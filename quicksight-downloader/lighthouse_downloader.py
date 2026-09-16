@@ -61,23 +61,35 @@ def is_logged_in(page):
 def login(page, user, pwd):
     """Login por usuario/contraseña de Quick (enable-sso=0 evita la redirección a Midway)."""
     log(f"Login QuickSight (cuenta {ACCOUNT}) …")
-    page.goto(LOGIN_URL, wait_until="networkidle")
-    time.sleep(2)
-    # Paso 0: nombre de cuenta (sólo si lo pide)
-    if page.locator("input[type=text]").count() and ACCOUNT not in page.content():
-        page.locator("input[type=text]").first.fill(ACCOUNT)
-        page.locator("button[type=submit], button:has-text('Next')").first.click()
-        page.wait_for_load_state("networkidle")
-    # Paso 1: usuario
-    page.locator("input[type=text]").first.wait_for(timeout=15000)
-    page.locator("input[type=text]").first.fill(user)
-    page.locator("button[type=submit]").first.click()
+    page.goto(LOGIN_URL, wait_until="domcontentloaded")
+    page.wait_for_timeout(3000)
+    # Página «Choose your account» (cuenta recordada por el navegador): pulsar la cuenta
+    if page.get_by_text(re.compile(r"Choose your account", re.I)).count():
+        acct = page.get_by_role("button").filter(has_text=re.compile(re.escape(ACCOUNT)))
+        if not acct.count(): acct = page.get_by_text(ACCOUNT, exact=False)
+        acct.first.click(); log("Cuenta recordada seleccionada")
+        page.wait_for_timeout(3000)
+    if not page.locator("input[type=password]").count():
+        # Paso 0: nombre de cuenta (sólo si lo pide)
+        if page.locator("input[type=text]").count() and ACCOUNT not in page.content():
+            page.locator("input[type=text]").first.fill(ACCOUNT)
+            page.locator("button[type=submit], button:has-text('Next')").first.click()
+            page.wait_for_timeout(3000)
+        # Paso 1: usuario
+        if not page.locator("input[type=password]").count():
+            page.locator("input[type=text]").first.wait_for(timeout=20000)
+            page.locator("input[type=text]").first.fill(user)
+            page.locator("button[type=submit]").first.click()
     # Paso 2: contraseña (página us-east-1.signin.aws)
-    page.locator("input[type=password]").wait_for(timeout=30000)
+    page.locator("input[type=password]").wait_for(timeout=45000)
     page.locator("input[type=password]").fill(pwd)
     page.locator("button[type=submit]").first.click()
-    page.wait_for_load_state("networkidle")
-    time.sleep(3)
+    # Esperar a que termine la cadena de redirecciones signin.aws → QuickSight (puede tardar >10 s)
+    try:
+        page.wait_for_url(re.compile(r"quicksight\.aws\.amazon\.com/sn/.*(start|dashboards)"), timeout=90000)
+    except PWTimeout:
+        pass
+    page.wait_for_timeout(3000)
     if "midway" in page.url.lower():
         raise RuntimeError("Redirigido a Midway: la cuenta exige SSO. Revisa ACCOUNT / usuario.")
     if not is_logged_in(page):
@@ -206,10 +218,10 @@ def main():
         page = ctx.new_page()
         page.set_default_timeout(30000)
 
-        page.goto(DASH_URL, wait_until="networkidle"); time.sleep(3)
+        page.goto(DASH_URL, wait_until="domcontentloaded"); page.wait_for_timeout(6000)
         if not is_logged_in(page):
             login(page, user, pwd)
-            page.goto(DASH_URL, wait_until="networkidle"); time.sleep(5)
+            page.goto(DASH_URL, wait_until="domcontentloaded"); page.wait_for_timeout(8000)
         ctx.storage_state(path=str(STATE_FILE))
 
         # ── Hoja 1: métricas semanales ──
