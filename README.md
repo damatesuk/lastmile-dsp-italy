@@ -26,3 +26,15 @@ Single-page React app with Recharts, loaded via CDN. No build step required.
 ## Multi-Language
 
 🇬🇧 English · 🇮🇹 Italiano · 🇪🇸 Español
+
+## Daily update (automated)
+
+`quicksight-downloader/daily_update.sh` runs the whole cycle: QuickSight export (Playwright) → `scripts/lighthouse_to_dashboard.py` merge into `src/Dashboard.jsx` → git commit + push → `npm run build` → `netlify deploy --prod`. The two most recent weeks are recalculated on every run (the current week arrives partial).
+
+```
+cd quicksight-downloader
+./daily_update.sh --headed          # first run: watch the login/export in a visible browser
+./schedule_daily.sh                 # install the launchd job (07:45 daily)
+./schedule_daily.sh --status        # check it / see the last log
+```
+Credentials in `quicksight-downloader/.env` (`QS_USERNAME`, `QS_PASSWORD`, optional `NETLIFY_AUTH_TOKEN`). Logs in `quicksight-downloader/logs/`.
