@@ -70,6 +70,8 @@ def dump_js(obj):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("folder"); ap.add_argument("--jsx", default="src/Dashboard.jsx"); ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--refresh", type=int, default=2, help="nº de semanas más recientes del export que se recalculan siempre (la semana en curso llega parcial); 0 = ninguna")
+    ap.add_argument("--refresh-all", action="store_true", help="recalcula todas las semanas presentes en el export")
     a = ap.parse_args()
 
     # ── 1. Métricas semanales por estación ─────────────────────────────
@@ -94,7 +96,7 @@ def main():
     pond = defaultdict(lambda: {"FP": 0, "PP": 0})
     ncc_stn = defaultdict(lambda: defaultdict(int)); ncc_drv = defaultdict(lambda: {"stations": set(), "w": defaultdict(int)})
     late_stn = defaultdict(lambda: defaultdict(int)); gt15_stn = defaultdict(lambda: defaultdict(int))
-    late_drv = defaultdict(lambda: {"s": set(), "l": 0, "g": 0, "w": defaultdict(int)})
+    late_drv = defaultdict(lambda: {"s": set(), "l": 0, "g": 0, "w": defaultdict(int), "wg": defaultdict(int)})
     weeks = set()
     for r in rows:
         stn = r["delivery_station_code"]; y, n = week_of(r["delivery_date"]); wk = wkey(y, n); weeks.add((y, n))
@@ -105,7 +107,7 @@ def main():
             ncc_stn[stn][wk] += 1; ncc_drv[tid]["stations"].add(stn); ncc_drv[tid]["w"][wk] += 1
         if attr == "Late Batch Ops Controllable":
             late_stn[stn][wk] += 1; late_drv[tid]["s"].add(stn); late_drv[tid]["w"][wk] += 1
-            if r["ior_defect"] == "class_late_gt15": gt15_stn[stn][wk] += 1; late_drv[tid]["g"] += 1
+            if r["ior_defect"] == "class_late_gt15": gt15_stn[stn][wk] += 1; late_drv[tid]["g"] += 1; late_drv[tid]["wg"][wk] += 1
             else: late_drv[tid]["l"] += 1
     for (stn, w), o in orders.items():  # 0 cuando hay pedidos pero ningún defecto FTPDF
         if o and (stn, w) in depot:
@@ -113,6 +115,19 @@ def main():
             depot[(stn, w)]["pondFP"] = round(100 * c["FP"] / o, 2); depot[(stn, w)]["pondPP"] = round(100 * c["PP"] / o, 2)
     weeks = sorted(weeks | set(w for _, w in depot))
     print(f"Semanas en los datos: {[wkey(*w) for w in weeks]}")
+    # Semanas «abiertas»: se borran del JSX y se vuelven a cargar (la semana en curso llega parcial y crece cada día)
+    refresh = set(weeks) if a.refresh_all else set(weeks[-a.refresh:]) if a.refresh > 0 else set()
+    refresh_keys = {wkey(*w) for w in refresh}
+    if refresh: print(f"Semanas que se recalculan: {sorted(refresh_keys, key=lambda k: int(k.split('-W')[1]))}")
+    def drop_week_lines(block):
+        """Quita las filas {year:Y,week:"WN",…} de las semanas a recalcular (y líneas vacías)."""
+        keep = []
+        for line in block.split("\n"):
+            mm = re.search(r'year:(\d{4}),week:"W(\d+)"', line)
+            if mm and (int(mm.group(1)), int(mm.group(2))) in refresh: continue
+            if line.strip() == "": continue
+            keep.append(line)
+        return "\n".join(keep)
 
     # ── 3. Fusionar en Dashboard.jsx ───────────────────────────────────
     src = open(a.jsx, encoding="utf-8").read()
@@ -124,7 +139,7 @@ def main():
     for stn in STATIONS:
         m = re.search(r'(\n  %s: \[\n)(.*?)(\n  \],)' % stn, src, re.S)
         if not m: print(f"AVISO: no encuentro el bloque {stn} en ALL_DEPOT_DATA"); continue
-        have = existing_weeks(m.group(2)); new_lines = []
+        blk = drop_week_lines(m.group(2)); have = existing_weeks(blk); new_lines = []
         for w in weeks:
             d = depot.get((stn, w))
             if not d or w in have: continue
@@ -132,28 +147,29 @@ def main():
             for fld in ["late", "fondCtrl", "ftfdf", "pdnr", "fdnr", "ftdc", "pondFP", "pondPP", "ftpdf"]:
                 row[fld] = d.get(fld)
             new_lines.append("    " + dump_js(row) + ",")
-        if new_lines:
-            marker = f"    // {weeks[0][0]} — Lighthouse export {os.path.basename(a.folder.rstrip('/'))}"
-            src = src.replace(m.group(0), m.group(1) + m.group(2) + "\n" + marker + "\n" + "\n".join(new_lines) + m.group(3))
-            print(f"{stn}: +{len(new_lines)} semanas")
+        if new_lines or blk != m.group(2):
+            src = src.replace(m.group(0), m.group(1) + blk + ("\n" + "\n".join(new_lines) if new_lines else "") + m.group(3))
+            print(f"{stn}: +{len(new_lines)} semanas (recalculadas incluidas)")
         else: print(f"{stn}: sin semanas nuevas")
 
     # 3b. NETWORK
     m = re.search(r'(const NETWORK = \[\n)(.*?)(\n\];)', src, re.S)
-    have = existing_weeks(m.group(2)); new_lines = []
+    blk = drop_week_lines(m.group(2)); have = existing_weeks(blk); new_lines = []
     for w in weeks:
         d = network.get(w)
         if not d or w in have: continue
         row = OrderedDict([("year", w[0]), ("week", f"W{w[1]}")])
         for fld in ["late", "fond", "pdnr", "ftfdf", "ftfdfOC"]: row[fld] = d.get(fld)
         new_lines.append("  " + dump_js(row) + ",")
-    if new_lines:
-        src = src.replace(m.group(0), m.group(1) + m.group(2) + "\n" + "\n".join(new_lines) + m.group(3)); print(f"NETWORK: +{len(new_lines)} semanas")
+    if new_lines or blk != m.group(2):
+        src = src.replace(m.group(0), m.group(1) + blk + ("\n" + "\n".join(new_lines) if new_lines else "") + m.group(3)); print(f"NETWORK: +{len(new_lines)} semanas (recalculadas incluidas)")
 
     # 3c. Semanas de defectos + tablas por estación (JSON en una línea)
     def merge_json_const(name, newdata, src):
         m = re.search(r'const %s = (\{.*?\});' % name, src)
         cur = json.loads(m.group(1))
+        for stn in cur:
+            for k in refresh_keys: cur[stn][k] = 0
         for stn, wks in newdata.items():
             cur.setdefault(stn, {})
             for wk, v in wks.items(): cur[stn][wk] = v
@@ -177,6 +193,9 @@ def main():
     # 3e. NCC_DRIVERS (fusión por nombre)
     m = re.search(r'const NCC_DRIVERS = \[\n(.*?)\n\];', src, re.S)
     ncc_list = js_obj_to_json("[" + m.group(1) + "]"); ncc_list = [d for d in ncc_list if d]
+    for d in ncc_list:
+        for k in refresh_keys: d["w"].pop(k, None)
+        d["total"] = sum(d["w"].values())
     by_name = {d["name"]: d for d in ncc_list}
     new_weeks = [wkey(*w) for w in weeks]
     for tid, info in ncc_drv.items():
@@ -189,6 +208,7 @@ def main():
             if s not in d["stations"]: d["stations"].append(s)
         for wk, v in info["w"].items(): d["w"][wk] = v
         d["total"] = sum(d["w"].values())
+    ncc_list = [d for d in ncc_list if d["total"] > 0]
     ncc_list.sort(key=lambda d: -d["total"])
     src = src.replace(m.group(0), "const NCC_DRIVERS = [\n" + ",\n".join("  " + dump_js(d) for d in ncc_list) + "\n];")
     # actualizar NCC_TID_MAP con los nuevos nombres conocidos
@@ -202,14 +222,31 @@ def main():
     # 3f. LATE_DRIVERS (fusión por TID)
     m = re.search(r'const LATE_DRIVERS = \[\n(.*?)\n\];', src, re.S)
     late_list = js_obj_to_json("[" + m.group(1) + "]"); late_list = [d for d in late_list if d]
+    export_keys = {wkey(*w) for w in weeks}
+    for d in late_list:
+        d.setdefault("wg", {})
+        # se quitan: semanas recalculadas y semanas del export sin detalle gt15 (wg) — se vuelven a cargar con detalle
+        for k in list(d["w"].keys()):
+            if k in refresh_keys or (k in export_keys and k not in d["wg"]):
+                t_old = d["w"].pop(k); g_old = d["wg"].pop(k, None)
+                if g_old is None: g_old = round(t_old * (d["g"] / d["t"])) if d["t"] else 0  # estimación para semanas antiguas
+                d["g"] = max(0, d["g"] - g_old); d["l"] = max(0, d["l"] - (t_old - g_old)); d["t"] = d["l"] + d["g"]
     by_tid = {d["tid"]: d for d in late_list}
     for tid, info in late_drv.items():
         d = by_tid.get(tid)
-        if not d: d = {"tid": tid, "s": sorted(info["s"]), "l": 0, "g": 0, "t": 0, "w": {}}; late_list.append(d); by_tid[tid] = d
-        for s in info["s"]:
-            if s not in d["s"]: d["s"].append(s)
-        for wk, v in info["w"].items(): d["w"][wk] = v
-        d["l"] += info["l"]; d["g"] += info["g"]; d["t"] = d["l"] + d["g"]
+        if not d: d = {"tid": tid, "s": sorted(info["s"]), "l": 0, "g": 0, "t": 0, "w": {}, "wg": {}}; late_list.append(d); by_tid[tid] = d
+        for s_ in info["s"]:
+            if s_ not in d["s"]: d["s"].append(s_)
+        d.setdefault("wg", {})
+        for wk, v in info["w"].items():
+            if wk in d["w"]: continue  # ya cargada con detalle y no recalculada
+            g = info["wg"].get(wk, 0)
+            d["w"][wk] = v; d["wg"][wk] = g; d["g"] += g; d["l"] += v - g
+        d["t"] = d["l"] + d["g"]
+    for d in late_list:  # cuando todas las semanas tienen detalle, los totales se recalculan exactos
+        if d["w"] and all(k in d["wg"] for k in d["w"]):
+            d["t"] = sum(d["w"].values()); d["g"] = sum(d["wg"].values()); d["l"] = d["t"] - d["g"]
+    late_list = [d for d in late_list if d["t"] > 0]
     late_list.sort(key=lambda d: -d["t"])
     src = src.replace(m.group(0), "const LATE_DRIVERS = [\n" + ",\n".join("  " + dump_js(d) for d in late_list) + "\n];")
 
@@ -234,15 +271,15 @@ def main():
         bm = re.search(r'(  %s: \[\n)(.*?)(  \],)' % stn, body, re.S)
         if not bm:
             body = body.rstrip("\n") + f"\n  {stn}: [\n  ],"; bm = re.search(r'(  %s: \[\n)(.*?)(  \],)' % stn, body, re.S)
-        have = existing_weeks(bm.group(2)); new_lines = []
+        blk = drop_week_lines(bm.group(2)); have = existing_weeks(blk); new_lines = []
         for w in sorted(set(k[1] for k in orders if k[0] == stn)):
             if w in have: continue
             o = orders.get((stn, w), 0); rt = routes.get((stn, w), 0)
             if not (o or rt): continue
             new_lines.append(f'    {{year:{w[0]},week:"W{w[1]}",orders:{o},routes:{rt}}},\n')
-        if new_lines:
-            body = body.replace(bm.group(0), bm.group(1) + bm.group(2) + "".join(new_lines) + bm.group(3))
-            print(f"PRODUCTIVITY {stn}: +{len(new_lines)} semanas")
+        if new_lines or blk != bm.group(2):
+            body = body.replace(bm.group(0), bm.group(1) + (blk + "\n" if blk.strip() else "") + "".join(new_lines) + bm.group(3))
+            print(f"PRODUCTIVITY {stn}: +{len(new_lines)} semanas (recalculadas incluidas)")
     src = src.replace(m.group(0), "const PRODUCTIVITY = {\n" + body + "\n};")
     # objetivo = percentil 75 de stops/route por estación (sólo si aún no está definido)
     mt = re.search(r'const SPR_TARGET = \{(.*?)\};', src, re.S)
@@ -269,6 +306,7 @@ def main():
             line = line.strip().rstrip(",")
             if not line: continue
             k, _, v = line.partition(":"); flow_weeks[json.loads(k)] = json.loads(v)
+    for k in refresh_keys: flow_weeks.pop(k, None)
     aidx = {a: i for i, a in enumerate(flow_attr)}; tidx = {t: i for i, t in enumerate(flow_tid)}
     def idx(table, index, val):
         if val not in index: index[val] = len(table); table.append(val)

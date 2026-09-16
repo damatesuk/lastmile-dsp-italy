@@ -7,3 +7,4 @@ __pycache__/
 .qs_state.json
 logs/
 login_error.png
+.daily.lock
