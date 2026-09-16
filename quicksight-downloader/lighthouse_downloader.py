@@ -107,23 +107,69 @@ def open_sheet(page, name):
 
 
 def expand_controls(page):
-    """El panel de controles va plegado; lo desplegamos si no vemos los combos."""
-    if page.get_by_label("Start Date").count() or page.get_by_role("combobox").count() > 3:
+    """El panel de controles suele ir plegado en un navegador nuevo; lo desplegamos si no vemos los combos."""
+    def visible():
+        return page.get_by_label("Start Date").count() or page.locator('[role="combobox"]').count() > 2
+    if visible():
         return
-    btn = page.get_by_role("button", name=re.compile(r"^Controls$"))
-    if btn.count():
-        btn.first.click(); page.wait_for_timeout(1500)
+    for loc in (page.get_by_role("button", name=re.compile(r"controls", re.I)),
+                page.locator('[aria-label*="ontrols"]'),
+                page.get_by_text(re.compile(r"^\s*Controls\s*$"))):
+        if loc.count():
+            loc.first.click(); page.wait_for_timeout(2500)
+            log("Panel de controles desplegado")
+            if visible():
+                return
+    names = [b.strip().replace("\n", " ")[:30] for b in page.get_by_role("button").all_inner_texts() if b.strip()][:40]
+    log(f"No veo los controles de la hoja; botones visibles: {names}", "WARN")
+
+
+def dump_debug(page, tag):
+    """Captura + inventario de elementos para diagnosticar selectores (logs/debug_<tag>.*)."""
+    try:
+        logs = HERE / "logs"; logs.mkdir(exist_ok=True)
+        page.screenshot(path=str(logs / f"debug_{tag}.png"), full_page=True)
+        els = page.evaluate("""() => [...document.querySelectorAll('button,[role=combobox],[role=option],[role=heading],[role=tab],h1,h2,h3,input,[role=textbox]')]
+            .slice(0, 600).map(e => [e.tagName, e.getAttribute('role')||'', e.getAttribute('aria-label')||'', (e.innerText||e.value||'').trim().replace(/\\s+/g,' ').slice(0,80)].join(' | '))""")
+        (logs / f"debug_{tag}.txt").write_text("\n".join(els), encoding="utf-8")
+        log(f"Diagnóstico guardado en logs/debug_{tag}.png/.txt", "WARN")
+    except Exception as e:
+        log(f"No se pudo guardar el diagnóstico: {e}", "WARN")
+
+
+def combo_text(c):
+    """Texto visible de un combobox (QuickSight usa a veces <input role=combobox> con el valor en value)."""
+    t = ""
+    for getter in (lambda: c.inner_text(), lambda: c.input_value(),
+                   lambda: c.get_attribute("aria-label") or "", lambda: c.get_attribute("title") or ""):
+        try:
+            t = (getter() or "").strip().replace("\n", " ")
+        except Exception:
+            t = ""
+        if t:
+            break
+    return t
 
 
 def select_combo(page, current_pattern, option_text):
-    """Abre el combobox cuyo texto actual cumple current_pattern y elige option_text."""
-    combo = page.get_by_role("combobox", name=re.compile(current_pattern))
-    if not combo.count():
-        log(f"Combobox {current_pattern!r} no encontrado (¿ya está en {option_text!r}?)", "WARN"); return
-    if re.fullmatch(re.escape(option_text), combo.first.get_attribute("aria-label") or ""):
+    """Abre el combobox cuyo texto cumple current_pattern y elige option_text."""
+    combos = page.locator('[role="combobox"], select')
+    items = [(combos.nth(i), combo_text(combos.nth(i))) for i in range(combos.count())]
+    target = next((c for c, t in items if re.search(current_pattern, t)), None)
+    if target is None:
+        if any(t == option_text for _, t in items):
+            log(f"Control ya en «{option_text}»"); return
+        log(f"Combobox {current_pattern!r} no encontrado; comboboxes visibles: {[t[:40] for _, t in items]}", "WARN"); return
+    if combo_text(target) == option_text:
         return
-    combo.first.click(); page.wait_for_timeout(800)
-    page.get_by_text(option_text, exact=True).last.click()
+    target.scroll_into_view_if_needed(); target.click(); page.wait_for_timeout(800)
+    opt = page.get_by_role("option", name=re.compile(re.escape(option_text)))
+    if not opt.count():
+        opt = page.get_by_text(option_text, exact=True)
+    if not opt.count():
+        dump_debug(page, "combo_" + re.sub(r"\W+", "_", option_text)); page.keyboard.press("Escape")
+        raise RuntimeError(f"No encuentro la opción «{option_text}» en el desplegable")
+    opt.last.click()
     page.wait_for_timeout(5000)
     log(f"Control → {option_text}")
 
@@ -131,12 +177,15 @@ def select_combo(page, current_pattern, option_text):
 def set_metrics_date_range(page, start: dt.date, end: dt.date):
     """Hoja 'DSP Lighthouse metrics': inputs Start Date / End Date + calendario + Apply."""
     s, e = page.get_by_label("Start Date"), page.get_by_label("End Date")
-    s.fill(f"{start:%Y/%m/%d} 00:00:00"); s.press("Enter")
-    e.fill(f"{end:%Y/%m/%d} 00:00:00"); e.press("Enter")
+    if not s.count():
+        dump_debug(page, "metrics_dates"); raise RuntimeError("No encuentro el control de fechas (Start Date) de la hoja de métricas")
+    s.first.scroll_into_view_if_needed()
+    s.first.fill(f"{start:%Y/%m/%d} 00:00:00"); s.first.press("Enter")
+    e.first.fill(f"{end:%Y/%m/%d} 00:00:00"); e.first.press("Enter")
     page.wait_for_timeout(800)
     # El picker exige «Apply»: abrimos el calendario (botón "Calendar") y pulsamos Apply
     cal = page.get_by_role("button", name="Calendar")
-    (cal.first if cal.count() else s).click(); page.wait_for_timeout(1000)
+    (cal.first if cal.count() else s.first).click(); page.wait_for_timeout(1000)
     apply = page.get_by_role("button", name="Apply")
     if apply.count():
         apply.first.click()
@@ -144,31 +193,41 @@ def set_metrics_date_range(page, start: dt.date, end: dt.date):
         log("No aparece el botón Apply del calendario; el rango puede no haberse aplicado", "WARN")
         page.keyboard.press("Escape")
     page.wait_for_timeout(8000)
-    heading = page.get_by_role("heading", name=re.compile("delivery_date between")).first
-    log(f"Rango métricas: {heading.text_content() if heading.count() else '?'}")
+    log(f"Rango métricas aplicado: {s.first.input_value()} → {e.first.input_value()}")
 
 
 def set_orders_date_range(page, start: dt.date, end: dt.date):
     """Hoja 'Order Level View': control único 'YYYY/MM/DD - YYYY/MM/DD' con popover Start date / End date."""
     box = page.get_by_role("textbox", name=re.compile(r"^\d{4}/\d{2}/\d{2} .* - \d{4}/\d{2}/\d{2}"))
-    box.first.click(); page.wait_for_timeout(1000)
+    if not box.count():
+        box = page.locator('input[value*=" - "]')
+    if not box.count():
+        dump_debug(page, "orders_dates"); raise RuntimeError("No encuentro el control de fechas de 'Order Level View'")
+    box.first.scroll_into_view_if_needed(); box.first.click(); page.wait_for_timeout(1000)
     page.get_by_label("Start date").fill(f"{start:%Y/%m/%d} 00:00:00"); page.get_by_label("Start date").press("Enter")
     page.wait_for_timeout(500)
     page.get_by_label("End date").fill(f"{end:%Y/%m/%d} 00:00:00"); page.get_by_label("End date").press("Enter")
     page.wait_for_timeout(1000)
     page.keyboard.press("Escape")
     page.wait_for_timeout(8000)
-    log(f"Rango pedidos: {box.first.get_attribute('aria-label') or box.first.input_value()}")
+    log(f"Rango pedidos: {box.first.input_value()}")
 
 
-def export_visual(page, menu_name_pattern, out_path: Path):
-    """Menú (⋮) del visual → Export to CSV → guarda la descarga."""
-    btn = page.get_by_role("button", name=re.compile(menu_name_pattern))
-    if not btn.count():
-        # los botones aparecen al pasar el ratón por el visual
-        page.mouse.move(400, 600); page.wait_for_timeout(500)
-    btn = page.get_by_role("button", name=re.compile(menu_name_pattern))
-    btn.first.scroll_into_view_if_needed(); btn.first.hover(); btn.first.click()
+def export_visual(page, title_pattern, out_path: Path):
+    """Pasa el ratón por el visual (su ⋮ sólo aparece al hacer hover) → Menu options → Export to CSV."""
+    menu = page.get_by_role("button", name=re.compile(r"^Menu options, " + title_pattern))
+    if not menu.count():
+        head = page.get_by_role("heading", name=re.compile(title_pattern))
+        if not head.count(): head = page.get_by_text(re.compile(title_pattern))
+        if head.count():
+            h = head.last; h.scroll_into_view_if_needed(); h.hover(); page.wait_for_timeout(800)
+            if not menu.count():
+                bb = h.bounding_box()
+                if bb: page.mouse.move(bb["x"] + bb["width"] / 2, bb["y"] + bb["height"] + 120); page.wait_for_timeout(800)
+    if not menu.count():
+        dump_debug(page, "export_" + re.sub(r"\W+", "_", title_pattern)[:30])
+        raise RuntimeError(f"No encuentro el menú del visual «{title_pattern}»")
+    menu.first.scroll_into_view_if_needed(); menu.first.hover(); menu.first.click()
     page.wait_for_timeout(700)
     with page.expect_download(timeout=120000) as dl:
         page.get_by_role("menuitem", name="Export to CSV").click()
@@ -211,7 +270,7 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=a.headless)
-        ctx_kwargs = {"accept_downloads": True, "viewport": {"width": 1500, "height": 1000}}
+        ctx_kwargs = {"accept_downloads": True, "viewport": {"width": 1500, "height": 1700}}
         if STATE_FILE.exists():
             ctx_kwargs["storage_state"] = str(STATE_FILE)
         ctx = browser.new_context(**ctx_kwargs)
@@ -224,24 +283,27 @@ def main():
             page.goto(DASH_URL, wait_until="domcontentloaded"); page.wait_for_timeout(8000)
         ctx.storage_state(path=str(STATE_FILE))
 
-        # ── Hoja 1: métricas semanales ──
-        open_sheet(page, "DSP Lighthouse metrics")
-        expand_controls(page)
-        select_combo(page, r"^\d\. (Daily|Weekly|Monthly|Quarterly)$", "2. Weekly")
-        select_combo(page, r"^\d\. By ", "4. By Station Code")
-        set_metrics_date_range(page, start, end)
-        export_visual(page, r"^Menu options, Business Metrics", out_dir / f"business_metrics_by_station_{rng}.csv")
-        export_visual(page, r"^Menu options, Metric by Show By", out_dir / f"quality_metrics_by_station_{rng}.csv")
-        select_combo(page, r"^\d\. By ", "5. By DSP Company")
-        export_visual(page, r"^Menu options, Metric by Show By", out_dir / f"quality_metrics_network_{rng}.csv")
-        select_combo(page, r"^\d\. By ", "4. By Station Code")  # dejamos la vista como estaba
+        try:
+          # ── Hoja 1: métricas semanales ──
+          open_sheet(page, "DSP Lighthouse metrics")
+          expand_controls(page)
+          select_combo(page, r"\d\. (Daily|Weekly|Monthly|Quarterly)", "2. Weekly")
+          select_combo(page, r"\d\. By ", "4. By Station Code")
+          set_metrics_date_range(page, start, end)
+          export_visual(page, r"Business Metrics", out_dir / f"business_metrics_by_station_{rng}.csv")
+          export_visual(page, r"Metric by Show By", out_dir / f"quality_metrics_by_station_{rng}.csv")
+          select_combo(page, r"\d\. By ", "5. By DSP Company")
+          export_visual(page, r"Metric by Show By", out_dir / f"quality_metrics_network_{rng}.csv")
+          select_combo(page, r"\d\. By ", "4. By Station Code")  # dejamos la vista como estaba
 
-        # ── Hoja 2: defectos a nivel de pedido ──
-        open_sheet(page, "Order Level View")
-        expand_controls(page)
-        set_orders_date_range(page, start, end)
-        export_visual(page, r"^Menu options, Order Level Data", out_dir / f"order_level_defects_{rng}.csv")
+          # ── Hoja 2: defectos a nivel de pedido ──
+          open_sheet(page, "Order Level View")
+          expand_controls(page)
+          set_orders_date_range(page, start, end)
+          export_visual(page, r"Order Level Data", out_dir / f"order_level_defects_{rng}.csv")
 
+        except Exception:
+          dump_debug(page, "fail"); raise
         ctx.storage_state(path=str(STATE_FILE))
         browser.close()
 
