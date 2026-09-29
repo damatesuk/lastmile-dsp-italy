@@ -4,6 +4,7 @@ Delivery Performance Dashboard for DSP Italy operations.
 
 ## Features
 
+- **Scorecard** (landing tab) — goal vs actual radar, RCA donut per metric from Amazon's order-level attribution, WK-vs-monthly-goal tiles (FTDC, FTFDF, Lates +15, FTPDF, DNR) and secondary metrics (RFC, stops per route, orders, routes, late pickup). Monthly goals live in `SC_GOALS` in `src/Dashboard.jsx`.
 - **Network Overview** — KPI trends across all depots (Late +15, FTFDF, PDNR, FDNR)
 - **Depot Deep-Dive** — Individual station performance with week-over-week comparisons
 - **Upstream vs Controllable** — Attribution analysis of late deliveries
@@ -17,7 +18,7 @@ Delivery Performance Dashboard for DSP Italy operations.
 
 ## Data Range
 
-W47/2025 → W37/2026 (W9–W26 not loaded; UIT7 closed after W5/2026)
+W47/2025 → W40/2026, refreshed daily from Amazon Lighthouse (W9–W26 not loaded — Lighthouse keeps ~12 weeks; UIT7 closed after W5/2026)
 
 ## Tech
 
@@ -38,3 +39,10 @@ cd quicksight-downloader
 ./schedule_daily.sh --status        # check it / see the last log
 ```
 Credentials in `quicksight-downloader/.env` (`QS_USERNAME`, `QS_PASSWORD`, optional `NETLIFY_AUTH_TOKEN`). Logs in `quicksight-downloader/logs/`.
+
+The downloader (`lighthouse_downloader.py`) does *Reset to original* on the dashboard first, then sets every control explicitly (date range, Time Granularity = Weekly, Show By, Show Attribution, Defect = All), so a filter someone left on in QuickSight (e.g. `station_code = UIT4`) never leaks into the export. `--steps setup,network,orders` runs the export in phases (useful where a single run must finish in < 3 min); if it fails it writes `logs/debug_<step>.png/.txt` with a DOM inventory.
+
+Manual re-merge / redeploy without downloading:
+```
+./daily_update.sh --no-download --force-deploy
+```

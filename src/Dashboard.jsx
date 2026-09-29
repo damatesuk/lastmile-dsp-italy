@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, AreaChart, Area, ReferenceLine, ComposedChart
+  ResponsiveContainer, AreaChart, Area, ReferenceLine, ComposedChart,
+  RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, PieChart, Pie, Cell
 } from "recharts";
 
 // ─── LEAFLET MAP COMPONENT ───────────────────────────────────────────
@@ -168,6 +169,11 @@ function useIsMobile(breakpoint = 768) {
 // ─── TRANSLATIONS ───────────────────────────────────────────────────
 const T = {
   "en": {
+    tabGoals: "Scorecard", scNetwork: "Network", scSource: "Amazon Lighthouse · weekly · goal vs actual", scWeek: "WEEK", scPartial: "partial", scPartialNote: "partial week — data up to the last refresh",
+    scGoal: "Goal", scActual: "Actual", scTarget: "target", scRadarNote: "each axis = actual ÷ goal (goal = inner pentagon)", scOrders: "orders", scNoRca: "no attributed orders for this metric",
+    scDefectiveOrders: "Defective orders in the week", scKeyMetrics: "Key metrics", scCatRouting: "Routing", scCatVolume: "Volume", scCatPunctuality: "Punctuality",
+    scOwnerStation: "Station", scOwnerCustomer: "Customer", scOwnerNetwork: "Network", scOwnerPending: "Pending", scOwnerOther: "Other", scNoData: "no data in the selected range",
+    scFootnote: "DNR = PDNR + FDNR. RCA = Amazon root-cause attribution of each defective order (Lighthouse Order Level View); owner tags are LSRL's classification. Goals: monthly Amazon goals when defined, otherwise the 2026 targets.",
     brand: "Last Mile DSP — Italy", title: "Delivery Performance", latestInRange: "Latest in Range",
     stations: "stations", station: "station",
     tabOverview: "Overview", tabDepots: "Depot Deep-Dive", tabUpstream: "Upstream vs Controllable",
@@ -227,6 +233,11 @@ const T = {
     defects: "defects", across: "across",
   },
   "it": {
+    tabGoals: "Scorecard", scNetwork: "Rete", scSource: "Amazon Lighthouse · settimanale · obiettivo vs effettivo", scWeek: "SETTIMANA", scPartial: "parziale", scPartialNote: "settimana parziale — dati fino all'ultimo aggiornamento",
+    scGoal: "Obiettivo", scActual: "Effettivo", scTarget: "target", scRadarNote: "ogni asse = effettivo ÷ obiettivo (obiettivo = pentagono interno)", scOrders: "ordini", scNoRca: "nessun ordine attribuito per questa metrica",
+    scDefectiveOrders: "Ordini difettosi nella settimana", scKeyMetrics: "Metriche chiave", scCatRouting: "Routing", scCatVolume: "Volumi", scCatPunctuality: "Puntualità",
+    scOwnerStation: "Stazione", scOwnerCustomer: "Cliente", scOwnerNetwork: "Rete", scOwnerPending: "In attesa", scOwnerOther: "Altro", scNoData: "nessun dato nell'intervallo selezionato",
+    scFootnote: "DNR = PDNR + FDNR. RCA = attribuzione Amazon della causa radice di ogni ordine difettoso (Lighthouse Order Level View); le etichette del responsabile sono la classificazione LSRL. Obiettivi: mensili Amazon se definiti, altrimenti i target 2026.",
     brand: "Ultimo Miglio DSP — Italia", title: "Performance di Consegna", latestInRange: "Ultima nel Range",
     stations: "stazioni", station: "stazione",
     tabOverview: "Panoramica", tabDepots: "Analisi Depositi", tabUpstream: "Upstream vs Controllabile",
@@ -276,6 +287,11 @@ const T = {
     defects: "difetti", across: "su",
   },
   "es": {
+    tabGoals: "Scorecard", scNetwork: "Red", scSource: "Amazon Lighthouse · semanal · objetivo vs real", scWeek: "SEMANA", scPartial: "parcial", scPartialNote: "semana parcial — datos hasta la última actualización",
+    scGoal: "Objetivo", scActual: "Real", scTarget: "target", scRadarNote: "cada eje = real ÷ objetivo (objetivo = pentágono interior)", scOrders: "pedidos", scNoRca: "sin pedidos atribuidos para esta métrica",
+    scDefectiveOrders: "Pedidos defectuosos en la semana", scKeyMetrics: "Métricas clave", scCatRouting: "Routing", scCatVolume: "Volumen", scCatPunctuality: "Puntualidad",
+    scOwnerStation: "Estación", scOwnerCustomer: "Cliente", scOwnerNetwork: "Red", scOwnerPending: "Pendiente", scOwnerOther: "Otro", scNoData: "sin datos en el rango seleccionado",
+    scFootnote: "DNR = PDNR + FDNR. RCA = atribución Amazon de la causa raíz de cada pedido defectuoso (Lighthouse Order Level View); las etiquetas de responsable son la clasificación de LSRL. Objetivos: mensuales de Amazon si están definidos; si no, los targets 2026.",
     brand: "Última Milla DSP — Italia", title: "Rendimiento de Entrega", latestInRange: "Última en Rango",
     stations: "estaciones", station: "estación",
     tabOverview: "Resumen", tabDepots: "Análisis de Depósitos", tabUpstream: "Upstream vs Controlable",
@@ -372,18 +388,18 @@ const NETWORK = [
   { year:2026,week:"W7",late:3.44,fond:1.72,pdnr:0.67,ftfdf:null,ftfdfOC:1.72 },
   {year:2026,week:"W27",late:2.77,fond:0.7,pdnr:1.07,ftfdf:2.16,ftfdfOC:0.7},
   {year:2026,week:"W28",late:1.64,fond:0.73,pdnr:0.89,ftfdf:1.99,ftfdfOC:0.73},
-  {year:2026,week:"W29",late:2.18,fond:0.66,pdnr:0.6,ftfdf:1.96,ftfdfOC:0.66},
-  {year:2026,week:"W30",late:1.04,fond:0.77,pdnr:0.83,ftfdf:2.06,ftfdfOC:0.77},
-  {year:2026,week:"W31",late:1.41,fond:0.69,pdnr:1.09,ftfdf:1.94,ftfdfOC:0.69},
-  {year:2026,week:"W32",late:1.7,fond:0.65,pdnr:0.98,ftfdf:2.15,ftfdfOC:0.65},
-  {year:2026,week:"W33",late:0.35,fond:0.29,pdnr:0.55,ftfdf:1.87,ftfdfOC:0.29},
-  {year:2026,week:"W34",late:0.77,fond:0.39,pdnr:1.21,ftfdf:2.07,ftfdfOC:0.39},
-  {year:2026,week:"W35",late:0.9,fond:0.53,pdnr:1.43,ftfdf:1.8,ftfdfOC:0.53},
-  {year:2026,week:"W36",late:2.98,fond:0.72,pdnr:1.17,ftfdf:2.1,ftfdfOC:0.72},
-  {year:2026,week:"W37",late:4.46,fond:1.3,pdnr:1.15,ftfdf:2.88,ftfdfOC:1.3},
-  {year:2026,week:"W38",late:2.92,fond:0.86,pdnr:1.01,ftfdf:2.25,ftfdfOC:0.86},
-  {year:2026,week:"W39",late:2.38,fond:0.86,pdnr:0.78,ftfdf:2.24,ftfdfOC:0.86},
-  {year:2026,week:"W40",late:1.12,fond:0.92,pdnr:0.0,ftfdf:2.76,ftfdfOC:0.92},
+  {year:2026,week:"W29",late:2.18,fond:0.66,pdnr:0.6,ftfdf:1.96,ftfdfOC:0.66,fdnr:0.07,ftdc:0.26,ftpdf:0.84,pondFP:0.48,pondPP:0.37,rfc:95.4,latePk:24.06,latePkFW:8.19},
+  {year:2026,week:"W30",late:1.04,fond:0.77,pdnr:0.83,ftfdf:2.06,ftfdfOC:0.77,fdnr:0.17,ftdc:0.13,ftpdf:0.77,pondFP:0.44,pondPP:0.33,rfc:94.25,latePk:23.97,latePkFW:10.12},
+  {year:2026,week:"W31",late:1.41,fond:0.69,pdnr:1.09,ftfdf:1.94,ftfdfOC:0.69,fdnr:0.12,ftdc:0.02,ftpdf:0.67,pondFP:0.46,pondPP:0.22,rfc:97.7,latePk:17.53,latePkFW:5.37},
+  {year:2026,week:"W32",late:1.7,fond:0.65,pdnr:0.98,ftfdf:2.15,ftfdfOC:0.65,fdnr:0.2,ftdc:0.0,ftpdf:0.75,pondFP:0.45,pondPP:0.3,rfc:98.82,latePk:19.76,latePkFW:7.14},
+  {year:2026,week:"W33",late:0.35,fond:0.29,pdnr:0.55,ftfdf:1.87,ftfdfOC:0.29,fdnr:0.19,ftdc:0.06,ftpdf:0.74,pondFP:0.23,pondPP:0.52,rfc:97.1,latePk:13.71,latePkFW:6.22},
+  {year:2026,week:"W34",late:0.77,fond:0.39,pdnr:1.21,ftfdf:2.07,ftfdfOC:0.39,fdnr:0.05,ftdc:0.03,ftpdf:0.96,pondFP:0.31,pondPP:0.65,rfc:91.39,latePk:11.01,latePkFW:9.02},
+  {year:2026,week:"W35",late:0.9,fond:0.53,pdnr:1.43,ftfdf:1.8,ftfdfOC:0.53,fdnr:0.16,ftdc:0.02,ftpdf:1.35,pondFP:0.59,pondPP:0.76,rfc:95.21,latePk:16.74,latePkFW:8.06},
+  {year:2026,week:"W36",late:2.98,fond:0.72,pdnr:1.17,ftfdf:2.1,ftfdfOC:0.72,fdnr:0.1,ftdc:0.36,ftpdf:2.21,pondFP:0.74,pondPP:1.47,rfc:88.51,latePk:37.09,latePkFW:19.91},
+  {year:2026,week:"W37",late:4.46,fond:1.3,pdnr:1.15,ftfdf:2.88,ftfdfOC:1.3,fdnr:0.15,ftdc:0.27,ftpdf:1.81,pondFP:0.66,pondPP:1.15,rfc:89.14,latePk:37.33,latePkFW:20.41},
+  {year:2026,week:"W38",late:2.92,fond:0.86,pdnr:1.01,ftfdf:2.25,ftfdfOC:0.86,fdnr:0.19,ftdc:0.16,ftpdf:1.62,pondFP:0.66,pondPP:0.97,rfc:97.7,latePk:30.51,latePkFW:14.47},
+  {year:2026,week:"W39",late:2.38,fond:0.86,pdnr:0.78,ftfdf:2.24,ftfdfOC:0.86,fdnr:0.09,ftdc:0.24,ftpdf:1.39,pondFP:0.61,pondPP:0.78,rfc:95.98,latePk:31.68,latePkFW:15.02},
+  {year:2026,week:"W40",late:1.12,fond:0.92,pdnr:0.0,ftfdf:2.76,ftfdfOC:0.92,fdnr:0.0,ftdc:0.0,ftpdf:1.94,pondFP:0.0,pondPP:0.0,rfc:91.67,latePk:22.82,latePkFW:13.24},
 ];
 
 // ─── ALL DEPOT DATA (with year) ────────────────────────────────────
@@ -432,18 +448,18 @@ const ALL_DEPOT_DATA = {
     // 2026 — Lighthouse export 2026-09-14
     {year:2026,week:"W27",late:2.73,fondCtrl:0.71,ftfdf:2.57,pdnr:1.43,fdnr:0.25,ftdc:0.22,pondFP:0.77,pondPP:0.9,ftpdf:1.67},
     {year:2026,week:"W28",late:1.73,fondCtrl:0.83,ftfdf:2.34,pdnr:0.96,fdnr:0.19,ftdc:0.06,pondFP:0.77,pondPP:0.49,ftpdf:1.27},
-    {year:2026,week:"W29",late:1.39,fondCtrl:0.63,ftfdf:2.28,pdnr:0.86,fdnr:0.07,ftdc:0.3,pondFP:0.69,pondPP:0.56,ftpdf:1.26},
-    {year:2026,week:"W30",late:0.37,fondCtrl:0.87,ftfdf:2.36,pdnr:0.87,fdnr:0.24,ftdc:0.07,pondFP:0.64,pondPP:0.4,ftpdf:1.04},
-    {year:2026,week:"W31",late:0.92,fondCtrl:0.71,ftfdf:2.38,pdnr:1.21,fdnr:0.11,ftdc:0.04,pondFP:0.43,pondPP:0.18,ftpdf:0.6},
-    {year:2026,week:"W32",late:1.31,fondCtrl:0.54,ftfdf:2.62,pdnr:1.18,fdnr:0.23,ftdc:0.0,pondFP:0.68,pondPP:0.5,ftpdf:1.18},
-    {year:2026,week:"W33",late:0.22,fondCtrl:0.27,ftfdf:2.16,pdnr:0.48,fdnr:0.27,ftdc:0.11,pondFP:0.32,pondPP:0.75,ftpdf:1.08},
-    {year:2026,week:"W34",late:0.25,fondCtrl:0.42,ftfdf:2.38,pdnr:1.51,fdnr:0.08,ftdc:0.04,pondFP:0.38,pondPP:0.92,ftpdf:1.3},
-    {year:2026,week:"W35",late:0.4,fondCtrl:0.4,ftfdf:1.82,pdnr:1.45,fdnr:0.13,ftdc:0.0,pondFP:0.67,pondPP:0.94,ftpdf:1.62},
-    {year:2026,week:"W36",late:2.38,fondCtrl:0.66,ftfdf:2.18,pdnr:1.65,fdnr:0.15,ftdc:0.63,pondFP:0.86,pondPP:2.13,ftpdf:2.99},
-    {year:2026,week:"W37",late:5.5,fondCtrl:1.44,ftfdf:3.54,pdnr:1.33,fdnr:0.19,ftdc:0.42,pondFP:0.75,pondPP:1.54,ftpdf:2.28},
-    {year:2026,week:"W38",late:3.39,fondCtrl:0.72,ftfdf:2.36,pdnr:1.3,fdnr:0.26,ftdc:0.17,pondFP:0.84,pondPP:1.3,ftpdf:2.14},
-    {year:2026,week:"W39",late:2.94,fondCtrl:0.78,ftfdf:2.33,pdnr:1.05,fdnr:0.1,ftdc:0.42,pondFP:0.56,pondPP:1.18,ftpdf:1.74},
-    {year:2026,week:"W40",late:1.77,fondCtrl:1.24,ftfdf:3.18,pdnr:0.0,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:2.65},
+    {year:2026,week:"W29",late:1.39,fondCtrl:0.63,ftfdf:2.28,pdnr:0.86,fdnr:0.07,ftdc:0.3,pondFP:0.69,pondPP:0.56,ftpdf:1.26,rfc:96.43,latePk:28.17,latePkFW:8.02},
+    {year:2026,week:"W30",late:0.37,fondCtrl:0.87,ftfdf:2.36,pdnr:0.87,fdnr:0.24,ftdc:0.07,pondFP:0.64,pondPP:0.4,ftpdf:1.04,rfc:96.43,latePk:27.43,latePkFW:8.65},
+    {year:2026,week:"W31",late:0.92,fondCtrl:0.71,ftfdf:2.38,pdnr:1.21,fdnr:0.11,ftdc:0.04,pondFP:0.43,pondPP:0.18,ftpdf:0.6,rfc:96.43,latePk:22.05,latePkFW:3.78},
+    {year:2026,week:"W32",late:1.31,fondCtrl:0.54,ftfdf:2.62,pdnr:1.18,fdnr:0.23,ftdc:0.0,pondFP:0.68,pondPP:0.5,ftpdf:1.18,rfc:100.0,latePk:22.79,latePkFW:5.52},
+    {year:2026,week:"W33",late:0.22,fondCtrl:0.27,ftfdf:2.16,pdnr:0.48,fdnr:0.27,ftdc:0.11,pondFP:0.32,pondPP:0.75,ftpdf:1.08,rfc:100.0,latePk:18.14,latePkFW:6.14},
+    {year:2026,week:"W34",late:0.25,fondCtrl:0.42,ftfdf:2.38,pdnr:1.51,fdnr:0.08,ftdc:0.04,pondFP:0.38,pondPP:0.92,ftpdf:1.3,rfc:96.43,latePk:10.68,latePkFW:8.55},
+    {year:2026,week:"W35",late:0.4,fondCtrl:0.4,ftfdf:1.82,pdnr:1.45,fdnr:0.13,ftdc:0.0,pondFP:0.67,pondPP:0.94,ftpdf:1.62,rfc:94.64,latePk:15.86,latePkFW:4.15},
+    {year:2026,week:"W36",late:2.38,fondCtrl:0.66,ftfdf:2.18,pdnr:1.65,fdnr:0.15,ftdc:0.63,pondFP:0.86,pondPP:2.13,ftpdf:2.99,rfc:71.43,latePk:41.68,latePkFW:21.37},
+    {year:2026,week:"W37",late:5.5,fondCtrl:1.44,ftfdf:3.54,pdnr:1.33,fdnr:0.19,ftdc:0.42,pondFP:0.75,pondPP:1.54,ftpdf:2.28,rfc:73.68,latePk:42.72,latePkFW:21.12},
+    {year:2026,week:"W38",late:3.39,fondCtrl:0.72,ftfdf:2.36,pdnr:1.3,fdnr:0.26,ftdc:0.17,pondFP:0.84,pondPP:1.3,ftpdf:2.14,rfc:94.64,latePk:31.71,latePkFW:9.77},
+    {year:2026,week:"W39",late:2.94,fondCtrl:0.78,ftfdf:2.33,pdnr:1.05,fdnr:0.1,ftdc:0.42,pondFP:0.56,pondPP:1.18,ftpdf:1.74,rfc:92.86,latePk:35.53,latePkFW:14.43},
+    {year:2026,week:"W40",late:1.77,fondCtrl:1.24,ftfdf:3.18,pdnr:0.0,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:2.65,rfc:100.0,latePk:30.08,latePkFW:16.67},
   ],
   UIT1: [
     // 2025
@@ -489,18 +505,18 @@ const ALL_DEPOT_DATA = {
     // 2026 — Lighthouse export 2026-09-14
     {year:2026,week:"W27",late:1.04,fondCtrl:0.71,ftfdf:2.07,pdnr:0.44,fdnr:0.16,ftdc:0.11,pondFP:0.11,pondPP:0.22,ftpdf:0.33},
     {year:2026,week:"W28",late:0.62,fondCtrl:0.87,ftfdf:2.04,pdnr:0.43,fdnr:0.0,ftdc:0.0,pondFP:0.19,pondPP:0.06,ftpdf:0.25},
-    {year:2026,week:"W29",late:1.21,fondCtrl:0.27,ftfdf:1.34,pdnr:0.13,fdnr:0.07,ftdc:0.07,pondFP:0.13,pondPP:0.13,ftpdf:0.27},
-    {year:2026,week:"W30",late:0.89,fondCtrl:0.52,ftfdf:1.56,pdnr:0.74,fdnr:0.15,ftdc:0.07,pondFP:0.15,pondPP:0.22,ftpdf:0.37},
-    {year:2026,week:"W31",late:0.63,fondCtrl:0.47,ftfdf:1.49,pdnr:0.47,fdnr:0.16,ftdc:0.0,pondFP:0.39,pondPP:0.16,ftpdf:0.55},
-    {year:2026,week:"W32",late:1.79,fondCtrl:0.99,ftfdf:1.79,pdnr:0.6,fdnr:0.1,ftdc:0.0,pondFP:0.1,pondPP:0.0,ftpdf:0.1},
-    {year:2026,week:"W33",late:0.44,fondCtrl:0.29,ftfdf:1.76,pdnr:0.29,fdnr:0.15,ftdc:0.0,pondFP:0.0,pondPP:0.15,ftpdf:0.15},
-    {year:2026,week:"W34",late:0.97,fondCtrl:0.32,ftfdf:1.83,pdnr:0.43,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.11,ftpdf:0.11},
-    {year:2026,week:"W35",late:0.96,fondCtrl:0.88,ftfdf:2.13,pdnr:0.74,fdnr:0.0,ftdc:0.07,pondFP:0.44,pondPP:0.07,ftpdf:0.51},
-    {year:2026,week:"W36",late:3.43,fondCtrl:0.99,ftfdf:2.39,pdnr:0.45,fdnr:0.05,ftdc:0.05,pondFP:0.63,pondPP:0.45,ftpdf:1.08},
-    {year:2026,week:"W37",late:1.88,fondCtrl:0.96,ftfdf:1.88,pdnr:0.7,fdnr:0.09,ftdc:0.09,pondFP:0.48,pondPP:0.39,ftpdf:0.88},
-    {year:2026,week:"W38",late:1.49,fondCtrl:1.03,ftfdf:2.19,pdnr:0.37,fdnr:0.09,ftdc:0.19,pondFP:0.51,pondPP:0.51,ftpdf:1.03},
-    {year:2026,week:"W39",late:1.36,fondCtrl:0.9,ftfdf:2.31,pdnr:0.32,fdnr:0.09,ftdc:0.05,pondFP:0.72,pondPP:0.32,ftpdf:1.04},
-    {year:2026,week:"W40",late:0.0,fondCtrl:0.73,ftfdf:2.92,pdnr:0.0,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:1.09},
+    {year:2026,week:"W29",late:1.21,fondCtrl:0.27,ftfdf:1.34,pdnr:0.13,fdnr:0.07,ftdc:0.07,pondFP:0.13,pondPP:0.13,ftpdf:0.27,rfc:94.64,latePk:20.2,latePkFW:12.22},
+    {year:2026,week:"W30",late:0.89,fondCtrl:0.52,ftfdf:1.56,pdnr:0.74,fdnr:0.15,ftdc:0.07,pondFP:0.15,pondPP:0.22,ftpdf:0.37,rfc:92.86,latePk:26.55,latePkFW:21.62},
+    {year:2026,week:"W31",late:0.63,fondCtrl:0.47,ftfdf:1.49,pdnr:0.47,fdnr:0.16,ftdc:0.0,pondFP:0.39,pondPP:0.16,ftpdf:0.55,rfc:96.43,latePk:15.07,latePkFW:12.2},
+    {year:2026,week:"W32",late:1.79,fondCtrl:0.99,ftfdf:1.79,pdnr:0.6,fdnr:0.1,ftdc:0.0,pondFP:0.1,pondPP:0.0,ftpdf:0.1,rfc:96.43,latePk:23.94,latePkFW:17.19},
+    {year:2026,week:"W33",late:0.44,fondCtrl:0.29,ftfdf:1.76,pdnr:0.29,fdnr:0.15,ftdc:0.0,pondFP:0.0,pondPP:0.15,ftpdf:0.15,rfc:91.67,latePk:6.98,latePkFW:9.43},
+    {year:2026,week:"W34",late:0.97,fondCtrl:0.32,ftfdf:1.83,pdnr:0.43,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.11,ftpdf:0.11,rfc:79.25,latePk:14.35,latePkFW:16.13},
+    {year:2026,week:"W35",late:0.96,fondCtrl:0.88,ftfdf:2.13,pdnr:0.74,fdnr:0.0,ftdc:0.07,pondFP:0.44,pondPP:0.07,ftpdf:0.51,rfc:94.55,latePk:22.41,latePkFW:20.93},
+    {year:2026,week:"W36",late:3.43,fondCtrl:0.99,ftfdf:2.39,pdnr:0.45,fdnr:0.05,ftdc:0.05,pondFP:0.63,pondPP:0.45,ftpdf:1.08,rfc:92.86,latePk:38.82,latePkFW:28.15},
+    {year:2026,week:"W37",late:1.88,fondCtrl:0.96,ftfdf:1.88,pdnr:0.7,fdnr:0.09,ftdc:0.09,pondFP:0.48,pondPP:0.39,ftpdf:0.88,rfc:92.86,latePk:37.78,latePkFW:27.63},
+    {year:2026,week:"W38",late:1.49,fondCtrl:1.03,ftfdf:2.19,pdnr:0.37,fdnr:0.09,ftdc:0.19,pondFP:0.51,pondPP:0.51,ftpdf:1.03,rfc:100.0,latePk:38.08,latePkFW:29.41},
+    {year:2026,week:"W39",late:1.36,fondCtrl:0.9,ftfdf:2.31,pdnr:0.32,fdnr:0.09,ftdc:0.05,pondFP:0.72,pondPP:0.32,ftpdf:1.04,rfc:100.0,latePk:34.55,latePkFW:22.64},
+    {year:2026,week:"W40",late:0.0,fondCtrl:0.73,ftfdf:2.92,pdnr:0.0,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:1.09,rfc:100.0,latePk:16.67,latePkFW:15.79},
   ],
   UIT7: [
     // 2025
@@ -576,18 +592,18 @@ const ALL_DEPOT_DATA = {
     // 2026 — Lighthouse export 2026-09-14
     {year:2026,week:"W27",late:3.53,fondCtrl:0.0,ftfdf:0.56,pdnr:1.48,fdnr:0.0,ftdc:0.0,pondFP:0.37,pondPP:0.0,ftpdf:0.37},
     {year:2026,week:"W28",late:0.2,fondCtrl:0.2,ftfdf:1.17,pdnr:1.76,fdnr:0.0,ftdc:0.0,pondFP:0.39,pondPP:0.0,ftpdf:0.39},
-    {year:2026,week:"W29",late:5.26,fondCtrl:1.14,ftfdf:1.83,pdnr:0.92,fdnr:0.23,ftdc:0.92,pondFP:0.0,pondPP:0.23,ftpdf:0.23},
-    {year:2026,week:"W30",late:0.0,fondCtrl:0.25,ftfdf:0.99,pdnr:0.49,fdnr:0.0,ftdc:0.74,pondFP:0.49,pondPP:0.0,ftpdf:0.49},
-    {year:2026,week:"W31",late:0.23,fondCtrl:0.23,ftfdf:0.46,pdnr:1.85,fdnr:0.23,ftdc:0.0,pondFP:0.69,pondPP:0.69,ftpdf:1.39},
-    {year:2026,week:"W32",late:0.0,fondCtrl:0.29,ftfdf:1.47,pdnr:1.18,fdnr:0.0,ftdc:0.0,pondFP:0.29,pondPP:0.0,ftpdf:0.29},
-    {year:2026,week:"W33",late:0.0,fondCtrl:0.0,ftfdf:1.71,pdnr:1.71,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:0.0},
-    {year:2026,week:"W34",late:0.61,fondCtrl:0.0,ftfdf:0.0,pdnr:1.83,fdnr:0.0,ftdc:0.0,pondFP:1.22,pondPP:0.0,ftpdf:1.22},
-    {year:2026,week:"W35",late:1.06,fondCtrl:0.35,ftfdf:1.42,pdnr:3.19,fdnr:1.42,ftdc:0.0,pondFP:0.35,pondPP:0.0,ftpdf:0.35},
-    {year:2026,week:"W36",late:1.57,fondCtrl:0.22,ftfdf:0.67,pdnr:1.12,fdnr:0.0,ftdc:0.0,pondFP:0.45,pondPP:0.45,ftpdf:0.9},
-    {year:2026,week:"W37",late:0.0,fondCtrl:0.75,ftfdf:0.94,pdnr:1.51,fdnr:0.19,ftdc:0.0,pondFP:1.13,pondPP:0.38,ftpdf:1.51},
-    {year:2026,week:"W38",late:0.2,fondCtrl:1.4,ftfdf:3.21,pdnr:1.2,fdnr:0.2,ftdc:0.2,pondFP:0.6,pondPP:0.0,ftpdf:0.6},
-    {year:2026,week:"W39",late:0.85,fondCtrl:1.28,ftfdf:1.92,pdnr:0.85,fdnr:0.0,ftdc:0.0,pondFP:0.64,pondPP:0.0,ftpdf:0.64},
-    {year:2026,week:"W40",late:0.0,fondCtrl:0.0,ftfdf:2.04,pdnr:0.0,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:0.0},
+    {year:2026,week:"W29",late:5.26,fondCtrl:1.14,ftfdf:1.83,pdnr:0.92,fdnr:0.23,ftdc:0.92,pondFP:0.0,pondPP:0.23,ftpdf:0.23,rfc:95.12,latePk:19.51,latePkFW:4.17},
+    {year:2026,week:"W30",late:0.0,fondCtrl:0.25,ftfdf:0.99,pdnr:0.49,fdnr:0.0,ftdc:0.74,pondFP:0.49,pondPP:0.0,ftpdf:0.49,rfc:92.68,latePk:2.35,latePkFW:0.0},
+    {year:2026,week:"W31",late:0.23,fondCtrl:0.23,ftfdf:0.46,pdnr:1.85,fdnr:0.23,ftdc:0.0,pondFP:0.69,pondPP:0.69,ftpdf:1.39,rfc:100.0,latePk:4.6,latePkFW:0.0},
+    {year:2026,week:"W32",late:0.0,fondCtrl:0.29,ftfdf:1.47,pdnr:1.18,fdnr:0.0,ftdc:0.0,pondFP:0.29,pondPP:0.0,ftpdf:0.29,rfc:100.0,latePk:1.43,latePkFW:0.0},
+    {year:2026,week:"W33",late:0.0,fondCtrl:0.0,ftfdf:1.71,pdnr:1.71,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:0.0,rfc:100.0,latePk:14.71,latePkFW:9.09},
+    {year:2026,week:"W34",late:0.61,fondCtrl:0.0,ftfdf:0.0,pdnr:1.83,fdnr:0.0,ftdc:0.0,pondFP:1.22,pondPP:0.0,ftpdf:1.22,rfc:100.0,latePk:9.68,latePkFW:0.0},
+    {year:2026,week:"W35",late:1.06,fondCtrl:0.35,ftfdf:1.42,pdnr:3.19,fdnr:1.42,ftdc:0.0,pondFP:0.35,pondPP:0.0,ftpdf:0.35,rfc:100.0,latePk:11.54,latePkFW:0.0},
+    {year:2026,week:"W36",late:1.57,fondCtrl:0.22,ftfdf:0.67,pdnr:1.12,fdnr:0.0,ftdc:0.0,pondFP:0.45,pondPP:0.45,ftpdf:0.9,rfc:100.0,latePk:11.7,latePkFW:0.0},
+    {year:2026,week:"W37",late:0.0,fondCtrl:0.75,ftfdf:0.94,pdnr:1.51,fdnr:0.19,ftdc:0.0,pondFP:1.13,pondPP:0.38,ftpdf:1.51,rfc:100.0,latePk:7.44,latePkFW:2.78},
+    {year:2026,week:"W38",late:0.2,fondCtrl:1.4,ftfdf:3.21,pdnr:1.2,fdnr:0.2,ftdc:0.2,pondFP:0.6,pondPP:0.0,ftpdf:0.6,rfc:97.56,latePk:7.77,latePkFW:5.56},
+    {year:2026,week:"W39",late:0.85,fondCtrl:1.28,ftfdf:1.92,pdnr:0.85,fdnr:0.0,ftdc:0.0,pondFP:0.64,pondPP:0.0,ftpdf:0.64,rfc:100.0,latePk:8.91,latePkFW:5.71},
+    {year:2026,week:"W40",late:0.0,fondCtrl:0.0,ftfdf:2.04,pdnr:0.0,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:0.0,rfc:100.0,latePk:0.0,latePkFW:0.0},
   ],
   UIL7: [
     // 2025
@@ -613,18 +629,18 @@ const ALL_DEPOT_DATA = {
     // 2026 — Lighthouse export 2026-09-14
     {year:2026,week:"W27",late:7.98,fondCtrl:1.24,ftfdf:1.6,pdnr:0.71,fdnr:0.0,ftdc:0.0,pondFP:0.71,pondPP:0.0,ftpdf:0.71},
     {year:2026,week:"W28",late:5.75,fondCtrl:0.2,ftfdf:0.4,pdnr:0.99,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.4,ftpdf:0.4},
-    {year:2026,week:"W29",late:7.21,fondCtrl:1.6,ftfdf:2.0,pdnr:0.2,fdnr:0.0,ftdc:0.0,pondFP:0.6,pondPP:0.0,ftpdf:0.6},
-    {year:2026,week:"W30",late:6.54,fondCtrl:1.27,ftfdf:2.53,pdnr:1.05,fdnr:0.0,ftdc:0.21,pondFP:0.0,pondPP:0.42,ftpdf:0.42},
-    {year:2026,week:"W31",late:6.88,fondCtrl:1.53,ftfdf:1.91,pdnr:1.34,fdnr:0.0,ftdc:0.0,pondFP:0.57,pondPP:0.19,ftpdf:0.76},
-    {year:2026,week:"W32",late:4.83,fondCtrl:0.69,ftfdf:1.15,pdnr:0.69,fdnr:0.46,ftdc:0.0,pondFP:0.23,pondPP:0.23,ftpdf:0.46},
-    {year:2026,week:"W33",late:1.04,fondCtrl:0.52,ftfdf:0.78,pdnr:0.78,fdnr:0.0,ftdc:0.0,pondFP:0.26,pondPP:0.26,ftpdf:0.52},
-    {year:2026,week:"W34",late:3.58,fondCtrl:0.51,ftfdf:1.53,pdnr:1.02,fdnr:0.0,ftdc:0.0,pondFP:0.26,pondPP:0.51,ftpdf:0.77},
-    {year:2026,week:"W35",late:3.56,fondCtrl:0.4,ftfdf:0.99,pdnr:2.17,fdnr:0.0,ftdc:0.0,pondFP:0.59,pondPP:1.98,ftpdf:2.57},
-    {year:2026,week:"W36",late:6.4,fondCtrl:0.52,ftfdf:1.56,pdnr:0.69,fdnr:0.0,ftdc:0.0,pondFP:0.52,pondPP:1.73,ftpdf:2.25},
-    {year:2026,week:"W37",late:10.36,fondCtrl:2.01,ftfdf:3.55,pdnr:1.24,fdnr:0.15,ftdc:0.15,pondFP:0.31,pondPP:1.85,ftpdf:2.16},
-    {year:2026,week:"W38",late:6.68,fondCtrl:0.76,ftfdf:1.06,pdnr:1.06,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:1.06,ftpdf:1.06},
-    {year:2026,week:"W39",late:3.36,fondCtrl:0.92,ftfdf:1.68,pdnr:0.61,fdnr:0.15,ftdc:0.0,pondFP:0.46,pondPP:0.46,ftpdf:0.92},
-    {year:2026,week:"W40",late:1.12,fondCtrl:0.0,ftfdf:0.0,pdnr:0.0,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:1.12},
+    {year:2026,week:"W29",late:7.21,fondCtrl:1.6,ftfdf:2.0,pdnr:0.2,fdnr:0.0,ftdc:0.0,pondFP:0.6,pondPP:0.0,ftpdf:0.6,rfc:95.24,latePk:4.84,latePkFW:2.44},
+    {year:2026,week:"W30",late:6.54,fondCtrl:1.27,ftfdf:2.53,pdnr:1.05,fdnr:0.0,ftdc:0.21,pondFP:0.0,pondPP:0.42,ftpdf:0.42,rfc:95.24,latePk:6.35,latePkFW:2.38},
+    {year:2026,week:"W31",late:6.88,fondCtrl:1.53,ftfdf:1.91,pdnr:1.34,fdnr:0.0,ftdc:0.0,pondFP:0.57,pondPP:0.19,ftpdf:0.76,rfc:100.0,latePk:1.49,latePkFW:2.33},
+    {year:2026,week:"W32",late:4.83,fondCtrl:0.69,ftfdf:1.15,pdnr:0.69,fdnr:0.46,ftdc:0.0,pondFP:0.23,pondPP:0.23,ftpdf:0.46,rfc:100.0,latePk:0.0,latePkFW:0.0},
+    {year:2026,week:"W33",late:1.04,fondCtrl:0.52,ftfdf:0.78,pdnr:0.78,fdnr:0.0,ftdc:0.0,pondFP:0.26,pondPP:0.26,ftpdf:0.52,rfc:100.0,latePk:0.0,latePkFW:0.0},
+    {year:2026,week:"W34",late:3.58,fondCtrl:0.51,ftfdf:1.53,pdnr:1.02,fdnr:0.0,ftdc:0.0,pondFP:0.26,pondPP:0.51,ftpdf:0.77,rfc:100.0,latePk:0.0,latePkFW:0.0},
+    {year:2026,week:"W35",late:3.56,fondCtrl:0.4,ftfdf:0.99,pdnr:2.17,fdnr:0.0,ftdc:0.0,pondFP:0.59,pondPP:1.98,ftpdf:2.57,rfc:90.48,latePk:4.55,latePkFW:2.33},
+    {year:2026,week:"W36",late:6.4,fondCtrl:0.52,ftfdf:1.56,pdnr:0.69,fdnr:0.0,ftdc:0.0,pondFP:0.52,pondPP:1.73,ftpdf:2.25,rfc:100.0,latePk:4.05,latePkFW:0.0},
+    {year:2026,week:"W37",late:10.36,fondCtrl:2.01,ftfdf:3.55,pdnr:1.24,fdnr:0.15,ftdc:0.15,pondFP:0.31,pondPP:1.85,ftpdf:2.16,rfc:100.0,latePk:10.53,latePkFW:6.25},
+    {year:2026,week:"W38",late:6.68,fondCtrl:0.76,ftfdf:1.06,pdnr:1.06,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:1.06,ftpdf:1.06,rfc:100.0,latePk:6.74,latePkFW:5.26},
+    {year:2026,week:"W39",late:3.36,fondCtrl:0.92,ftfdf:1.68,pdnr:0.61,fdnr:0.15,ftdc:0.0,pondFP:0.46,pondPP:0.46,ftpdf:0.92,rfc:85.71,latePk:2.22,latePkFW:3.28},
+    {year:2026,week:"W40",late:1.12,fondCtrl:0.0,ftfdf:0.0,pdnr:0.0,fdnr:0.0,ftdc:0.0,pondFP:0.0,pondPP:0.0,ftpdf:1.12,rfc:33.33,latePk:0.0,latePkFW:0.0},
   ],
 };
 
@@ -1089,6 +1105,305 @@ const FLOW_WEEKS = {
 "2026-W40":{"o":{"UIT4":566,"UIT1":274,"UBA1":49,"UIL7":89},"d":{"UIT4":57,"UIL7":3,"UIT1":14,"UBA1":1},"r":[["late",13,"UIT4",80,6],["late_gt15",13,"UIT4",80,5],["late",2,"UIT4",80,3],["ftpdf",56,"UIT4",45,3],["late",5,"UIT4",45,3],["ftfdf",6,"UIT4",94,3],["late",5,"UIT4",48,3],["ftfdf",12,"UIT1",11,2],["late",2,"UIT4",65,2],["ftfdf",14,"UIT1",22,2],["late_gt15",2,"UIT4",80,2],["late",2,"UIT1",60,2],["ftfdf",6,"UIT4",33,2],["ftfdf",14,"UIT4",71,2],["ftpdf",56,"UIT4",92,2],["ftpdf",56,"UIT4",68,2],["late",5,"UIT4",33,1],["late",18,"UIT4",92,1],["late",5,"UIL7",7,1],["late",18,"UIT1",112,1],["ftfdf",15,"UIT1",11,1],["ftfdf",14,"UIT4",47,1],["ftfdf",12,"UIT4",117,1],["ftpdf",56,"UIT1",64,1],["late",5,"UIT4",92,1],["ftfdf",27,"UIT4",45,1],["ftfdf",1,"UIT4",32,1],["late",5,"UIT4",70,1],["ftpdf",56,"UIT4",26,1],["ftpdf",56,"UIL7",126,1],["late",2,"UIL7",126,1],["ftfdf",14,"UIT4",72,1],["ftfdf",15,"UIT1",19,1],["ftfdf",6,"UIT4",26,1],["ftfdf",14,"UIT1",57,1],["ftfdf",17,"UIT4",107,1],["ftfdf",12,"UIT4",34,1],["late",13,"UIT4",39,1],["ftpdf",56,"UIT1",125,1],["ftpdf",56,"UIT4",40,1],["ftpdf",56,"UIT4",99,1],["late",5,"UIT4",46,1],["ftpdf",56,"UIT4",80,1],["ftpdf",56,"UIT4",41,1],["late_gt15",5,"UIT4",45,1],["ftpdf",56,"UIT1",58,1],["ftpdf",56,"UIT4",48,1],["ftfdf",14,"UIT4",41,1],["ftfdf",14,"UIT1",3,1],["late",2,"UIT4",34,1],["late",10,"UIT4",29,1],["ftfdf",14,"UIT4",73,1],["late",5,"UIT4",65,1],["late_gt15",5,"UIT4",65,1],["ftpdf",56,"UIT4",105,1],["ftfdf",14,"UBA1",83,1],["late_gt15",2,"UIT4",65,1],["ftpdf",56,"UIT4",70,1],["late",5,"UIL7",6,1],["late_gt15",5,"UIL7",6,1],["ftfdf",12,"UIT4",70,1],["late",2,"UIT4",45,1]]},
 };
 
+// ─── SCORECARD (Goal vs Actual + RCA) ────────────────────────────────
+// Pestaña clara al estilo "Last Mile analytics": radar Goal/Actual, RCA por métrica
+// (atribución Amazon de Lighthouse), tarjetas WK vs objetivo mensual y métricas secundarias.
+const SC_GOALS = {  // objetivos mensuales (clave "YYYY-MM"); DNR = PDNR + FDNR
+  "2026-09": { ftdc: 0.10, ftfdf: 1.30, late: 2.05, ftpdf: 0.45, dnr: 0.50 },
+};
+const SC_ANNUAL = { ftdc: 0.10, ftfdf: 1.20, late: 1.50, ftpdf: 0.30, dnr: 0.40 };  // respaldo: objetivos 2026
+const SC_METRICS = [  // orden de las tarjetas y del radar
+  { key: "ftdc",  label: "FTDC",      defects: ["ftdc"] },
+  { key: "ftfdf", label: "FTFDF",     defects: ["ftfdf"] },
+  { key: "late",  label: "Lates +15", defects: ["late_gt15"] },
+  { key: "ftpdf", label: "FTPDF",     defects: ["ftpdf"] },
+  { key: "dnr",   label: "DNR",       defects: ["pdnr", "fdnr"] },
+];
+const SC_MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+// Propietario de cada atribución Amazon (para las etiquetas del RCA)
+const SC_OWNER = {
+  "OTR - Route Non Complaint": "DSP", "OTR-Others": "DSP", "Assignment Delay - Others": "DSP", "Late Batch Ops Controllable": "DSP",
+  "Not call compliant": "DSP", "Driver out of time": "DSP", "Late": "DSP", "Multiple statuses": "DSP", "Not geocompliant": "DSP", "Missing OTR": "DSP",
+  "Driver Delivered Wrong Shipment": "DSP", "Shipment Switcheroo On Route": "DSP", "Package Not Physically Delivered By Driver": "DSP",
+  "Suspicious Driver": "DSP", "Unclear Scan": "DSP", "Unclear": "DSP", "Order Not Picked Up (DSP)": "DSP", "OTR SDS Non Compliant": "DSP",
+  "Non CSPU FTPDF PP - Object Missing - Other": "DSP", "Non CSPU FTPDF PP - Object Missing - Scan Before Batch": "DSP", "Non CSPU FTPDF PP - Other": "DSP",
+  "Non CSPU FTPDF FP - Object Missing - Delivered to Wrong Customer": "DSP", "Non CSPU FTPDF FP - Item Damage": "DSP",
+  "Non CSPU FTPDF FP - Object Missing - Package Missing": "DSP", "Non CSPU FTPDF FP - Object Missing - Other": "DSP", "Non CSPU FTPDF FP - Other": "DSP",
+  "Damaged Items": "DSP", "Missing Items": "DSP",
+  "Pickup Delay": "STATION", "Late Batch Non-Ops Controllable": "STATION", "Late Slam": "STATION", "Late Slam/ Late Batch": "STATION", "Late slam/batch": "STATION",
+  "Route Split": "STATION", "Open Order": "STATION", "Orders Unplanned": "STATION", "Order Never Assigned": "STATION", "Open": "STATION", "ONP": "STATION",
+  "Non CSPU FTPDF PP - Object Missing - Late Batch": "STATION", "SDS Possibly Missing": "STATION", "Damaged OTR": "STATION",
+  "Non CSPU FTPDF FP - Object Missing - Never Picked Up": "STATION", "Non CSPU FTPDF FP - Object Missing - POND Before Arrival": "STATION",
+  "Customer unavailable": "CUSTOMER", "Customer called CS": "CUSTOMER", "Access issue/no safe location": "CUSTOMER", "Customer Did Not Receive From Recipient": "CUSTOMER",
+  "Suspicious Customer": "CUSTOMER", "Unclear Delivery Recepient": "CUSTOMER", "Unattended Order Lost": "CUSTOMER", "Not Deliverred With Other Shipments": "CUSTOMER",
+  "Road closures": "NETWORK", "Geocode accuracy": "NETWORK", "Geocode Issue": "NETWORK", "Driver Geocode Issues/ Wrong location": "NETWORK", "Early": "NETWORK",
+  "Order Cancelled After Final Scan": "NETWORK", "**root cause attribution in progress": "PENDING",
+};
+const SC_OWNER_STYLE = {
+  DSP: { bg: "#eef2ff", fg: "#3730a3" }, STATION: { bg: "#fff7ed", fg: "#c2410c" }, CUSTOMER: { bg: "#f0fdf4", fg: "#15803d" },
+  NETWORK: { bg: "#f5f3ff", fg: "#6d28d9" }, PENDING: { bg: "#f3f4f6", fg: "#6b7280" }, OTHER: { bg: "#f3f4f6", fg: "#6b7280" },
+};
+// Texto corto de cada atribución (nombre visible + explicación)
+const SC_ATTR = {
+  "OTR - Route Non Complaint": ["Route non-compliant", "DA did not follow the planned route/sequence."],
+  "OTR-Others": ["OTR — other", "On-the-road delay, other causes."],
+  "Assignment Delay - Others": ["Assignment delay", "Route assigned late to the DA."],
+  "Late Batch Ops Controllable": ["Late batch (ops)", "Batch closed after time-window start — DSP controllable."],
+  "Late Batch Non-Ops Controllable": ["Late batch (non-ops)", "Batch closed late for reasons outside ops."],
+  "Pickup Delay": ["Pickup delay", "Route left the station late."],
+  "Route Split": ["Route split", "Route split at the station."],
+  "Late Slam": ["Late SLAM", "Late labelling/manifest at the station."],
+  "Not call compliant": ["Not call compliant", "DA did not call the customer before marking undeliverable."],
+  "Customer unavailable": ["Customer unavailable", "Customer not reachable at delivery."],
+  "Customer called CS": ["Customer called CS", "Customer contacted Customer Service."],
+  "Access issue/no safe location": ["Access / no safe location", "No access or safe place to leave the order."],
+  "Road closures": ["Road closures", "Road or ZTL access blocked."],
+  "Late": ["Late", "Delivered outside the window."],
+  "Geocode accuracy": ["Geocode accuracy", "Wrong pin / address geocode."],
+  "Driver out of time": ["DA out of time", "Shift ended with stops remaining."],
+  "Late slam/batch": ["Late SLAM / batch", "Late station process."],
+  "Multiple statuses": ["Multiple statuses", "Conflicting scan statuses."],
+  "Non CSPU FTPDF PP - Object Missing - Other": ["PP object missing — other", "Partial delivery: item missing, unspecified."],
+  "Non CSPU FTPDF FP - Item Damage": ["FP item damage", "Item damaged at first attempt."],
+  "Non CSPU FTPDF FP - Object Missing - Delivered to Wrong Customer": ["FP wrong customer", "Item delivered to the wrong customer."],
+  "Non CSPU FTPDF FP - Object Missing - Package Missing": ["FP package missing", "Package missing at delivery."],
+  "Non CSPU FTPDF PP - Object Missing - Late Batch": ["PP late batch", "Item missing because the batch closed late."],
+  "Non CSPU FTPDF FP - Object Missing - Other": ["FP object missing — other", "Item missing, unspecified."],
+  "Non CSPU FTPDF FP - Other": ["FP — other", "First-attempt partial failure, other."],
+  "Non CSPU FTPDF FP - Object Missing - POND Before Arrival": ["FP POND before arrival", "Marked not delivered before arriving."],
+  "Non CSPU FTPDF PP - Object Missing - Scan Before Batch": ["PP scan before batch", "Item scanned before the batch was ready."],
+  "Non CSPU FTPDF FP - Object Missing - Never Picked Up": ["FP never picked up", "Item never picked up from the station."],
+  "Non CSPU FTPDF PP - Other": ["PP — other", "Partial failure, other."],
+  "**root cause attribution in progress": ["Attribution pending", "Amazon root-cause attribution in progress."],
+  "OTR SDS Non Compliant": ["SDS non-compliant", "Delivery/cancellation scan not compliant on the road."],
+  "Order Not Picked Up (DSP)": ["Not picked up (DSP)", "Order left at the station by the DSP."],
+  "Late Slam/ Late Batch": ["Late SLAM / batch", "Late station process."],
+  "Open Order": ["Open order", "Order still open at cut-off."],
+  "Orders Unplanned": ["Orders unplanned", "Order not planned on any route."],
+  "Order Cancelled After Final Scan": ["Cancelled after final scan", "Customer cancellation after delivery scan."],
+  "Driver Geocode Issues/ Wrong location": ["Wrong location", "Delivered to the wrong geocode."],
+  "Unclear": ["Unclear", "Root cause not determined."],
+  "Shipment Switcheroo On Route": ["Shipment switch on route", "Packages swapped between stops."],
+  "SDS Possibly Missing": ["SDS possibly missing", "Package possibly missing at the station."],
+  "Unclear Scan": ["Unclear scan", "Delivery scan does not clarify the outcome."],
+  "Suspicious Driver": ["Suspicious DA", "Pattern suggests DA-side loss."],
+  "Driver Delivered Wrong Shipment": ["Wrong shipment delivered", "DA delivered the wrong package."],
+  "Customer Did Not Receive From Recipient": ["Not received from recipient", "Left with a third party who did not hand it over."],
+  "Package Not Physically Delivered By Driver": ["Not physically delivered", "Scanned delivered but not handed over."],
+  "Suspicious Customer": ["Suspicious customer", "Pattern suggests customer-side claim."],
+  "Not Deliverred With Other Shipments": ["Not delivered with the rest", "Missing from a multi-package delivery."],
+  "Unclear Delivery Recepient": ["Unclear recipient", "Recipient could not be identified."],
+  "Unattended Order Lost": ["Unattended order lost", "Left unattended and lost."],
+  "Geocode Issue": ["Geocode issue", "Wrong address geocode."],
+};
+const SC_PIE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];  // paleta categórica validada (modo claro)
+const SC_OTHER = "#9ca3af";
+const SC_SECONDARY = [  // métricas secundarias (Lighthouse)
+  { key: "rfc",      cat: "routing",     label: "RFC — Route Fulfillment Compliance", fmt: v => v.toFixed(2) + "%" },
+  { key: "dpr",      cat: "routing",     label: "DpR — stops per route",             fmt: v => v.toFixed(2) },
+  { key: "orders",   cat: "volume",      label: "Orders",                            fmt: v => v.toLocaleString("en-GB") },
+  { key: "routes",   cat: "volume",      label: "Routes",                            fmt: v => v.toLocaleString("en-GB") },
+  { key: "latePk",   cat: "punctuality", label: "Late pickup routes",                fmt: v => v.toFixed(2) + "%" },
+  { key: "latePkFW", cat: "punctuality", label: "Late pickup — first window",        fmt: v => v.toFixed(2) + "%" },
+];
+const scSunday = (year, week) => { const d = new Date(Date.UTC(2025, 11, 28)); d.setUTCDate(d.getUTCDate() + (year - 2026) * 364 + (weekNum(week) - 1) * 7); return d; };
+function scGoalsFor(year, week) {
+  const d = scSunday(year, week); const ym = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+  const keys = Object.keys(SC_GOALS).sort();
+  const use = keys.includes(ym) ? ym : keys.filter(k => k < ym).pop();
+  if (use) { const [y, m] = use.split("-"); return { goals: SC_GOALS[use], label: `${SC_MONTHS[+m - 1]} ${y}`, monthly: true }; }
+  return { goals: SC_ANNUAL, label: `${year}`, monthly: false };
+}
+
+function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeeks, effectiveFrom, effectiveTo, t, isMobile, lang }) {
+  const year = selectedYear === "ALL" ? 2026 : selectedYear;
+  const inRange = w => weekNum(w) >= weekNum(effectiveFrom) && weekNum(w) <= weekNum(effectiveTo);
+  // Semanas del rango con datos; la semana en curso llega parcial (menos de la mitad de pedidos que la anterior)
+  const weekInfo = useMemo(() => {
+    const out = [];
+    availableWeeks.filter(inRange).forEach(w => {
+      const fw = FLOW_WEEKS[`${year}-${w}`];
+      const orders = fw ? selectedDepots.reduce((s, d) => s + (fw.o?.[d] || 0), 0) : null;
+      const rows = selectedDepots.map(d => (ALL_DEPOT_DATA[d] || []).find(r => r.year === year && r.week === w)).filter(Boolean);
+      if (rows.length || orders) out.push({ week: w, orders });
+    });
+    out.forEach((x, i) => { x.partial = i > 0 && x.orders != null && out[i - 1].orders && x.orders < 0.5 * out[i - 1].orders; });
+    return out;
+  }, [availableWeeks, effectiveFrom, effectiveTo, year, selectedDepots]);
+  const defaultWeek = useMemo(() => { const full = weekInfo.filter(x => !x.partial); return (full.length ? full[full.length - 1] : weekInfo[weekInfo.length - 1])?.week || null; }, [weekInfo]);
+  const [pickedWeek, setPickedWeek] = useState(null);
+  const week = pickedWeek && weekInfo.some(x => x.week === pickedWeek) ? pickedWeek : defaultWeek;
+  const weekIdx = weekInfo.findIndex(x => x.week === week);
+  const prevWeek = weekIdx > 0 ? weekInfo[weekIdx - 1].week : null;
+  const isPartial = weekInfo[weekIdx]?.partial;
+  const [metric, setMetric] = useState(null);
+
+  // Valores de la semana: red = fila NETWORK; subconjunto = media ponderada por pedidos de las estaciones
+  const valuesFor = useCallback((w) => {
+    if (!w) return null;
+    const fw = FLOW_WEEKS[`${year}-${w}`];
+    const wt = d => (PRODUCTIVITY[d] || []).find(x => x.year === year && x.week === w)?.orders || fw?.o?.[d] || 0;
+    const agg = (fld) => { let s = 0, n = 0; selectedDepots.forEach(d => { const r = (ALL_DEPOT_DATA[d] || []).find(x => x.year === year && x.week === w); const v = r?.[fld]; if (v == null) return; const k = wt(d) || 1; s += v * k; n += k; }); return n ? s / n : null; };
+    const net = allSelected ? NETWORK.find(x => x.year === year && x.week === w) : null;
+    const pick = (fld, netFld) => { const v = net ? net[netFld || fld] : null; return v != null ? v : agg(fld); };
+    const late = pick("late"), ftfdf = pick("ftfdf"), ftpdf = pick("ftpdf"), pdnr = pick("pdnr"), fdnr = pick("fdnr"), ftdc = pick("ftdc");
+    const fondCtrl = net ? net.ftfdfOC : agg("fondCtrl");
+    let orders = 0, routes = 0; selectedDepots.forEach(d => { const p = (PRODUCTIVITY[d] || []).find(x => x.year === year && x.week === w); if (p) { orders += p.orders || 0; routes += p.routes || 0; } });
+    return { late, ftfdf, ftpdf, pdnr, fdnr, ftdc, fondCtrl, dnr: pdnr != null && fdnr != null ? +(pdnr + fdnr).toFixed(2) : (pdnr ?? fdnr),
+             rfc: pick("rfc"), latePk: pick("latePk"), latePkFW: pick("latePkFW"), orders: orders || null, routes: routes || null, dpr: orders && routes ? orders / routes : null };
+  }, [year, selectedDepots, allSelected]);
+  const cur = useMemo(() => valuesFor(week), [valuesFor, week]);
+  const prev = useMemo(() => valuesFor(prevWeek), [valuesFor, prevWeek]);
+  const { goals, label: goalLabel, monthly } = useMemo(() => week ? scGoalsFor(year, week) : { goals: SC_ANNUAL, label: "", monthly: false }, [year, week]);
+
+  const radarData = useMemo(() => SC_METRICS.map(m => { const v = cur?.[m.key]; const g = goals[m.key]; return { metric: m.label, goal: 1, actual: v != null && g ? Math.min(v / g, 3) : 0, raw: v, goalRaw: g }; }), [cur, goals]);
+  const radarMax = Math.max(2, ...radarData.map(r => r.actual));
+  const worst = useMemo(() => SC_METRICS.reduce((b, m) => { const v = cur?.[m.key]; const r = v != null && goals[m.key] ? v / goals[m.key] : -1; return r > b.r ? { key: m.key, r } : b; }, { key: "ftpdf", r: -1 }).key, [cur, goals]);
+  const selMetric = metric || worst;
+  const selDef = SC_METRICS.find(m => m.key === selMetric) || SC_METRICS[0];
+
+  // RCA: atribución Amazon de los pedidos defectuosos de la semana (FLOW_WEEKS), por métrica
+  const rca = useMemo(() => {
+    const fw = FLOW_WEEKS[`${year}-${week}`]; if (!fw) return { items: [], total: 0 };
+    const set = new Set(selDef.defects), stns = new Set(selectedDepots), acc = {};
+    fw.r.forEach(([def, ai, stn, , n]) => { if (!set.has(def) || !stns.has(stn)) return; const a = FLOW_ATTR[ai] || "?"; acc[a] = (acc[a] || 0) + n; });
+    const total = Object.values(acc).reduce((s, n) => s + n, 0);
+    const sorted = Object.entries(acc).sort((a, b) => b[1] - a[1]);
+    const top = sorted.slice(0, 8), rest = sorted.slice(8).reduce((s, [, n]) => s + n, 0);
+    const items = top.map(([a, n], i) => ({ attr: a, name: SC_ATTR[a]?.[0] || a, desc: SC_ATTR[a]?.[1] || "", owner: SC_OWNER[a] || "OTHER", n, pct: total ? Math.round(100 * n / total) : 0, color: SC_PIE[i] }));
+    if (rest) items.push({ attr: "__other", name: "Other", desc: `${sorted.length - 8} smaller causes`, owner: "OTHER", n: rest, pct: Math.round(100 * rest / total), color: SC_OTHER });
+    return { items, total };
+  }, [year, week, selDef, selectedDepots]);
+
+  const fmtPct = v => v == null ? "—" : v.toFixed(2) + "%";
+  const withData = selectedDepots.filter(d => (ALL_DEPOT_DATA[d] || []).some(r => r.year === year && r.week === week && r.late != null));
+  const scope = allSelected ? t("scNetwork") : (withData.length ? withData : selectedDepots).join(", ");
+  const F = "'Outfit', system-ui, sans-serif", M = "'DM Mono', monospace";
+  const ownerLabel = o => ({ DSP: "DSP", STATION: t("scOwnerStation"), CUSTOMER: t("scOwnerCustomer"), NETWORK: t("scOwnerNetwork"), PENDING: t("scOwnerPending"), OTHER: t("scOwnerOther") }[o] || o);
+  const catLabel = c => ({ routing: t("scCatRouting"), volume: t("scCatVolume"), punctuality: t("scCatPunctuality") }[c] || c);
+  const delta = (k) => { const a = cur?.[k], b = prev?.[k]; if (a == null || b == null) return null; return +(a - b).toFixed(2); };
+
+  if (!week) return <div style={{ background: "#f4f5f7", borderRadius: 16, padding: 40, textAlign: "center", color: "#6b7280", fontFamily: M, fontSize: 12 }}>— {t("scNoData")} —</div>;
+
+  return (
+    <div style={{ background: "#f4f5f7", borderRadius: 16, padding: isMobile ? 10 : 18, color: "#111827", fontFamily: F }}>
+      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 16, padding: isMobile ? 14 : 24, boxShadow: "0 1px 2px rgba(0,0,0,.04)" }}>
+        {/* cabecera */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 14 }}>
+          <div>
+            <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 700, letterSpacing: -0.3 }}>Last Mile <span style={{ color: "#9ca3af", fontWeight: 500 }}>| {scope}</span></div>
+            <div style={{ fontSize: 11, color: "#6b7280", fontFamily: M, marginTop: 2 }}>{t("scSource")}</div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 10, color: "#6b7280", fontFamily: M, letterSpacing: 1.5 }}>{t("scWeek")}</span>
+            <select value={week} onChange={e => setPickedWeek(e.target.value)} style={{ border: "1px solid #d1d5db", borderRadius: 8, padding: "6px 10px", fontFamily: M, fontSize: 12, background: "#fff", color: "#111827" }}>
+              {[...weekInfo].reverse().map(x => <option key={x.week} value={x.week}>WK{weekNum(x.week)}{x.partial ? ` (${t("scPartial")})` : ""}</option>)}
+            </select>
+            {isPartial && <span style={{ fontSize: 10, background: "#fef3c7", color: "#92400e", borderRadius: 999, padding: "3px 8px", fontFamily: M }}>{t("scPartialNote")}</span>}
+          </div>
+        </div>
+
+        {/* radar + RCA */}
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "300px 1fr", gap: 20, alignItems: "start" }}>
+          <div>
+            <div style={{ width: "100%", height: 280 }}>
+              <ResponsiveContainer>
+                <RadarChart data={radarData} outerRadius={isMobile ? 90 : 105}>
+                  <PolarGrid stroke="#e5e7eb" />
+                  <PolarAngleAxis dataKey="metric" tick={{ fill: "#6b7280", fontSize: 11, fontFamily: F }} />
+                  <PolarRadiusAxis domain={[0, radarMax]} tick={false} axisLine={false} />
+                  <Radar name={t("scGoal")} dataKey="goal" stroke="#2a78d6" strokeWidth={2} strokeDasharray="5 4" fill="#2a78d6" fillOpacity={0.12} isAnimationActive={false} />
+                  <Radar name={t("scActual")} dataKey="actual" stroke="#e34948" strokeWidth={2} fill="#e34948" fillOpacity={0.12} isAnimationActive={false} />
+                  <Tooltip content={({ active, payload }) => active && payload?.length ? (
+                    <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 8, padding: "8px 10px", fontSize: 11, fontFamily: M, color: "#111827" }}>
+                      <div style={{ fontWeight: 700, marginBottom: 2 }}>{payload[0].payload.metric}</div>
+                      <div><span style={{ color: "#e34948" }}>{t("scActual")}</span> {fmtPct(payload[0].payload.raw)} · <span style={{ color: "#2a78d6" }}>{t("scGoal")}</span> {fmtPct(payload[0].payload.goalRaw)}</div>
+                    </div>) : null} />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", gap: 16, fontSize: 11, color: "#6b7280", marginTop: -6 }}>
+              <span><span style={{ display: "inline-block", width: 14, height: 3, background: "#2a78d6", borderRadius: 2, verticalAlign: "middle", marginRight: 5 }} />{t("scGoal")}</span>
+              <span><span style={{ display: "inline-block", width: 14, height: 3, background: "#e34948", borderRadius: 2, verticalAlign: "middle", marginRight: 5 }} />{t("scActual")}</span>
+            </div>
+            <div style={{ textAlign: "center", fontSize: 10, color: "#9ca3af", fontFamily: M, marginTop: 4 }}>{t("scRadarNote")}</div>
+          </div>
+
+          <div>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: isMobile ? "flex-start" : "center", marginBottom: 12 }}>
+              {SC_METRICS.map(m => { const on = m.key === selMetric; return (
+                <button key={m.key} onClick={() => setMetric(m.key)} style={{ border: "none", borderRadius: 999, padding: "6px 14px", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: F, background: on ? "#111827" : "#f3f4f6", color: on ? "#fff" : "#374151" }}>{m.label}</button>); })}
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "170px 1fr", gap: 14, alignItems: "start" }}>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>
+                  <span style={{ color: cur?.[selMetric] != null && cur[selMetric] > goals[selMetric] ? "#dc2626" : "#15803d" }}>{fmtPct(cur?.[selMetric])}</span>
+                  <span style={{ color: "#9ca3af", fontWeight: 500, margin: "0 6px" }}>vs</span>
+                  <span style={{ color: "#2563eb" }}>{fmtPct(goals[selMetric])}</span>
+                </div>
+                <div style={{ width: "100%", height: 160 }}>
+                  {rca.items.length ? (
+                    <ResponsiveContainer>
+                      <PieChart>
+                        <Pie data={rca.items} dataKey="n" nameKey="name" innerRadius={44} outerRadius={70} paddingAngle={2} stroke="#fff" strokeWidth={2} isAnimationActive={false}>
+                          {rca.items.map(it => <Cell key={it.attr} fill={it.color} />)}
+                        </Pie>
+                        <Tooltip content={({ active, payload }) => active && payload?.length ? (
+                          <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: 8, padding: "8px 10px", fontSize: 11, fontFamily: M, color: "#111827" }}>
+                            <div style={{ fontWeight: 700 }}>{payload[0].payload.name}</div><div>{payload[0].payload.n} {t("scOrders")} · {payload[0].payload.pct}%</div>
+                          </div>) : null} />
+                        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" style={{ fontSize: 12, fontWeight: 700, fill: "#6b7280", fontFamily: F }}>RCA</text>
+                      </PieChart>
+                    </ResponsiveContainer>
+                  ) : <div style={{ paddingTop: 60, fontSize: 11, color: "#9ca3af", fontFamily: M }}>— {t("scNoRca")} —</div>}
+                </div>
+                <div style={{ fontSize: 10, color: "#9ca3af", fontFamily: M }}>{t("scDefectiveOrders")}: {rca.total}</div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", columnGap: 18, rowGap: 10 }}>
+                {rca.items.map(it => { const os = SC_OWNER_STYLE[it.owner] || SC_OWNER_STYLE.OTHER; return (
+                  <div key={it.attr} style={{ display: "grid", gridTemplateColumns: "10px 1fr auto", columnGap: 8, alignItems: "start" }}>
+                    <span style={{ width: 10, height: 10, borderRadius: 999, background: it.color, marginTop: 4 }} />
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.25 }}>{it.name} <span style={{ fontSize: 10, fontWeight: 600, background: os.bg, color: os.fg, borderRadius: 4, padding: "1px 6px", marginLeft: 4, verticalAlign: "middle" }}>{ownerLabel(it.owner)}</span></div>
+                      <div style={{ fontSize: 11, color: "#6b7280", lineHeight: 1.3 }}>{it.desc}</div>
+                    </div>
+                    <div style={{ fontSize: 12, color: "#6b7280", fontFamily: M, paddingTop: 2 }}>{it.pct}%</div>
+                  </div>); })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* métricas clave */}
+        <div style={{ fontSize: 10, color: "#6b7280", letterSpacing: 2, fontFamily: M, textTransform: "uppercase", margin: "22px 0 10px" }}>{t("scKeyMetrics")}</div>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(5, 1fr)", gap: 10 }}>
+          {SC_METRICS.map(m => { const v = cur?.[m.key], g = goals[m.key], miss = v != null && v > g, d = delta(m.key); return (
+            <div key={m.key} style={{ background: miss ? "#fff1f2" : "#f0fdf4", borderRadius: 12, padding: "14px 10px", textAlign: "center" }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#374151", letterSpacing: 0.5 }}>{m.label.toUpperCase()}</div>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "stretch", gap: 0, marginTop: 8 }}>
+                <div style={{ flex: 1, borderRight: "1px solid #e5e7eb" }}><div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: miss ? "#dc2626" : "#15803d" }}>{fmtPct(v)}</div><div style={{ fontSize: 9, color: "#9ca3af", fontFamily: M }}>WK{weekNum(week)}</div></div>
+                <div style={{ flex: 1 }}><div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: "#2563eb" }}>{fmtPct(g)}</div><div style={{ fontSize: 9, color: "#9ca3af", fontFamily: M }}>{t("scGoal").toUpperCase()}</div></div>
+              </div>
+              <div style={{ fontSize: 10, color: "#2563eb", fontWeight: 600, marginTop: 8, letterSpacing: 0.5, textTransform: "uppercase" }}>{goalLabel} {monthly ? t("scGoal") : t("scTarget")}</div>
+              {d != null && prevWeek && <div style={{ fontSize: 10, color: d > 0 ? "#dc2626" : d < 0 ? "#15803d" : "#6b7280", fontFamily: M, marginTop: 4 }}>{d > 0 ? "▲" : d < 0 ? "▼" : "•"} {d > 0 ? "+" : ""}{d.toFixed(2)} pp vs WK{weekNum(prevWeek)}</div>}
+            </div>); })}
+        </div>
+
+        {/* métricas secundarias */}
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(6, 1fr)", gap: 10, marginTop: 12 }}>
+          {SC_SECONDARY.map(s => { const v = cur?.[s.key]; return (
+            <div key={s.key} style={{ border: "1px solid #e5e7eb", borderRadius: 12, padding: "12px 14px", background: "#fff" }}>
+              <div style={{ fontSize: 9, color: "#9ca3af", letterSpacing: 1.5, fontFamily: M, textTransform: "uppercase" }}>{catLabel(s.cat)}</div>
+              <div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, marginTop: 6 }}>{v == null ? "—" : s.fmt(v)}</div>
+              <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2 }}>{s.label}</div>
+            </div>); })}
+        </div>
+        <div style={{ fontSize: 10, color: "#9ca3af", fontFamily: M, marginTop: 12, lineHeight: 1.5 }}>{t("scFootnote")}</div>
+      </div>
+    </div>
+  );
+}
+
 function getStatusConfig(d) {
   if (!d || d.late == null) return {bg:"#1e293b",border:"#475569",text:"#94a3b8",label:"NO DATA",icon:"?"};
   if (d.late > 6 || (d.fondCtrl != null && d.fondCtrl > 2)) return {bg:"#450a0a",border:"#dc2626",text:"#fca5a5",label:"CRITICAL",icon:"◆"};
@@ -1266,7 +1581,7 @@ function PasswordGate({ children }) {
 // ─── MAIN DASHBOARD ─────────────────────────────────────────────────
 function DashboardInner() {
   const isMobile = useIsMobile();
-  const [selectedView, setSelectedView] = useState("overview");
+  const [selectedView, setSelectedView] = useState("goals");
   const [selectedYear, setSelectedYear] = useState(2026);
   const [lang, setLang] = useState("en");
   const t = key => T[lang]?.[key] || T["en"][key] || key;
@@ -1605,11 +1920,11 @@ function DashboardInner() {
             </div>
           </div>
         </div>
-        <div style={{display:"flex",gap:4,marginTop:isMobile?14:18,overflowX:isMobile?"auto":"visible",paddingBottom:isMobile?4:0,WebkitOverflowScrolling:"touch"}}>
-          {[{key:"overview",l:"tabOverview"},{key:"depots",l:"tabDepots"},{key:"upstream",l:"tabUpstream"},{key:"cycles",l:"tabCycles"},{key:"ncc",l:"tabNcc"},{key:"late",l:"tabLate"},{key:"scorecard",l:"tabScorecard"},{key:"productivity",l:"tabProductivity"},{key:"flow",l:"tabFlow"},{key:"geo",l:"tabGeo"}].map(tab=>{
-            const isSpecial = tab.key==="ncc"||tab.key==="late"||tab.key==="scorecard"||tab.key==="productivity"||tab.key==="flow"||tab.key==="geo";
+        <div style={{display:"flex",gap:4,marginTop:isMobile?14:18,overflowX:isMobile?"auto":"visible",flexWrap:isMobile?"nowrap":"wrap",paddingBottom:isMobile?4:0,WebkitOverflowScrolling:"touch"}}>
+          {[{key:"goals",l:"tabGoals"},{key:"overview",l:"tabOverview"},{key:"depots",l:"tabDepots"},{key:"upstream",l:"tabUpstream"},{key:"cycles",l:"tabCycles"},{key:"ncc",l:"tabNcc"},{key:"late",l:"tabLate"},{key:"scorecard",l:"tabScorecard"},{key:"productivity",l:"tabProductivity"},{key:"flow",l:"tabFlow"},{key:"geo",l:"tabGeo"}].map(tab=>{
+            const isSpecial = tab.key==="goals"||tab.key==="ncc"||tab.key==="late"||tab.key==="scorecard"||tab.key==="productivity"||tab.key==="flow"||tab.key==="geo";
             const isActive = selectedView===tab.key;
-            const specialColors = tab.key==="ncc"?{bg:"#7c2d12",border:"#ea580c",text:"#fb923c",dot:"#ea580c"}:tab.key==="late"?{bg:"#1e1b4b",border:"#6366f1",text:"#a5b4fc",dot:"#6366f1"}:tab.key==="productivity"?{bg:"#422006",border:"#f59e0b",text:"#fde68a",dot:"#f59e0b"}:tab.key==="flow"?{bg:"#134e4a",border:"#0d9488",text:"#5eead4",dot:"#0d9488"}:tab.key==="geo"?{bg:"#1a1035",border:"#8b5cf6",text:"#c4b5fd",dot:"#8b5cf6"}:{bg:"#14532d",border:"#22c55e",text:"#86efac",dot:"#22c55e"};
+            const specialColors = tab.key==="goals"?{bg:"#f8fafc",border:"#cbd5e1",text:"#0f172a",dot:"#2a78d6"}:tab.key==="ncc"?{bg:"#7c2d12",border:"#ea580c",text:"#fb923c",dot:"#ea580c"}:tab.key==="late"?{bg:"#1e1b4b",border:"#6366f1",text:"#a5b4fc",dot:"#6366f1"}:tab.key==="productivity"?{bg:"#422006",border:"#f59e0b",text:"#fde68a",dot:"#f59e0b"}:tab.key==="flow"?{bg:"#134e4a",border:"#0d9488",text:"#5eead4",dot:"#0d9488"}:tab.key==="geo"?{bg:"#1a1035",border:"#8b5cf6",text:"#c4b5fd",dot:"#8b5cf6"}:{bg:"#14532d",border:"#22c55e",text:"#86efac",dot:"#22c55e"};
             return(<button key={tab.key} onClick={()=>setSelectedView(tab.key)} style={{...tabStyle(isActive),
               ...(isSpecial&&isActive?{background:specialColors.bg,borderColor:specialColors.border,color:specialColors.text}:{})
             }}>{isSpecial&&<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:isActive?specialColors.dot:(specialColors.dot+"60"),marginRight:5,verticalAlign:"middle"}}/>}{t(tab.l)}</button>);
@@ -1622,6 +1937,9 @@ function DashboardInner() {
 
       <div style={{padding:isMobile?"16px":"24px 32px"}}>
         {/* OVERVIEW */}
+        {selectedView==="goals"&&(
+          <ScorecardTab selectedDepots={selectedDepots} allSelected={allSelected} selectedYear={selectedYear} availableWeeks={availableWeeks} effectiveFrom={effectiveFrom} effectiveTo={effectiveTo} t={t} isMobile={isMobile} lang={lang} />
+        )}
         {selectedView==="overview"&&(<>
           <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":selectedDepots.length===1?"1fr":"repeat(2,1fr)",gap:12,marginBottom:24}}>
             {selectedDepots.map(d=>(<DepotCard key={d} depot={d} weekData={filteredDepotData[d]||[]}/>))}

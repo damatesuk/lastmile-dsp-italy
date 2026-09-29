@@ -33,9 +33,15 @@ CITY = {"UIT4": "Roma", "UIT1": "Milano", "UIT7": "Milano", "UBA1": "Bologna", "
 DEPOT_METRICS = {  # campo JSX -> metric_name QuickSight
     "late": "~ % Late > 15", "fondCtrl": "~ % FOND Ops controllable", "ftfdf": "% FTFDF",
     "pdnr": "% PDNR", "fdnr": "% FDNR", "ftdc": "% FTDC", "ftpdf": "% FTPDF",
+    # métricas secundarias (pestaña Scorecard, desde 29/09/2026)
+    "rfc": "% Route Fulfillment Compliance", "latePk": "% Late pickup routes", "latePkFW": "% Late pickup routes (First window)",
 }
 NET_METRICS = {"late": "~ % Late > 15", "fond": "~ % FOND Ops controllable", "pdnr": "% PDNR",
-               "ftfdf": "% FTFDF", "ftfdfOC": "~ % FOND Ops controllable"}
+               "ftfdf": "% FTFDF", "ftfdfOC": "~ % FOND Ops controllable",
+               "fdnr": "% FDNR", "ftdc": "% FTDC", "ftpdf": "% FTPDF",
+               "rfc": "% Route Fulfillment Compliance", "latePk": "% Late pickup routes", "latePkFW": "% Late pickup routes (First window)"}
+DEPOT_FIELDS = ["late", "fondCtrl", "ftfdf", "pdnr", "fdnr", "ftdc", "pondFP", "pondPP", "ftpdf", "rfc", "latePk", "latePkFW"]
+NET_FIELDS = ["late", "fond", "pdnr", "ftfdf", "ftfdfOC", "fdnr", "ftdc", "ftpdf", "pondFP", "pondPP", "rfc", "latePk", "latePkFW"]
 
 def week_of(datestr):
     d = dt.datetime.strptime(datestr[:10], "%Y-%m-%d").date()
@@ -113,6 +119,12 @@ def main():
         if o and (stn, w) in depot:
             c = pond.get((stn, w), {"FP": 0, "PP": 0})
             depot[(stn, w)]["pondFP"] = round(100 * c["FP"] / o, 2); depot[(stn, w)]["pondPP"] = round(100 * c["PP"] / o, 2)
+    net_orders = defaultdict(int); net_pond = defaultdict(lambda: {"FP": 0, "PP": 0})
+    for (stn, w), o in orders.items():
+        net_orders[w] += o; c = pond.get((stn, w), {"FP": 0, "PP": 0}); net_pond[w]["FP"] += c["FP"]; net_pond[w]["PP"] += c["PP"]
+    for w, o in net_orders.items():
+        if o and w in network:
+            network[w]["pondFP"] = round(100 * net_pond[w]["FP"] / o, 2); network[w]["pondPP"] = round(100 * net_pond[w]["PP"] / o, 2)
     weeks = sorted(weeks | set(w for _, w in depot))
     print(f"Semanas en los datos: {[wkey(*w) for w in weeks]}")
     # Semanas «abiertas»: se borran del JSX y se vuelven a cargar (la semana en curso llega parcial y crece cada día)
@@ -144,7 +156,7 @@ def main():
             d = depot.get((stn, w))
             if not d or w in have: continue
             row = OrderedDict([("year", w[0]), ("week", f"W{w[1]}")])
-            for fld in ["late", "fondCtrl", "ftfdf", "pdnr", "fdnr", "ftdc", "pondFP", "pondPP", "ftpdf"]:
+            for fld in DEPOT_FIELDS:
                 row[fld] = d.get(fld)
             new_lines.append("    " + dump_js(row) + ",")
         if new_lines or blk != m.group(2):
@@ -159,7 +171,7 @@ def main():
         d = network.get(w)
         if not d or w in have: continue
         row = OrderedDict([("year", w[0]), ("week", f"W{w[1]}")])
-        for fld in ["late", "fond", "pdnr", "ftfdf", "ftfdfOC"]: row[fld] = d.get(fld)
+        for fld in NET_FIELDS: row[fld] = d.get(fld)
         new_lines.append("  " + dump_js(row) + ",")
     if new_lines or blk != m.group(2):
         src = src.replace(m.group(0), m.group(1) + blk + ("\n" + "\n".join(new_lines) if new_lines else "") + m.group(3)); print(f"NETWORK: +{len(new_lines)} semanas (recalculadas incluidas)")
