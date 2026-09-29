@@ -80,8 +80,12 @@ rm -f .git/HEAD.lock .git/index.lock .git/objects/maintenance.lock 2>/dev/null; 
 git add src/Dashboard.jsx >/dev/null 2>&1
 CHANGED=0
 if ! git diff --cached --quiet; then
-  GIT_ID=(); [ -n "$(git config user.email)" ] || GIT_ID=(-c user.name="Lighthouse daily update" -c user.email="ercilio@deliverymates.com")
-  git "${GIT_ID[@]}" commit -qm "data: Lighthouse daily update $(date +%d/%m/%Y) ($(basename "$LATEST"))" && CHANGED=1 && echo "── Commit hecho"
+  # identidad de respaldo si git no tiene user.email (sin arrays: bash 3.2 de macOS + set -u no admite arrays vacíos)
+  if [ -n "$(git config user.email)" ]; then
+    git commit -qm "data: Lighthouse daily update $(date +%d/%m/%Y) ($(basename "$LATEST"))" && CHANGED=1 && echo "── Commit hecho"
+  else
+    git -c user.name="Lighthouse daily update" -c user.email="ercilio@deliverymates.com" commit -qm "data: Lighthouse daily update $(date +%d/%m/%Y) ($(basename "$LATEST"))" && CHANGED=1 && echo "── Commit hecho"
+  fi
 else
   echo "── Sin cambios en Dashboard.jsx"
 fi
