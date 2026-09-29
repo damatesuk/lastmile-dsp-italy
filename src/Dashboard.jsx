@@ -98,7 +98,7 @@ function LeafletMap({ sites, selectedSite, onSiteClick, defectFilter, hoveredSit
 
       // Tooltip
       circle.bindTooltip(`
-        <div style="font-family:monospace;font-size:12px;line-height:1.6;padding:4px;">
+        <div style="font-family:Arial, Helvetica, sans-serif;font-size:12px;line-height:1.6;padding:4px;">
           <strong style="color:${color}">${site.key}</strong> — ${site.label}<br/>
           <span style="color:#6b7280">Defects:</span> <strong>${filtCount.toLocaleString()}</strong><br/>
           ${defectFilter.map(dt => `<span style="color:#888">${dt}:</span> ${site.defects[dt]||0}`).join("  ")}
@@ -110,7 +110,7 @@ function LeafletMap({ sites, selectedSite, onSiteClick, defectFilter, hoveredSit
 
       // Station label
       const label = L.divIcon({
-        html: `<div style="font-family:monospace;font-size:11px;font-weight:700;color:${color};text-shadow:0 1px 3px #fff,0 0 8px #fff;white-space:nowrap;pointer-events:none">${site.key}<br><span style="font-size:9px;color:#ccc">${filtCount}</span></div>`,
+        html: `<div style="font-family:Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;color:${color};text-shadow:0 1px 3px #fff,0 0 8px #fff;white-space:nowrap;pointer-events:none">${site.key}<br><span style="font-size:9px;color:#ccc">${filtCount}</span></div>`,
         className: "",
         iconAnchor: [-radius - 4, radius / 2],
       });
@@ -134,7 +134,7 @@ function LeafletMap({ sites, selectedSite, onSiteClick, defectFilter, hoveredSit
     <div style={{ position: "relative", height: "100%", minHeight: 360 }}>
       {!leafletReady && (
         <div style={{ position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",background:"#ffffff",zIndex:10,borderRadius:10 }}>
-          <div style={{ fontSize:11,color:"#9ca3af",fontFamily:"'DM Mono',monospace" }}>Loading map…</div>
+          <div style={{ fontSize:11,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif" }}>Loading map…</div>
         </div>
       )}
       <div ref={mapRef} style={{ width:"100%", height:"100%", minHeight:360, borderRadius:10 }}/>
@@ -768,10 +768,10 @@ const NCC_DRIVERS = [
   {name:"Maftei, Florin",loc:"Roma",stations:["UIT4"],total:1,w:{"2026-W39":1}}
 ];
 function NCCCell({val}) {
-  if (!val) return <td style={{padding:"3px 6px",textAlign:"center",fontSize:10,fontFamily:"'DM Mono',monospace",color:"#d1d5db"}}>·</td>;
+  if (!val) return <td style={{padding:"3px 6px",textAlign:"center",fontSize:10,fontFamily:"Arial, Helvetica, sans-serif",color:"#d1d5db"}}>·</td>;
   const bg = val >= 5 ? "#dc2626" : val >= 3 ? "#ea580c" : val >= 2 ? "#d97706" : "#ca8a04";
   const op = Math.min(0.15 + (val / 10) * 0.85, 1);
-  return <td style={{padding:"3px 6px",textAlign:"center",fontSize:10,fontWeight:700,fontFamily:"'DM Mono',monospace",color:"#fff",background:bg,opacity:op,borderRadius:2}}>{val}</td>;
+  return <td style={{padding:"3px 6px",textAlign:"center",fontSize:10,fontWeight:700,fontFamily:"Arial, Helvetica, sans-serif",color:"#fff",background:bg,opacity:op,borderRadius:2}}>{val}</td>;
 }
 
 // ─── LATE DELIVERY DATA (Order-Level, W47/25–W37/26) ──────────────────
@@ -867,10 +867,10 @@ const LATE_DRIVERS = [
   {tid:"A2JCNQ8Z92MZNC",s:["UIT1"],l:1,g:0,t:1,w:{"2026-W39":1},wg:{"2026-W39":0}}
 ];
 function LateCell({val,isGt15}) {
-  if (!val) return <td style={{padding:"3px 5px",textAlign:"center",fontSize:10,fontFamily:"'DM Mono',monospace",color:"#d1d5db"}}>·</td>;
+  if (!val) return <td style={{padding:"3px 5px",textAlign:"center",fontSize:10,fontFamily:"Arial, Helvetica, sans-serif",color:"#d1d5db"}}>·</td>;
   const bg = isGt15 ? (val>=8?"#dc2626":val>=4?"#ea580c":"#d97706") : (val>=10?"#dc2626":val>=5?"#ea580c":val>=3?"#d97706":"#ca8a04");
   const op = Math.min(0.2+(val/(isGt15?15:20))*0.8, 1);
-  return <td style={{padding:"3px 5px",textAlign:"center",fontSize:10,fontWeight:700,fontFamily:"'DM Mono',monospace",color:"#fff",background:bg,opacity:op,borderRadius:2}}>{val}</td>;
+  return <td style={{padding:"3px 5px",textAlign:"center",fontSize:10,fontWeight:700,fontFamily:"Arial, Helvetica, sans-serif",color:"#fff",background:bg,opacity:op,borderRadius:2}}>{val}</td>;
 }
 // TID->Name lookup (from staff roster cross-reference)
 const TID_NAME = {
@@ -1074,13 +1074,13 @@ const SPR_TARGET = {UIT4:4.6,UIT1:4.9,UBA1:5.2,UIL7:8.3};
 function SprTooltip({active,payload,label}) {
   if (!active||!payload?.length) return null;
   return (<div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:6,padding:"8px 12px",boxShadow:"0 8px 32px rgba(0,0,0,0.5)"}}>
-    <p style={{color:"#6b7280",fontSize:10,margin:"0 0 4px",fontFamily:"'DM Mono',monospace"}}>{label}</p>
-    {payload.filter(p=>p.value!=null).map((p,i)=>{const row=p.payload||{};const o=row[p.name+"_o"],r=row[p.name+"_r"];return(<p key={i} style={{color:p.stroke||p.color,fontSize:11,margin:"2px 0",fontFamily:"'DM Mono',monospace"}}>{p.name}: <strong>{Number(p.value).toFixed(2)}</strong>{o!=null&&<span style={{color:"#6b7280"}}> · {o.toLocaleString()} / {r}</span>}</p>);})}
+    <p style={{color:"#6b7280",fontSize:10,margin:"0 0 4px",fontFamily:"Arial, Helvetica, sans-serif"}}>{label}</p>
+    {payload.filter(p=>p.value!=null).map((p,i)=>{const row=p.payload||{};const o=row[p.name+"_o"],r=row[p.name+"_r"];return(<p key={i} style={{color:p.stroke||p.color,fontSize:11,margin:"2px 0",fontFamily:"Arial, Helvetica, sans-serif"}}>{p.name}: <strong>{Number(p.value).toFixed(2)}</strong>{o!=null&&<span style={{color:"#6b7280"}}> · {o.toLocaleString()} / {r}</span>}</p>);})}
   </div>);
 }
 function SprLabel({x,y,value,color}) {
   if (value==null||x==null) return null;
-  return <text x={x} y={y-7} fill={color} fontSize={9} fontFamily="DM Mono" textAnchor="middle" opacity={0.9}>{Number(value).toFixed(1)}</text>;
+  return <text x={x} y={y-7} fill={color} fontSize={9} fontFamily="Arial, Helvetica, sans-serif" textAnchor="middle" opacity={0.9}>{Number(value).toFixed(1)}</text>;
 }
 
 // ─── DEFECT FLOW por semana — generado por scripts/lighthouse_to_dashboard.py ──
@@ -1288,7 +1288,7 @@ function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeek
   const fmtPct = v => v == null ? "—" : v.toFixed(2) + "%";
   const withData = selectedDepots.filter(d => (ALL_DEPOT_DATA[d] || []).some(r => r.year === year && r.week === week && r.late != null));
   const scope = allSelected ? t("scNetwork") : (withData.length ? withData : selectedDepots).join(", ");
-  const F = "'Outfit', system-ui, sans-serif", M = "'DM Mono', monospace";
+  const F = "Arial, Helvetica, sans-serif", M = "Arial, Helvetica, sans-serif";  // fuente única: Arial
   const ownerLabel = o => ({ DSP: "DSP", STATION: t("scOwnerStation"), CUSTOMER: t("scOwnerCustomer"), NETWORK: t("scOwnerNetwork"), PENDING: t("scOwnerPending"), OTHER: t("scOwnerOther") }[o] || o);
   const catLabel = c => ({ routing: t("scCatRouting"), volume: t("scCatVolume"), punctuality: t("scCatPunctuality") }[c] || c);
   const delta = (k) => { const a = cur?.[k], b = prev?.[k]; if (a == null || b == null) return null; return +(a - b).toFixed(2); };
@@ -1423,7 +1423,7 @@ function getStatusConfig(d) {
 }
 function ChartTooltip({active,payload,label}) {
   if (!active||!payload?.length) return null;
-  return (<div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:6,padding:"8px 12px",boxShadow:"0 8px 32px rgba(0,0,0,0.5)"}}><p style={{color:"#6b7280",fontSize:10,margin:"0 0 4px",fontFamily:"'DM Mono',monospace"}}>{label}</p>{payload.filter(p=>p.value!=null).map((p,i)=>(<p key={i} style={{color:p.color||p.stroke,fontSize:11,margin:"2px 0",fontFamily:"'DM Mono',monospace"}}>{p.name}: <strong>{typeof p.value==="number"?p.value.toFixed(2):p.value}%</strong></p>))}</div>);
+  return (<div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:6,padding:"8px 12px",boxShadow:"0 8px 32px rgba(0,0,0,0.5)"}}><p style={{color:"#6b7280",fontSize:10,margin:"0 0 4px",fontFamily:"Arial, Helvetica, sans-serif"}}>{label}</p>{payload.filter(p=>p.value!=null).map((p,i)=>(<p key={i} style={{color:p.color||p.stroke,fontSize:11,margin:"2px 0",fontFamily:"Arial, Helvetica, sans-serif"}}>{p.name}: <strong>{typeof p.value==="number"?p.value.toFixed(2):p.value}%</strong></p>))}</div>);
 }
 function MiniSpark({data,width=90,height=24}) {
   const vals=data.filter(d=>d.late!=null).map(d=>d.late);
@@ -1438,36 +1438,36 @@ function MiniSpark({data,width=90,height=24}) {
 function FilterBar({selectedYear,setSelectedYear,selectedDepots,setSelectedDepots,weekFrom,setWeekFrom,weekTo,setWeekTo,availableWeeks,t,isMobile}) {
   const toggleDepot = d => setSelectedDepots(prev => prev.includes(d) ? (prev.length > 1 ? prev.filter(x=>x!==d) : prev) : [...prev, d]);
   const allSelected = selectedDepots.length === ALL_DEPOTS.length;
-  const ss = {background:"#ffffff",color:"#111827",border:"1px solid #e5e7eb",borderRadius:5,padding:"5px 8px",fontSize:11,fontFamily:"'DM Mono',monospace",cursor:"pointer",outline:"none",minWidth:70};
+  const ss = {background:"#ffffff",color:"#111827",border:"1px solid #e5e7eb",borderRadius:5,padding:"5px 8px",fontSize:11,fontFamily:"Arial, Helvetica, sans-serif",cursor:"pointer",outline:"none",minWidth:70};
   const yrBtn = (yr, active) => ({
     background: active ? (yr === "ALL" ? "#e5e7eb" : `${yr===2025?"#2563eb":"#d97706"}18`) : "transparent",
     border: active ? `1px solid ${yr==="ALL"?"#9ca3af":yr===2025?"#2563eb50":"#d9770650"}` : "1px solid #e5e7eb",
     color: active ? (yr==="ALL"?"#111827":yr===2025?"#1d4ed8":"#d97706") : "#e5e7eb",
-    borderRadius:5,padding:"4px 10px",cursor:"pointer",fontSize:10,fontWeight:700,fontFamily:"'DM Mono',monospace",transition:"all 0.15s"
+    borderRadius:5,padding:"4px 10px",cursor:"pointer",fontSize:10,fontWeight:700,fontFamily:"Arial, Helvetica, sans-serif",transition:"all 0.15s"
   });
   return (
     <div style={{display:"flex",alignItems:"center",gap:isMobile?8:14,padding:isMobile?"10px 16px":"12px 32px",background:"#ffffff",borderBottom:"1px solid #e5e7eb",flexWrap:"wrap"}}>
       <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-        <span style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",whiteSpace:"nowrap"}}>{t("year")}</span>
+        <span style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",whiteSpace:"nowrap"}}>{t("year")}</span>
         {["ALL",...ALL_YEARS].map(yr => (
           <button key={yr} onClick={()=>setSelectedYear(yr)} style={yrBtn(yr,selectedYear===yr)}>{yr==="ALL"?"All":yr}</button>
         ))}
       </div>
       {!isMobile&&<div style={{width:1,height:24,background:"#e5e7eb"}}/>}
       <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-        <span style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",whiteSpace:"nowrap"}}>{t("station")}</span>
-        <button onClick={()=>setSelectedDepots([...ALL_DEPOTS])} style={{background:allSelected?"#e5e7eb":"transparent",border:allSelected?"1px solid #9ca3af":"1px solid #e5e7eb",color:allSelected?"#111827":"#9ca3af",borderRadius:5,padding:"4px 10px",cursor:"pointer",fontSize:10,fontWeight:600,fontFamily:"'DM Mono',monospace"}}>ALL</button>
-        {ALL_DEPOTS.map(d=>{const a=selectedDepots.includes(d);return(<button key={d} onClick={()=>toggleDepot(d)} style={{background:a?`${DEPOT_COLORS[d]}18`:"transparent",border:a?`1px solid ${DEPOT_COLORS[d]}50`:"1px solid #e5e7eb",color:a?DEPOT_COLORS[d]:"#e5e7eb",borderRadius:5,padding:"4px 10px",cursor:"pointer",fontSize:10,fontWeight:700,fontFamily:"'DM Mono',monospace",opacity:a?1:0.5}}><span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:a?DEPOT_COLORS[d]:"#e5e7eb",marginRight:5,verticalAlign:"middle"}}/>{d}</button>);})}
+        <span style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",whiteSpace:"nowrap"}}>{t("station")}</span>
+        <button onClick={()=>setSelectedDepots([...ALL_DEPOTS])} style={{background:allSelected?"#e5e7eb":"transparent",border:allSelected?"1px solid #9ca3af":"1px solid #e5e7eb",color:allSelected?"#111827":"#9ca3af",borderRadius:5,padding:"4px 10px",cursor:"pointer",fontSize:10,fontWeight:600,fontFamily:"Arial, Helvetica, sans-serif"}}>ALL</button>
+        {ALL_DEPOTS.map(d=>{const a=selectedDepots.includes(d);return(<button key={d} onClick={()=>toggleDepot(d)} style={{background:a?`${DEPOT_COLORS[d]}18`:"transparent",border:a?`1px solid ${DEPOT_COLORS[d]}50`:"1px solid #e5e7eb",color:a?DEPOT_COLORS[d]:"#e5e7eb",borderRadius:5,padding:"4px 10px",cursor:"pointer",fontSize:10,fontWeight:700,fontFamily:"Arial, Helvetica, sans-serif",opacity:a?1:0.5}}><span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:a?DEPOT_COLORS[d]:"#e5e7eb",marginRight:5,verticalAlign:"middle"}}/>{d}</button>);})}
       </div>
       <div style={{width:1,height:24,background:"#e5e7eb"}}/>
       <div style={{display:"flex",alignItems:"center",gap:6}}>
-        <span style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",whiteSpace:"nowrap"}}>{t("weeks")}</span>
+        <span style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",whiteSpace:"nowrap"}}>{t("weeks")}</span>
         <select value={weekFrom} onChange={e=>{const nv=e.target.value;setWeekFrom(nv);if(weekNum(nv)>weekNum(weekTo))setWeekTo(nv);}} style={ss}>{availableWeeks.map(w=><option key={w} value={w}>{w}</option>)}</select>
-        <span style={{fontSize:10,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>→</span>
+        <span style={{fontSize:10,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>→</span>
         <select value={weekTo} onChange={e=>{const nv=e.target.value;setWeekTo(nv);if(weekNum(nv)<weekNum(weekFrom))setWeekFrom(nv);}} style={ss}>{availableWeeks.map(w=><option key={w} value={w}>{w}</option>)}</select>
-        <button onClick={()=>{if(availableWeeks.length){setWeekFrom(availableWeeks[0]);setWeekTo(availableWeeks[availableWeeks.length-1]);}}} style={{background:"transparent",border:"1px solid #e5e7eb",color:"#6b7280",borderRadius:5,padding:"4px 8px",cursor:"pointer",fontSize:9,fontFamily:"'DM Mono',monospace"}}>{t("reset")}</button>
+        <button onClick={()=>{if(availableWeeks.length){setWeekFrom(availableWeeks[0]);setWeekTo(availableWeeks[availableWeeks.length-1]);}}} style={{background:"transparent",border:"1px solid #e5e7eb",color:"#6b7280",borderRadius:5,padding:"4px 8px",cursor:"pointer",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}}>{t("reset")}</button>
       </div>
-      <div style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{selectedYear==="ALL"?"2025+2026":selectedYear} · {selectedDepots.length}/{ALL_DEPOTS.length} {t("stations")} · {availableWeeks.filter(w=>weekNum(w)>=weekNum(weekFrom)&&weekNum(w)<=weekNum(weekTo)).length}w</div>
+      <div style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{selectedYear==="ALL"?"2025+2026":selectedYear} · {selectedDepots.length}/{ALL_DEPOTS.length} {t("stations")} · {availableWeeks.filter(w=>weekNum(w)>=weekNum(weekFrom)&&weekNum(w)<=weekNum(weekTo)).length}w</div>
     </div>
   );
 }
@@ -1478,19 +1478,19 @@ function DepotCard({depot,weekData}) {
   const upPct=latest&&latest.ftfdf>0&&latest.fondCtrl!=null?Math.round(Math.max(0,(latest.ftfdf-latest.fondCtrl))/latest.ftfdf*100):null;
   return (
     <div style={{background:cfg.bg,border:`1px solid ${cfg.border}30`,borderRadius:10,padding:"16px 18px",borderLeft:`3px solid ${cfg.border}`,position:"relative",overflow:"hidden"}}>
-      <div style={{position:"absolute",top:0,right:0,background:`${cfg.border}18`,color:cfg.text,fontSize:8,fontWeight:700,padding:"3px 10px",borderBottomLeftRadius:6,fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase"}}>{cfg.icon} {cfg.label}</div>
+      <div style={{position:"absolute",top:0,right:0,background:`${cfg.border}18`,color:cfg.text,fontSize:8,fontWeight:700,padding:"3px 10px",borderBottomLeftRadius:6,fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase"}}>{cfg.icon} {cfg.label}</div>
       <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:2}}>
-        <span style={{fontSize:17,fontWeight:800,color:DEPOT_COLORS[depot],fontFamily:"'Outfit',sans-serif"}}>{depot}</span>
-        <span style={{fontSize:10,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}>{DEPOT_LABELS[depot]}</span>
-        {latest&&<span style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace",marginLeft:"auto"}}>{latest.week}{latest.year?" '"+String(latest.year).slice(2):""}</span>}
+        <span style={{fontSize:17,fontWeight:800,color:DEPOT_COLORS[depot],fontFamily:"Arial, Helvetica, sans-serif"}}>{depot}</span>
+        <span style={{fontSize:10,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}>{DEPOT_LABELS[depot]}</span>
+        {latest&&<span style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif",marginLeft:"auto"}}>{latest.week}{latest.year?" '"+String(latest.year).slice(2):""}</span>}
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"10px",marginTop:12}}>
-        <div><div style={{fontSize:8,color:"#6b7280",textTransform:"uppercase",letterSpacing:1.2,fontFamily:"'DM Mono',monospace",marginBottom:1}}>Late +15</div><div style={{fontSize:20,fontWeight:800,color:latest?.late>5?"#b91c1c":latest?.late>3?"#b45309":"#15803d",fontFamily:"'Outfit',sans-serif"}}>{latest?.late!=null?`${latest.late}%`:"—"}</div><MiniSpark data={weekData}/></div>
-        <div><div style={{fontSize:8,color:"#6b7280",textTransform:"uppercase",letterSpacing:1.2,fontFamily:"'DM Mono',monospace",marginBottom:1}}>FOND Ctrl</div><div style={{fontSize:20,fontWeight:800,color:latest?.fondCtrl>1.5?"#b91c1c":latest?.fondCtrl>0.8?"#b45309":"#15803d",fontFamily:"'Outfit',sans-serif"}}>{latest?.fondCtrl!=null?`${latest.fondCtrl}%`:"—"}</div><div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",marginTop:2}}>FTFDF: {latest?.ftfdf!=null?`${latest.ftfdf}%`:"—"}</div></div>
-        <div><div style={{fontSize:8,color:"#6b7280",textTransform:"uppercase",letterSpacing:1.2,fontFamily:"'DM Mono',monospace",marginBottom:1}}>PDNR</div><div style={{fontSize:20,fontWeight:800,color:latest?.pdnr>0.7?"#b91c1c":latest?.pdnr>0.5?"#b45309":"#15803d",fontFamily:"'Outfit',sans-serif"}}>{latest?.pdnr!=null?`${latest.pdnr}%`:"—"}</div>{upPct!=null&&<div style={{fontSize:9,color:"#d97706",fontFamily:"'DM Mono',monospace",marginTop:2}}>{upPct}% upstream</div>}</div>
+        <div><div style={{fontSize:8,color:"#6b7280",textTransform:"uppercase",letterSpacing:1.2,fontFamily:"Arial, Helvetica, sans-serif",marginBottom:1}}>Late +15</div><div style={{fontSize:20,fontWeight:800,color:latest?.late>5?"#b91c1c":latest?.late>3?"#b45309":"#15803d",fontFamily:"Arial, Helvetica, sans-serif"}}>{latest?.late!=null?`${latest.late}%`:"—"}</div><MiniSpark data={weekData}/></div>
+        <div><div style={{fontSize:8,color:"#6b7280",textTransform:"uppercase",letterSpacing:1.2,fontFamily:"Arial, Helvetica, sans-serif",marginBottom:1}}>FOND Ctrl</div><div style={{fontSize:20,fontWeight:800,color:latest?.fondCtrl>1.5?"#b91c1c":latest?.fondCtrl>0.8?"#b45309":"#15803d",fontFamily:"Arial, Helvetica, sans-serif"}}>{latest?.fondCtrl!=null?`${latest.fondCtrl}%`:"—"}</div><div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",marginTop:2}}>FTFDF: {latest?.ftfdf!=null?`${latest.ftfdf}%`:"—"}</div></div>
+        <div><div style={{fontSize:8,color:"#6b7280",textTransform:"uppercase",letterSpacing:1.2,fontFamily:"Arial, Helvetica, sans-serif",marginBottom:1}}>PDNR</div><div style={{fontSize:20,fontWeight:800,color:latest?.pdnr>0.7?"#b91c1c":latest?.pdnr>0.5?"#b45309":"#15803d",fontFamily:"Arial, Helvetica, sans-serif"}}>{latest?.pdnr!=null?`${latest.pdnr}%`:"—"}</div>{upPct!=null&&<div style={{fontSize:9,color:"#d97706",fontFamily:"Arial, Helvetica, sans-serif",marginTop:2}}>{upPct}% upstream</div>}</div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6,marginTop:10,paddingTop:10,borderTop:"1px solid rgba(255,255,255,0.05)"}}>
-        {[{label:"FTPDF",val:latest?.ftpdf},{label:"FDNR",val:latest?.fdnr},{label:"FTDC",val:latest?.ftdc},{label:"PP",val:latest?.pondPP}].map(({label,val})=>(<div key={label}><div style={{fontSize:7,color:"#9ca3af",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>{label}</div><div style={{fontSize:11,fontWeight:600,color:val>0.8?"#b91c1c":"#4b5563",fontFamily:"'DM Mono',monospace"}}>{val!=null?`${val}%`:"—"}</div></div>))}
+        {[{label:"FTPDF",val:latest?.ftpdf},{label:"FDNR",val:latest?.fdnr},{label:"FTDC",val:latest?.ftdc},{label:"PP",val:latest?.pondPP}].map(({label,val})=>(<div key={label}><div style={{fontSize:7,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>{label}</div><div style={{fontSize:11,fontWeight:600,color:val>0.8?"#b91c1c":"#4b5563",fontFamily:"Arial, Helvetica, sans-serif"}}>{val!=null?`${val}%`:"—"}</div></div>))}
       </div>
     </div>
   );
@@ -1568,9 +1568,9 @@ function PasswordGate({ children }) {
     else { setTries(n); setErr(g.wrong); }
   };
   const secs = Math.max(0, Math.ceil((lockUntil - now) / 1000));
-  const mono = "'DM Mono',monospace";
+  const mono = "Arial, Helvetica, sans-serif";
   return (
-    <div style={{background:"#f3f4f6",color:"#111827",minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Outfit',sans-serif",padding:16}}>
+    <div style={{background:"#f3f4f6",color:"#111827",minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"Arial, Helvetica, sans-serif",padding:16}}>
       <form onSubmit={submit} style={{width:"100%",maxWidth:360,background:"linear-gradient(135deg,#ffffff 0%,#f3f4f6 100%)",border:"1px solid #e5e7eb",borderRadius:12,padding:"28px 28px 24px",boxShadow:"0 20px 60px rgba(0,0,0,0.5)"}}>
         <div style={{fontSize:10,fontWeight:600,color:"#d97706",fontFamily:mono,letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>Last Mile DSP — Italy</div>
         <h1 style={{fontSize:22,fontWeight:800,color:"#111827",margin:0,letterSpacing:"-0.03em",lineHeight:1.1}}>Delivery Performance</h1>
@@ -1904,29 +1904,29 @@ function DashboardInner() {
   // al cambiar los filtros, la selección del drill-down puede dejar de existir → se limpia
   useEffect(() => { setFlowDefect(null); setFlowAttr(null); setFlowSite(null); }, [flowData]);
 
-  const tabStyle = active => ({background:active?"#111827":"transparent",border:active?"1px solid #111827":"1px solid transparent",color:active?"#ffffff":"#6b7280",borderRadius:6,padding:isMobile?"5px 10px":"6px 14px",cursor:"pointer",fontSize:isMobile?10:11,fontWeight:600,fontFamily:"'DM Mono',monospace",transition:"all 0.2s",letterSpacing:0.3,whiteSpace:"nowrap"});
+  const tabStyle = active => ({background:active?"#111827":"transparent",border:active?"1px solid #111827":"1px solid transparent",color:active?"#ffffff":"#6b7280",borderRadius:6,padding:isMobile?"5px 10px":"6px 14px",cursor:"pointer",fontSize:isMobile?10:11,fontWeight:600,fontFamily:"Arial, Helvetica, sans-serif",transition:"all 0.2s",letterSpacing:0.3,whiteSpace:"nowrap"});
   const cellStyle = (val,th) => { if(val==null) return {bg:"#ffffff",color:"#d1d5db"}; if(val>th[1]) return {bg:"#fef2f2",color:"#b91c1c"}; if(val>th[0]) return {bg:"#fffbeb",color:"#b45309"}; return {bg:"#f0fdf4",color:"#15803d"}; };
 
   const yearLabel = selectedYear === "ALL" ? "2025–2026" : String(selectedYear);
 
   return (
-    <div style={{background:"#f3f4f6",color:"#111827",minHeight:"100vh",fontFamily:"'Outfit',sans-serif"}}>
+    <div style={{background:"#f3f4f6",color:"#111827",minHeight:"100vh",fontFamily:"Arial, Helvetica, sans-serif"}}>
       {/* HEADER */}
       <div style={{background:"linear-gradient(135deg,#ffffff 0%,#f3f4f6 100%)",borderBottom:"1px solid #e5e7eb",padding:isMobile?"16px 16px 14px":"24px 32px 20px"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:isMobile?"flex-start":"flex-start",flexDirection:isMobile?"column":"row",gap:isMobile?12:0}}>
           <div>
-            <div style={{fontSize:isMobile?9:10,fontWeight:600,color:"#d97706",fontFamily:"'DM Mono',monospace",letterSpacing:2,textTransform:"uppercase",marginBottom:isMobile?4:6}}>{t("brand")}</div>
-            <h1 style={{fontSize:isMobile?20:26,fontWeight:800,color:"#111827",margin:0,fontFamily:"'Outfit',sans-serif",letterSpacing:"-0.03em",lineHeight:1.1}}>{t("title")}</h1>
-            <div style={{fontSize:isMobile?10:12,color:"#6b7280",fontFamily:"'DM Mono',monospace",marginTop:isMobile?4:6}}>{effectiveFrom}–{effectiveTo} / {yearLabel}</div>
+            <div style={{fontSize:isMobile?9:10,fontWeight:600,color:"#d97706",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:2,textTransform:"uppercase",marginBottom:isMobile?4:6}}>{t("brand")}</div>
+            <h1 style={{fontSize:isMobile?20:26,fontWeight:800,color:"#111827",margin:0,fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:"-0.03em",lineHeight:1.1}}>{t("title")}</h1>
+            <div style={{fontSize:isMobile?10:12,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",marginTop:isMobile?4:6}}>{effectiveFrom}–{effectiveTo} / {yearLabel}</div>
           </div>
           <div style={{display:"flex",gap:10,alignItems:"flex-start",width:isMobile?"100%":"auto",justifyContent:isMobile?"space-between":"flex-end"}}>
             <div style={{display:"flex",gap:2,background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:6,padding:2}}>
-              {LANGS.map(l=>(<button key={l.code} onClick={()=>setLang(l.code)} style={{background:lang===l.code?"#e5e7eb":"transparent",border:"none",color:lang===l.code?"#111827":"#9ca3af",borderRadius:4,padding:"4px 8px",cursor:"pointer",fontSize:9,fontWeight:700,fontFamily:"'DM Mono',monospace",letterSpacing:0.5,transition:"all 0.15s"}}>{l.label}</button>))}
+              {LANGS.map(l=>(<button key={l.code} onClick={()=>setLang(l.code)} style={{background:lang===l.code?"#e5e7eb":"transparent",border:"none",color:lang===l.code?"#111827":"#9ca3af",borderRadius:4,padding:"4px 8px",cursor:"pointer",fontSize:9,fontWeight:700,fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:0.5,transition:"all 0.15s"}}>{l.label}</button>))}
             </div>
             <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:8,padding:isMobile?"8px 12px":"10px 16px",textAlign:"right"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{t("latestInRange")}</div>
-              <div style={{fontSize:isMobile?18:22,fontWeight:800,color:"#d97706",fontFamily:"'Outfit',sans-serif"}}>{latestWeekLabel}</div>
-              <div style={{fontSize:isMobile?9:10,color:"#4b5563",fontFamily:"'DM Mono',monospace"}}>{selectedDepots.length} {t("stations")}</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{t("latestInRange")}</div>
+              <div style={{fontSize:isMobile?18:22,fontWeight:800,color:"#d97706",fontFamily:"Arial, Helvetica, sans-serif"}}>{latestWeekLabel}</div>
+              <div style={{fontSize:isMobile?9:10,color:"#4b5563",fontFamily:"Arial, Helvetica, sans-serif"}}>{selectedDepots.length} {t("stations")}</div>
             </div>
           </div>
         </div>
@@ -1955,24 +1955,24 @@ function DashboardInner() {
             {selectedDepots.map(d=>(<DepotCard key={d} depot={d} weekData={filteredDepotData[d]||[]}/>))}
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"20px",marginBottom:24}}>
-            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 16px",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>{t("networkLate")} — {effectiveFrom} → {effectiveTo} / {yearLabel}</h3>
+            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 16px",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>{t("networkLate")} — {effectiveFrom} → {effectiveTo} / {yearLabel}</h3>
             <ResponsiveContainer width="100%" height={isMobile?180:220}>
               <AreaChart data={networkChartData} margin={{top:5,right:isMobile?10:20,bottom:5,left:0}}>
                 <defs><linearGradient id="lateGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#dc2626" stopOpacity={0.2}/><stop offset="95%" stopColor="#dc2626" stopOpacity={0}/></linearGradient></defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb"/>
-                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}} interval={Math.max(0,Math.floor(networkChartData.length/12))}/>
-                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}} tickFormatter={v=>`${v}%`}/>
-                <Tooltip content={<ChartTooltip/>}/><ReferenceLine y={2.4} stroke="#e5e7eb" strokeDasharray="4 4" label={{value:t("w4Baseline"),fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}}/>
+                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}} interval={Math.max(0,Math.floor(networkChartData.length/12))}/>
+                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}} tickFormatter={v=>`${v}%`}/>
+                <Tooltip content={<ChartTooltip/>}/><ReferenceLine y={2.4} stroke="#e5e7eb" strokeDasharray="4 4" label={{value:t("w4Baseline"),fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}}/>
                 <Area type="monotone" dataKey="late" stroke="#dc2626" strokeWidth={2} fill="url(#lateGrad)" name="Late +15" dot={{r:2,fill:"#dc2626"}} connectNulls/>
               </AreaChart>
             </ResponsiveContainer>
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"20px"}}>
-            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 14px",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>{latestWeekLabel} {t("perfHeatmap")}</h3>
+            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 14px",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>{latestWeekLabel} {t("perfHeatmap")}</h3>
             <div style={{overflowX:"auto"}}>
               <table style={{width:"100%",borderCollapse:"separate",borderSpacing:3}}>
-                <thead><tr>{[t("depot"),t("week"),t("latePlus15"),t("fondCtrl"),t("ftfdf"),t("ftpdf"),t("pdnr"),t("fdnr"),t("pp"),t("status")].map((h,hi)=>(<th key={h} style={{padding:"8px",fontSize:8,color:"#9ca3af",textAlign:hi===0?"left":"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>{h}</th>))}</tr></thead>
-                <tbody>{selectedDepots.map(depot=>{const d=latestByDepot[depot];const cfg=getStatusConfig(d);const wkLabel=d?(selectedYear==="ALL"?`${d.week}'${String(d.year).slice(2)}`:d.week):"—";const cells=[{val:d?.late,th:[2.5,5]},{val:d?.fondCtrl,th:[0.7,1.2]},{val:d?.ftfdf,th:[2,3]},{val:d?.ftpdf,th:[1,1.5]},{val:d?.pdnr,th:[0.5,0.8]},{val:d?.fdnr,th:[0.15,0.3]},{val:d?.pondPP,th:[0.5,0.9]}];return(<tr key={depot}><td style={{padding:"8px",fontSize:12,fontWeight:700,color:DEPOT_COLORS[depot],fontFamily:"'DM Mono',monospace"}}>{depot}</td><td style={{padding:"8px",fontSize:10,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace"}}>{wkLabel}</td>{cells.map((c,i)=>{const s=cellStyle(c.val,c.th);return(<td key={i} style={{padding:"7px 6px",fontSize:11,fontWeight:600,textAlign:"center",fontFamily:"'DM Mono',monospace",borderRadius:4,background:s.bg,color:s.color}}>{c.val!=null?`${c.val}%`:"—"}</td>);})}<td style={{padding:"7px 8px",textAlign:"center"}}><span style={{fontSize:8,fontWeight:700,color:cfg.text,background:`${cfg.border}18`,padding:"2px 8px",borderRadius:4,fontFamily:"'DM Mono',monospace",letterSpacing:1}}>{cfg.label}</span></td></tr>);})}</tbody>
+                <thead><tr>{[t("depot"),t("week"),t("latePlus15"),t("fondCtrl"),t("ftfdf"),t("ftpdf"),t("pdnr"),t("fdnr"),t("pp"),t("status")].map((h,hi)=>(<th key={h} style={{padding:"8px",fontSize:8,color:"#9ca3af",textAlign:hi===0?"left":"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>{h}</th>))}</tr></thead>
+                <tbody>{selectedDepots.map(depot=>{const d=latestByDepot[depot];const cfg=getStatusConfig(d);const wkLabel=d?(selectedYear==="ALL"?`${d.week}'${String(d.year).slice(2)}`:d.week):"—";const cells=[{val:d?.late,th:[2.5,5]},{val:d?.fondCtrl,th:[0.7,1.2]},{val:d?.ftfdf,th:[2,3]},{val:d?.ftpdf,th:[1,1.5]},{val:d?.pdnr,th:[0.5,0.8]},{val:d?.fdnr,th:[0.15,0.3]},{val:d?.pondPP,th:[0.5,0.9]}];return(<tr key={depot}><td style={{padding:"8px",fontSize:12,fontWeight:700,color:DEPOT_COLORS[depot],fontFamily:"Arial, Helvetica, sans-serif"}}>{depot}</td><td style={{padding:"8px",fontSize:10,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif"}}>{wkLabel}</td>{cells.map((c,i)=>{const s=cellStyle(c.val,c.th);return(<td key={i} style={{padding:"7px 6px",fontSize:11,fontWeight:600,textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",borderRadius:4,background:s.bg,color:s.color}}>{c.val!=null?`${c.val}%`:"—"}</td>);})}<td style={{padding:"7px 8px",textAlign:"center"}}><span style={{fontSize:8,fontWeight:700,color:cfg.text,background:`${cfg.border}18`,padding:"2px 8px",borderRadius:4,fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1}}>{cfg.label}</span></td></tr>);})}</tbody>
               </table>
             </div>
           </div>
@@ -1982,33 +1982,33 @@ function DashboardInner() {
         {selectedView==="depots"&&(<>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"20px",marginBottom:24}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-              <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:0,fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>Late +15 by Depot — {yearLabel}</h3>
+              <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:0,fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>Late +15 by Depot — {yearLabel}</h3>
               <div style={{display:"flex",gap:4}}>
                 <button onClick={()=>setHighlightDepot(null)} style={{...tabStyle(!highlightDepot),padding:"3px 8px",fontSize:9}}>All</button>
-                {selectedDepots.map(d=>(<button key={d} onClick={()=>setHighlightDepot(highlightDepot===d?null:d)} style={{background:highlightDepot===d?`${DEPOT_COLORS[d]}22`:"transparent",border:highlightDepot===d?`1px solid ${DEPOT_COLORS[d]}40`:"1px solid transparent",color:highlightDepot===d?DEPOT_COLORS[d]:"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:9,fontWeight:700,fontFamily:"'DM Mono',monospace"}}>{d}</button>))}
+                {selectedDepots.map(d=>(<button key={d} onClick={()=>setHighlightDepot(highlightDepot===d?null:d)} style={{background:highlightDepot===d?`${DEPOT_COLORS[d]}22`:"transparent",border:highlightDepot===d?`1px solid ${DEPOT_COLORS[d]}40`:"1px solid transparent",color:highlightDepot===d?DEPOT_COLORS[d]:"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:9,fontWeight:700,fontFamily:"Arial, Helvetica, sans-serif"}}>{d}</button>))}
               </div>
             </div>
             <ResponsiveContainer width="100%" height={isMobile?220:300}>
               <LineChart data={combinedLates} margin={{top:5,right:isMobile?10:20,bottom:5,left:0}}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb"/>
-                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}} interval={Math.max(0,Math.floor(combinedLates.length/12))}/>
-                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}} tickFormatter={v=>`${v}%`} domain={[0,"auto"]}/>
+                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}} interval={Math.max(0,Math.floor(combinedLates.length/12))}/>
+                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}} tickFormatter={v=>`${v}%`} domain={[0,"auto"]}/>
                 <Tooltip content={<ChartTooltip/>}/><ReferenceLine y={2.5} stroke="#e5e7eb" strokeDasharray="4 4"/>
                 {selectedDepots.map(depot=>(<Line key={depot} type="monotone" dataKey={depot} stroke={DEPOT_COLORS[depot]} strokeWidth={highlightDepot?(highlightDepot===depot?3:0.8):2} strokeOpacity={highlightDepot?(highlightDepot===depot?1:0.2):0.8} dot={highlightDepot===depot?{r:3,fill:DEPOT_COLORS[depot]}:false} name={depot} connectNulls/>))}
               </LineChart>
             </ResponsiveContainer>
             <div style={{display:"flex",gap:16,justifyContent:"center",marginTop:8}}>
-              {selectedDepots.map(depot=>(<div key={depot} style={{display:"flex",alignItems:"center",gap:5,fontSize:10,color:DEPOT_COLORS[depot],fontFamily:"'DM Mono',monospace",cursor:"pointer",opacity:highlightDepot&&highlightDepot!==depot?0.3:1}} onClick={()=>setHighlightDepot(highlightDepot===depot?null:depot)}><div style={{width:12,height:3,borderRadius:2,background:DEPOT_COLORS[depot]}}/>{depot}</div>))}
+              {selectedDepots.map(depot=>(<div key={depot} style={{display:"flex",alignItems:"center",gap:5,fontSize:10,color:DEPOT_COLORS[depot],fontFamily:"Arial, Helvetica, sans-serif",cursor:"pointer",opacity:highlightDepot&&highlightDepot!==depot?0.3:1}} onClick={()=>setHighlightDepot(highlightDepot===depot?null:depot)}><div style={{width:12,height:3,borderRadius:2,background:DEPOT_COLORS[depot]}}/>{depot}</div>))}
             </div>
           </div>
           <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:16}}>
             <div style={{background:"#f0fdf4",border:"1px solid #16a34a30",borderRadius:10,padding:"18px"}}>
-              <h3 style={{fontSize:11,fontWeight:700,color:"#15803d",margin:"0 0 12px",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>● Tier 1 — Performing</h3>
-              {["UIT1","UIT7"].filter(d=>selectedDepots.includes(d)).map(d=>{const l=latestByDepot[d];return(<div key={d} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:"1px solid #16a34a15"}}><span style={{fontSize:13,fontWeight:700,color:DEPOT_COLORS[d],fontFamily:"'DM Mono',monospace"}}>{d}</span><span style={{fontSize:15,fontWeight:800,color:"#15803d",fontFamily:"'Outfit',sans-serif"}}>{l?.late!=null?`${l.late}%`:"—"}</span></div>);})}
+              <h3 style={{fontSize:11,fontWeight:700,color:"#15803d",margin:"0 0 12px",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>● Tier 1 — Performing</h3>
+              {["UIT1","UIT7"].filter(d=>selectedDepots.includes(d)).map(d=>{const l=latestByDepot[d];return(<div key={d} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:"1px solid #16a34a15"}}><span style={{fontSize:13,fontWeight:700,color:DEPOT_COLORS[d],fontFamily:"Arial, Helvetica, sans-serif"}}>{d}</span><span style={{fontSize:15,fontWeight:800,color:"#15803d",fontFamily:"Arial, Helvetica, sans-serif"}}>{l?.late!=null?`${l.late}%`:"—"}</span></div>);})}
             </div>
             <div style={{background:"#fef2f2",border:"1px solid #dc262630",borderRadius:10,padding:"18px"}}>
-              <h3 style={{fontSize:11,fontWeight:700,color:"#b91c1c",margin:"0 0 12px",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>◆ Tier 2 — Structural</h3>
-              {["UIT4","UBA1","UIL7"].filter(d=>selectedDepots.includes(d)).map(d=>{const l=latestByDepot[d];return(<div key={d} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:"1px solid #dc262615"}}><span style={{fontSize:13,fontWeight:700,color:DEPOT_COLORS[d],fontFamily:"'DM Mono',monospace"}}>{d}</span><span style={{fontSize:15,fontWeight:800,color:"#b91c1c",fontFamily:"'Outfit',sans-serif"}}>{l?.late!=null?`${l.late}%`:"—"}</span></div>);})}
+              <h3 style={{fontSize:11,fontWeight:700,color:"#b91c1c",margin:"0 0 12px",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>◆ Tier 2 — Structural</h3>
+              {["UIT4","UBA1","UIL7"].filter(d=>selectedDepots.includes(d)).map(d=>{const l=latestByDepot[d];return(<div key={d} style={{display:"flex",justifyContent:"space-between",padding:"8px 0",borderBottom:"1px solid #dc262615"}}><span style={{fontSize:13,fontWeight:700,color:DEPOT_COLORS[d],fontFamily:"Arial, Helvetica, sans-serif"}}>{d}</span><span style={{fontSize:15,fontWeight:800,color:"#b91c1c",fontFamily:"Arial, Helvetica, sans-serif"}}>{l?.late!=null?`${l.late}%`:"—"}</span></div>);})}
             </div>
           </div>
         </>)}
@@ -2016,59 +2016,59 @@ function DashboardInner() {
         {/* UPSTREAM */}
         {selectedView==="upstream"&&(<>
           <div style={{background:"linear-gradient(135deg,#fffbeb 0%,#ffffff 100%)",border:"1px solid #d9770630",borderRadius:10,padding:"24px 28px",marginBottom:24,textAlign:"center"}}>
-            <div style={{fontSize:10,color:"#d97706",fontFamily:"'DM Mono',monospace",letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>{allSelected?t("networkFtfdf"):`FTFDF — ${selectedDepots.join(", ")}`} — {effectiveFrom}{effectiveFrom!==effectiveTo?`–${effectiveTo}`:""} / {yearLabel}</div>
+            <div style={{fontSize:10,color:"#d97706",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:2,textTransform:"uppercase",marginBottom:8}}>{allSelected?t("networkFtfdf"):`FTFDF — ${selectedDepots.join(", ")}`} — {effectiveFrom}{effectiveFrom!==effectiveTo?`–${effectiveTo}`:""} / {yearLabel}</div>
             {upstreamAgg ? (
             <div style={{display:"flex",justifyContent:"center",alignItems:"baseline",gap:isMobile?12:20,flexWrap:"wrap"}}>
-              <div><div style={{fontSize:isMobile?28:40,fontWeight:800,color:"#d97706",fontFamily:"'Outfit',sans-serif"}}>{upstreamAgg.pct}%</div><div style={{fontSize:10,color:"#92400e",fontFamily:"'DM Mono',monospace"}}>{t("upstream")}</div></div>
+              <div><div style={{fontSize:isMobile?28:40,fontWeight:800,color:"#d97706",fontFamily:"Arial, Helvetica, sans-serif"}}>{upstreamAgg.pct}%</div><div style={{fontSize:10,color:"#92400e",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("upstream")}</div></div>
               <div style={{fontSize:20,color:"#9ca3af"}}>|</div>
-              <div><div style={{fontSize:22,fontWeight:700,color:"#4b5563",fontFamily:"'Outfit',sans-serif"}}>{upstreamAgg.total}%</div><div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{t("total")}</div></div>
+              <div><div style={{fontSize:22,fontWeight:700,color:"#4b5563",fontFamily:"Arial, Helvetica, sans-serif"}}>{upstreamAgg.total}%</div><div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("total")}</div></div>
               <div style={{fontSize:14,color:"#9ca3af"}}>=</div>
-              <div><div style={{fontSize:22,fontWeight:700,color:"#16a34a",fontFamily:"'Outfit',sans-serif"}}>{upstreamAgg.ctrl}%</div><div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{t("dspCtrl")}</div></div>
+              <div><div style={{fontSize:22,fontWeight:700,color:"#16a34a",fontFamily:"Arial, Helvetica, sans-serif"}}>{upstreamAgg.ctrl}%</div><div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("dspCtrl")}</div></div>
               <div style={{fontSize:14,color:"#9ca3af"}}>+</div>
-              <div><div style={{fontSize:22,fontWeight:700,color:"#dc2626",fontFamily:"'Outfit',sans-serif"}}>{upstreamAgg.upstream}%</div><div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{t("upstream")}</div></div>
-            </div>) : <div style={{fontSize:11,color:"#4b5563",fontFamily:"'DM Mono',monospace",padding:"10px 0"}}>— no FTFDF data in range —</div>}
+              <div><div style={{fontSize:22,fontWeight:700,color:"#dc2626",fontFamily:"Arial, Helvetica, sans-serif"}}>{upstreamAgg.upstream}%</div><div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("upstream")}</div></div>
+            </div>) : <div style={{fontSize:11,color:"#4b5563",fontFamily:"Arial, Helvetica, sans-serif",padding:"10px 0"}}>— no FTFDF data in range —</div>}
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"20px",marginBottom:24}}>
-            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 16px",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>{t("ftfdfBreakdown")} — {effectiveFrom}{effectiveFrom!==effectiveTo?`–${effectiveTo}`:""} / {yearLabel}</h3>
+            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 16px",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>{t("ftfdfBreakdown")} — {effectiveFrom}{effectiveFrom!==effectiveTo?`–${effectiveTo}`:""} / {yearLabel}</h3>
             <ResponsiveContainer width="100%" height={isMobile?220:280}>
               <BarChart data={upstreamData} margin={{top:5,right:isMobile?10:30,bottom:5,left:0}} barSize={isMobile?28:40}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb"/>
-                <XAxis dataKey="depot" tick={{fill:"#4b5563",fontSize:12,fontFamily:"DM Mono",fontWeight:700}} axisLine={{stroke:"#e5e7eb"}}/>
-                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}} tickFormatter={v=>`${v}%`}/>
+                <XAxis dataKey="depot" tick={{fill:"#4b5563",fontSize:12,fontFamily:"Arial, Helvetica, sans-serif",fontWeight:700}} axisLine={{stroke:"#e5e7eb"}}/>
+                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}} tickFormatter={v=>`${v}%`}/>
                 <Tooltip content={<ChartTooltip/>}/>
                 <Bar dataKey="ctrl" stackId="a" fill="#16a34a" name="DSP Controllable"/>
                 <Bar dataKey="upstream" stackId="a" fill="#dc2626" name="Upstream / non-controllable" radius={[4,4,0,0]} opacity={0.7}/>
               </BarChart>
             </ResponsiveContainer>
-            <div style={{marginTop:10,fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace",lineHeight:1.6}}>DSP controllable = FOND ops-controllable. Upstream / non-controllable = FTFDF − FOND ops-controllable (customer-caused FOND, PSC, FDNR, FTDC). Values are averages over the selected weeks, weighted by orders.</div>
+            <div style={{marginTop:10,fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif",lineHeight:1.6}}>DSP controllable = FOND ops-controllable. Upstream / non-controllable = FTFDF − FOND ops-controllable (customer-caused FOND, PSC, FDNR, FTDC). Values are averages over the selected weeks, weighted by orders.</div>
           </div>
         </>)}
 
         {/* UIT4 CYCLES */}
         {selectedView==="cycles"&&(<>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"20px",marginBottom:24}}>
-            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 16px",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>UIT4 Lates — {yearLabel}</h3>
+            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 16px",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>UIT4 Lates — {yearLabel}</h3>
             {(()=>{const d=(ALL_DEPOT_DATA.UIT4||[]).filter(fullFilter).sort((a,b)=>sortKey(a.year,a.week)-sortKey(b.year,b.week)).map(r=>({...r,label:chartLabel(r)}));return(
             <ResponsiveContainer width="100%" height={isMobile?220:300}>
               <ComposedChart data={d} margin={{top:10,right:isMobile?10:20,bottom:5,left:0}}>
                 <defs><linearGradient id="uit4Grad" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#2563eb" stopOpacity={0.25}/><stop offset="95%" stopColor="#2563eb" stopOpacity={0}/></linearGradient></defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb"/>
-                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}} interval={2}/>
-                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}} tickFormatter={v=>`${v}%`} domain={[0,8]}/>
-                <Tooltip content={<ChartTooltip/>}/><ReferenceLine y={2.11} stroke="#16a34a" strokeDasharray="4 4" label={{value:t("w4Baseline"),fill:"#16a34a",fontSize:9,fontFamily:"DM Mono"}}/>
+                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}} interval={2}/>
+                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}} tickFormatter={v=>`${v}%`} domain={[0,8]}/>
+                <Tooltip content={<ChartTooltip/>}/><ReferenceLine y={2.11} stroke="#16a34a" strokeDasharray="4 4" label={{value:t("w4Baseline"),fill:"#16a34a",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}}/>
                 <Area type="monotone" dataKey="late" stroke="#2563eb" strokeWidth={2.5} fill="url(#uit4Grad)" name="UIT4 Late +15" dot={{r:3,fill:"#2563eb"}} connectNulls/>
               </ComposedChart>
             </ResponsiveContainer>);})()}
           </div>
           <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(4,1fr)",gap:12,marginBottom:24}}>
             {CYCLES.map(c=>(<div key={c.id} style={{background:c.id===4?"#fef2f2":"#ffffff",border:`1px solid ${c.id===4?"#dc262640":"#e5e7eb"}`,borderRadius:10,padding:"16px",textAlign:"center"}}>
-              <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,marginBottom:8}}>CYCLE {c.id}</div>
+              <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,marginBottom:8}}>CYCLE {c.id}</div>
               <div style={{display:"flex",justifyContent:"center",alignItems:"center",gap:8,marginBottom:8}}>
-                <div><div style={{fontSize:8,color:"#16a34a",fontFamily:"'DM Mono',monospace"}}>{t("trough")}</div><div style={{fontSize:16,fontWeight:800,color:"#16a34a",fontFamily:"'Outfit',sans-serif"}}>{c.troughVal}%</div><div style={{fontSize:8,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{c.trough}</div></div>
+                <div><div style={{fontSize:8,color:"#16a34a",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("trough")}</div><div style={{fontSize:16,fontWeight:800,color:"#16a34a",fontFamily:"Arial, Helvetica, sans-serif"}}>{c.troughVal}%</div><div style={{fontSize:8,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{c.trough}</div></div>
                 <div style={{fontSize:16,color:"#9ca3af"}}>→</div>
-                <div><div style={{fontSize:8,color:"#dc2626",fontFamily:"'DM Mono',monospace"}}>{t("peak")}</div><div style={{fontSize:16,fontWeight:800,color:"#dc2626",fontFamily:"'Outfit',sans-serif"}}>{c.peakVal}%</div><div style={{fontSize:8,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{c.peak}</div></div>
+                <div><div style={{fontSize:8,color:"#dc2626",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("peak")}</div><div style={{fontSize:16,fontWeight:800,color:"#dc2626",fontFamily:"Arial, Helvetica, sans-serif"}}>{c.peakVal}%</div><div style={{fontSize:8,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{c.peak}</div></div>
               </div>
-              <div style={{fontSize:11,fontWeight:700,color:"#b91c1c",fontFamily:"'DM Mono',monospace",background:"#dc262618",borderRadius:4,padding:"4px 8px"}}>+{(c.peakVal-c.troughVal).toFixed(2)}pp</div>
+              <div style={{fontSize:11,fontWeight:700,color:"#b91c1c",fontFamily:"Arial, Helvetica, sans-serif",background:"#dc262618",borderRadius:4,padding:"4px 8px"}}>+{(c.peakVal-c.troughVal).toFixed(2)}pp</div>
             </div>))}
           </div>
         </>)}
@@ -2077,59 +2077,59 @@ function DashboardInner() {
         {selectedView==="ncc"&&(<>
           <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(4,1fr)",gap:12,marginBottom:20}}>
             <div style={{background:"linear-gradient(135deg,#fff7ed,#fffbeb)",border:"1px solid #ea580c30",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#ea580c",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("totalNccDefects")}</div>
-              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#ea580c",fontFamily:"'Outfit',sans-serif"}}>{nccStats.totalDefects.toLocaleString()}</div>
-              <div style={{fontSize:9,color:"#9a3412",fontFamily:"'DM Mono',monospace"}}>{nccStats.wkRange}</div>
+              <div style={{fontSize:8,color:"#ea580c",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("totalNccDefects")}</div>
+              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#ea580c",fontFamily:"Arial, Helvetica, sans-serif"}}>{nccStats.totalDefects.toLocaleString()}</div>
+              <div style={{fontSize:9,color:"#9a3412",fontFamily:"Arial, Helvetica, sans-serif"}}>{nccStats.wkRange}</div>
             </div>
             <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("uniqueDrivers")}</div>
-              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#111827",fontFamily:"'Outfit',sans-serif"}}>{nccStats.driverCount}</div>
-              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{t("across")} {selectedDepots.length} {selectedDepots.length!==1?t("stations"):t("station")}</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("uniqueDrivers")}</div>
+              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#111827",fontFamily:"Arial, Helvetica, sans-serif"}}>{nccStats.driverCount}</div>
+              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("across")} {selectedDepots.length} {selectedDepots.length!==1?t("stations"):t("station")}</div>
             </div>
             <div style={{background:"#ffffff",border:"1px solid #2563eb20",borderRadius:10,padding:"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("worstStation")}</div>
-              <div style={{fontSize:28,fontWeight:800,color:DEPOT_COLORS[nccStats.worstStn]||"#2563eb",fontFamily:"'Outfit',sans-serif"}}>{nccStats.worstStn}</div>
-              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{nccStats.worstVal} {t("defects")} ({nccStats.worstPct}%)</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("worstStation")}</div>
+              <div style={{fontSize:28,fontWeight:800,color:DEPOT_COLORS[nccStats.worstStn]||"#2563eb",fontFamily:"Arial, Helvetica, sans-serif"}}>{nccStats.worstStn}</div>
+              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{nccStats.worstVal} {t("defects")} ({nccStats.worstPct}%)</div>
             </div>
             <div style={{background:"#ffffff",border:"1px solid #dc262620",borderRadius:10,padding:"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("topOffender")}</div>
-              <div style={{fontSize:14,fontWeight:800,color:"#b91c1c",fontFamily:"'Outfit',sans-serif",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{nccStats.topDriver?.name||"—"}</div>
-              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{nccStats.topDriver?`${nccStats.topDriver._filtTotal} defects · ${nccStats.topDriver.stations.join("/")}`:"—"}</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("topOffender")}</div>
+              <div style={{fontSize:14,fontWeight:800,color:"#b91c1c",fontFamily:"Arial, Helvetica, sans-serif",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{nccStats.topDriver?.name||"—"}</div>
+              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{nccStats.topDriver?`${nccStats.topDriver._filtTotal} defects · ${nccStats.topDriver.stations.join("/")}`:"—"}</div>
             </div>
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"20px",marginBottom:20}}>
-            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 14px",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>{t("nccByStationWeekly")}</h3>
+            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 14px",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>{t("nccByStationWeekly")}</h3>
             <ResponsiveContainer width="100%" height={isMobile?180:220}>
               <BarChart data={nccTrendData} barSize={12}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb"/>
-                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:8,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}}/>
-                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}}/>
+                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:8,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}}/>
+                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}}/>
                 <Tooltip content={<ChartTooltip/>}/>
                 {selectedDepots.map(stn=><Bar key={stn} dataKey={stn} stackId="a" fill={DEPOT_COLORS[stn]} name={stn}/>)}
               </BarChart>
             </ResponsiveContainer>
           </div>
           <div style={{display:"flex",gap:12,alignItems:"center",marginBottom:14,flexWrap:"wrap"}}>
-            <span style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase"}}>{t("minDefects")}</span>
-            {[1,3,5,10].map(n=>(<button key={n} onClick={()=>setNccMinDefects(n)} style={{background:nccMinDefects===n?"#e5e7eb":"transparent",border:nccMinDefects===n?"1px solid #9ca3af":"1px solid #e5e7eb",color:nccMinDefects===n?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:10,fontWeight:600,fontFamily:"'DM Mono',monospace"}}>{n}+</button>))}
-            <span style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{nccFiltered.length} {t("driversShown")} · {defectWeeksFiltered.length} {t("weeksShown")} · {selectedDepots.join(", ")}</span>
+            <span style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase"}}>{t("minDefects")}</span>
+            {[1,3,5,10].map(n=>(<button key={n} onClick={()=>setNccMinDefects(n)} style={{background:nccMinDefects===n?"#e5e7eb":"transparent",border:nccMinDefects===n?"1px solid #9ca3af":"1px solid #e5e7eb",color:nccMinDefects===n?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:10,fontWeight:600,fontFamily:"Arial, Helvetica, sans-serif"}}>{n}+</button>))}
+            <span style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{nccFiltered.length} {t("driversShown")} · {defectWeeksFiltered.length} {t("weeksShown")} · {selectedDepots.join(", ")}</span>
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"16px",overflowX:"auto"}}>
             <table style={{width:"100%",borderCollapse:"separate",borderSpacing:"2px 3px",minWidth:900}}>
               <thead><tr>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:30}}>#</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",minWidth:160}}>{t("driver")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:50}}>{t("city")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:60}}>{t("station")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#ea580c",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:45}}>{t("total")}</th>
-                {defectWeeksFiltered.map(wk=><th key={wk} style={{padding:"4px 3px",fontSize:7,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",whiteSpace:"nowrap"}}>{wk.replace("2025-","").replace("2026-","")}<br/><span style={{fontSize:6,color:"#d1d5db"}}>{wk.startsWith("2025")?"'25":"'26"}</span></th>)}
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:30}}>#</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",minWidth:160}}>{t("driver")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:50}}>{t("city")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:60}}>{t("station")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#ea580c",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:45}}>{t("total")}</th>
+                {defectWeeksFiltered.map(wk=><th key={wk} style={{padding:"4px 3px",fontSize:7,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",whiteSpace:"nowrap"}}>{wk.replace("2025-","").replace("2026-","")}<br/><span style={{fontSize:6,color:"#d1d5db"}}>{wk.startsWith("2025")?"'25":"'26"}</span></th>)}
               </tr></thead>
               <tbody>{nccFiltered.map((d,i)=>{const isTop5=i<5;return(<tr key={i} style={{background:isTop5?"#fef2f208":"transparent"}}>
-                <td style={{padding:"5px 6px",fontSize:10,fontWeight:700,color:isTop5?"#b91c1c":"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{i+1}</td>
-                <td style={{padding:"5px 6px",fontSize:11,fontWeight:isTop5?700:500,color:isTop5?"#b91c1c":"#111827",fontFamily:"'DM Mono',monospace",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:180}}>{d.name.startsWith("ID:")?<span style={{color:"#6b7280",fontStyle:"italic"}}>{d.name}</span>:d.name}</td>
-                <td style={{padding:"5px 6px",fontSize:9,color:"#6b7280",textAlign:"center",fontFamily:"'DM Mono',monospace"}}>{d.loc}</td>
-                <td style={{padding:"5px 6px",textAlign:"center"}}>{d.stations.map(s=><span key={s} style={{display:"inline-block",fontSize:8,fontWeight:700,color:DEPOT_COLORS[s],background:`${DEPOT_COLORS[s]}15`,padding:"1px 5px",borderRadius:3,margin:"0 1px",fontFamily:"'DM Mono',monospace"}}>{s}</span>)}</td>
-                <td style={{padding:"5px 6px",textAlign:"center",fontSize:13,fontWeight:800,color:d._filtTotal>=20?"#dc2626":d._filtTotal>=10?"#ea580c":"#d97706",fontFamily:"'Outfit',sans-serif",background:d._filtTotal>=20?"#dc262618":d._filtTotal>=10?"#ea580c12":"transparent",borderRadius:4}}>{d._filtTotal}</td>
+                <td style={{padding:"5px 6px",fontSize:10,fontWeight:700,color:isTop5?"#b91c1c":"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{i+1}</td>
+                <td style={{padding:"5px 6px",fontSize:11,fontWeight:isTop5?700:500,color:isTop5?"#b91c1c":"#111827",fontFamily:"Arial, Helvetica, sans-serif",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:180}}>{d.name.startsWith("ID:")?<span style={{color:"#6b7280",fontStyle:"italic"}}>{d.name}</span>:d.name}</td>
+                <td style={{padding:"5px 6px",fontSize:9,color:"#6b7280",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif"}}>{d.loc}</td>
+                <td style={{padding:"5px 6px",textAlign:"center"}}>{d.stations.map(s=><span key={s} style={{display:"inline-block",fontSize:8,fontWeight:700,color:DEPOT_COLORS[s],background:`${DEPOT_COLORS[s]}15`,padding:"1px 5px",borderRadius:3,margin:"0 1px",fontFamily:"Arial, Helvetica, sans-serif"}}>{s}</span>)}</td>
+                <td style={{padding:"5px 6px",textAlign:"center",fontSize:13,fontWeight:800,color:d._filtTotal>=20?"#dc2626":d._filtTotal>=10?"#ea580c":"#d97706",fontFamily:"Arial, Helvetica, sans-serif",background:d._filtTotal>=20?"#dc262618":d._filtTotal>=10?"#ea580c12":"transparent",borderRadius:4}}>{d._filtTotal}</td>
                 {defectWeeksFiltered.map(wk=><NCCCell key={wk} val={d.w[wk]}/>)}
               </tr>);})}</tbody>
             </table>
@@ -2140,38 +2140,38 @@ function DashboardInner() {
         {selectedView==="late"&&(<>
           <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(4,1fr)",gap:12,marginBottom:20}}>
             <div style={{background:"linear-gradient(135deg,#eef2ff,#312e81)",border:"1px solid #4f46e530",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#4338ca",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("totalLateDefects")}</div>
-              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#4338ca",fontFamily:"'Outfit',sans-serif"}}>{lateStats.totalDefects.toLocaleString()}</div>
-              <div style={{fontSize:9,color:"#4f46e5",fontFamily:"'DM Mono',monospace"}}>{lateStats.wkRange} · {t("opsControllable")}</div>
+              <div style={{fontSize:8,color:"#4338ca",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("totalLateDefects")}</div>
+              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#4338ca",fontFamily:"Arial, Helvetica, sans-serif"}}>{lateStats.totalDefects.toLocaleString()}</div>
+              <div style={{fontSize:9,color:"#4f46e5",fontFamily:"Arial, Helvetica, sans-serif"}}>{lateStats.wkRange} · {t("opsControllable")}</div>
             </div>
             <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("latePlus15min")}</div>
-              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#dc2626",fontFamily:"'Outfit',sans-serif"}}>{lateStats.gt15Total.toLocaleString()}</div>
-              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{lateStats.gt15Pct}% {t("ofTotal")} · {t("severeDefects")}</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("latePlus15min")}</div>
+              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#dc2626",fontFamily:"Arial, Helvetica, sans-serif"}}>{lateStats.gt15Total.toLocaleString()}</div>
+              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{lateStats.gt15Pct}% {t("ofTotal")} · {t("severeDefects")}</div>
             </div>
             <div style={{background:"#ffffff",border:"1px solid #2563eb20",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("worstStation")}</div>
-              <div style={{fontSize:isMobile?22:28,fontWeight:800,color:DEPOT_COLORS[lateStats.worstStn]||"#2563eb",fontFamily:"'Outfit',sans-serif"}}>{lateStats.worstStn}</div>
-              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{lateStats.worstVal.toLocaleString()} {t("defects")} ({lateStats.worstPct}%)</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("worstStation")}</div>
+              <div style={{fontSize:isMobile?22:28,fontWeight:800,color:DEPOT_COLORS[lateStats.worstStn]||"#2563eb",fontFamily:"Arial, Helvetica, sans-serif"}}>{lateStats.worstStn}</div>
+              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{lateStats.worstVal.toLocaleString()} {t("defects")} ({lateStats.worstPct}%)</div>
             </div>
             <div style={{background:"#ffffff",border:"1px solid #dc262620",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("uniqueDrivers")}</div>
-              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#111827",fontFamily:"'Outfit',sans-serif"}}>{lateStats.driverCount}</div>
-              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{t("across")} {selectedDepots.length} {selectedDepots.length!==1?t("stations"):t("station")}</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("uniqueDrivers")}</div>
+              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#111827",fontFamily:"Arial, Helvetica, sans-serif"}}>{lateStats.driverCount}</div>
+              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("across")} {selectedDepots.length} {selectedDepots.length!==1?t("stations"):t("station")}</div>
             </div>
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"20px",marginBottom:20}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,flexDirection:isMobile?"column":"row",gap:isMobile?8:0}}>
-              <h3 style={{fontSize:isMobile?10:11,fontWeight:700,color:"#6b7280",margin:0,fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>{t("lateByStationWeekly")}</h3>
+              <h3 style={{fontSize:isMobile?10:11,fontWeight:700,color:"#6b7280",margin:0,fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>{t("lateByStationWeekly")}</h3>
               <div style={{display:"flex",gap:6}}>
-                {["combined","gt15only"].map(m=>(<button key={m} onClick={()=>setLateViewMode(m)} style={{background:lateViewMode===m?"#e5e7eb":"transparent",border:lateViewMode===m?"1px solid #9ca3af":"1px solid #e5e7eb",color:lateViewMode===m?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:9,fontWeight:600,fontFamily:"'DM Mono',monospace"}}>{m==="combined"?t("allLate"):t("latePlus15Only")}</button>))}
+                {["combined","gt15only"].map(m=>(<button key={m} onClick={()=>setLateViewMode(m)} style={{background:lateViewMode===m?"#e5e7eb":"transparent",border:lateViewMode===m?"1px solid #9ca3af":"1px solid #e5e7eb",color:lateViewMode===m?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:9,fontWeight:600,fontFamily:"Arial, Helvetica, sans-serif"}}>{m==="combined"?t("allLate"):t("latePlus15Only")}</button>))}
               </div>
             </div>
             <ResponsiveContainer width="100%" height={isMobile?200:240}>
               <BarChart data={lateTrendData} barSize={lateViewMode==="gt15only"?(isMobile?10:14):(isMobile?7:10)}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb"/>
-                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:8,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}}/>
-                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}}/>
+                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:8,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}}/>
+                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}}/>
                 <Tooltip content={<ChartTooltip/>}/>
                 {lateViewMode==="combined"
                   ? selectedDepots.map(stn=><Bar key={stn} dataKey={stn} stackId="a" fill={DEPOT_COLORS[stn]} name={stn}/>)
@@ -2180,40 +2180,40 @@ function DashboardInner() {
               </BarChart>
             </ResponsiveContainer>
             <div style={{display:"flex",gap:12,justifyContent:"center",marginTop:8}}>
-              {selectedDepots.map(stn=><div key={stn} style={{display:"flex",alignItems:"center",gap:4,fontSize:9,color:DEPOT_COLORS[stn],fontFamily:"'DM Mono',monospace"}}><div style={{width:10,height:4,borderRadius:2,background:DEPOT_COLORS[stn]}}/>{stn}</div>)}
+              {selectedDepots.map(stn=><div key={stn} style={{display:"flex",alignItems:"center",gap:4,fontSize:9,color:DEPOT_COLORS[stn],fontFamily:"Arial, Helvetica, sans-serif"}}><div style={{width:10,height:4,borderRadius:2,background:DEPOT_COLORS[stn]}}/>{stn}</div>)}
             </div>
           </div>
           <div style={{display:"flex",gap:12,alignItems:"center",marginBottom:14,flexWrap:"wrap"}}>
-            <span style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase"}}>{t("minDefects")}</span>
-            {[1,5,10,20].map(n=>(<button key={n} onClick={()=>setLateMinDefects(n)} style={{background:lateMinDefects===n?"#e5e7eb":"transparent",border:lateMinDefects===n?"1px solid #9ca3af":"1px solid #e5e7eb",color:lateMinDefects===n?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:10,fontWeight:600,fontFamily:"'DM Mono',monospace"}}>{n}+</button>))}
-            <span style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{lateFiltered.length} {t("driversShown")} · {defectWeeksFiltered.length} {t("weeksShown")} · {selectedDepots.join(", ")}</span>
+            <span style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase"}}>{t("minDefects")}</span>
+            {[1,5,10,20].map(n=>(<button key={n} onClick={()=>setLateMinDefects(n)} style={{background:lateMinDefects===n?"#e5e7eb":"transparent",border:lateMinDefects===n?"1px solid #9ca3af":"1px solid #e5e7eb",color:lateMinDefects===n?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:10,fontWeight:600,fontFamily:"Arial, Helvetica, sans-serif"}}>{n}+</button>))}
+            <span style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{lateFiltered.length} {t("driversShown")} · {defectWeeksFiltered.length} {t("weeksShown")} · {selectedDepots.join(", ")}</span>
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"16px",overflowX:"auto"}}>
             <table style={{width:"100%",borderCollapse:"separate",borderSpacing:"2px 3px",minWidth:1000}}>
               <thead><tr>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:30}}>#</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",minWidth:130}}>{t("driver")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:60}}>{t("station")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#4338ca",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:50}}>{t("total")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#b91c1c",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:40}}>+15</th>
-                <th style={{padding:"6px",fontSize:8,color:"#4f46e5",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:35}}>%</th>
-                {defectWeeksFiltered.map(wk=><th key={wk} style={{padding:"4px 3px",fontSize:7,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",whiteSpace:"nowrap"}}>{wk.replace("2025-","").replace("2026-","")}<br/><span style={{fontSize:6,color:"#d1d5db"}}>{wk.startsWith("2025")?"'25":"'26"}</span></th>)}
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:30}}>#</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",minWidth:130}}>{t("driver")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:60}}>{t("station")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#4338ca",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:50}}>{t("total")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#b91c1c",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:40}}>+15</th>
+                <th style={{padding:"6px",fontSize:8,color:"#4f46e5",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:35}}>%</th>
+                {defectWeeksFiltered.map(wk=><th key={wk} style={{padding:"4px 3px",fontSize:7,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",whiteSpace:"nowrap"}}>{wk.replace("2025-","").replace("2026-","")}<br/><span style={{fontSize:6,color:"#d1d5db"}}>{wk.startsWith("2025")?"'25":"'26"}</span></th>)}
               </tr></thead>
               <tbody>{lateFiltered.map((d,i)=>{const isTop5=i<5;const gt15Pct=d._filtTotal>0?Math.round((d._filtGt15/d._filtTotal)*100):0;return(<tr key={i} style={{background:isTop5?"#eef2ff08":"transparent"}}>
-                <td style={{padding:"5px 6px",fontSize:10,fontWeight:700,color:isTop5?"#4338ca":"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{i+1}</td>
-                <td style={{padding:"5px 6px",fontSize:10,fontWeight:isTop5?700:500,color:isTop5?"#4338ca":"#111827",fontFamily:"'DM Mono',monospace",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:160}}>{(()=>{const nm=resolveName(d.tid);const isId=nm===d.tid;return isId?<span style={{color:"#6b7280",fontStyle:"italic",fontSize:9}}>{nm.slice(0,14)}</span>:nm;})()}</td>
-                <td style={{padding:"5px 6px",textAlign:"center"}}>{d.s.map(s=><span key={s} style={{display:"inline-block",fontSize:8,fontWeight:700,color:DEPOT_COLORS[s],background:`${DEPOT_COLORS[s]}15`,padding:"1px 5px",borderRadius:3,margin:"0 1px",fontFamily:"'DM Mono',monospace"}}>{s}</span>)}</td>
-                <td style={{padding:"5px 6px",textAlign:"center",fontSize:13,fontWeight:800,color:d._filtTotal>=40?"#dc2626":d._filtTotal>=25?"#ea580c":"#4338ca",fontFamily:"'Outfit',sans-serif",background:d._filtTotal>=40?"#dc262618":d._filtTotal>=25?"#ea580c12":"transparent",borderRadius:4}}>{d._filtTotal}</td>
-                <td style={{padding:"5px 6px",textAlign:"center",fontSize:11,fontWeight:700,color:d._filtGt15>=15?"#b91c1c":"#4b5563",fontFamily:"'DM Mono',monospace"}}>{d._filtGt15}</td>
-                <td style={{padding:"5px 6px",textAlign:"center",fontSize:10,fontWeight:600,color:gt15Pct>=45?"#b91c1c":"#4f46e5",fontFamily:"'DM Mono',monospace"}}>{gt15Pct}%</td>
+                <td style={{padding:"5px 6px",fontSize:10,fontWeight:700,color:isTop5?"#4338ca":"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{i+1}</td>
+                <td style={{padding:"5px 6px",fontSize:10,fontWeight:isTop5?700:500,color:isTop5?"#4338ca":"#111827",fontFamily:"Arial, Helvetica, sans-serif",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:160}}>{(()=>{const nm=resolveName(d.tid);const isId=nm===d.tid;return isId?<span style={{color:"#6b7280",fontStyle:"italic",fontSize:9}}>{nm.slice(0,14)}</span>:nm;})()}</td>
+                <td style={{padding:"5px 6px",textAlign:"center"}}>{d.s.map(s=><span key={s} style={{display:"inline-block",fontSize:8,fontWeight:700,color:DEPOT_COLORS[s],background:`${DEPOT_COLORS[s]}15`,padding:"1px 5px",borderRadius:3,margin:"0 1px",fontFamily:"Arial, Helvetica, sans-serif"}}>{s}</span>)}</td>
+                <td style={{padding:"5px 6px",textAlign:"center",fontSize:13,fontWeight:800,color:d._filtTotal>=40?"#dc2626":d._filtTotal>=25?"#ea580c":"#4338ca",fontFamily:"Arial, Helvetica, sans-serif",background:d._filtTotal>=40?"#dc262618":d._filtTotal>=25?"#ea580c12":"transparent",borderRadius:4}}>{d._filtTotal}</td>
+                <td style={{padding:"5px 6px",textAlign:"center",fontSize:11,fontWeight:700,color:d._filtGt15>=15?"#b91c1c":"#4b5563",fontFamily:"Arial, Helvetica, sans-serif"}}>{d._filtGt15}</td>
+                <td style={{padding:"5px 6px",textAlign:"center",fontSize:10,fontWeight:600,color:gt15Pct>=45?"#b91c1c":"#4f46e5",fontFamily:"Arial, Helvetica, sans-serif"}}>{gt15Pct}%</td>
                 {defectWeeksFiltered.map(wk=><LateCell key={wk} val={d.w[wk]||0}/>)}
               </tr>);})}</tbody>
             </table>
           </div>
           <div style={{marginTop:14,padding:"12px 16px",background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:8,display:"flex",gap:20,flexWrap:"wrap"}}>
-            <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}><span style={{color:"#4338ca",fontWeight:700}}>{t("keyInsight")}:</span> W50/25 was catastrophic — 442 late deliveries network-wide (409 UIT4). W2/26 repeated the pattern with 287.</div>
-            <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}><span style={{color:"#dc2626",fontWeight:700}}>{t("gt15Rate")}:</span> 30% of lates are &gt;15min — UIT4 has 403/527 of all severe lates.</div>
-            <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}><span style={{color:"#4f46e5",fontWeight:700}}>{t("attribution")}:</span> 100% classified as "Late Batch Ops Controllable" — these are DSP-owned.</div>
+            <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}><span style={{color:"#4338ca",fontWeight:700}}>{t("keyInsight")}:</span> W50/25 was catastrophic — 442 late deliveries network-wide (409 UIT4). W2/26 repeated the pattern with 287.</div>
+            <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}><span style={{color:"#dc2626",fontWeight:700}}>{t("gt15Rate")}:</span> 30% of lates are &gt;15min — UIT4 has 403/527 of all severe lates.</div>
+            <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}><span style={{color:"#4f46e5",fontWeight:700}}>{t("attribution")}:</span> 100% classified as "Late Batch Ops Controllable" — these are DSP-owned.</div>
           </div>
         </>)}
 
@@ -2221,55 +2221,55 @@ function DashboardInner() {
         {selectedView==="scorecard"&&(<>
           <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(4,1fr)",gap:12,marginBottom:20}}>
             <div style={{background:"linear-gradient(135deg,#f0fdf4,#f0fdf4)",border:"1px solid #16a34a30",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#15803d",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("combinedDefects")}</div>
-              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#15803d",fontFamily:"'Outfit',sans-serif"}}>{scStats.combined.toLocaleString()}</div>
-              <div style={{fontSize:9,color:"#16a34a",fontFamily:"'DM Mono',monospace"}}>{t("ncc")} + {t("late")} · {selectedDepots.join(", ")}</div>
+              <div style={{fontSize:8,color:"#15803d",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("combinedDefects")}</div>
+              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#15803d",fontFamily:"Arial, Helvetica, sans-serif"}}>{scStats.combined.toLocaleString()}</div>
+              <div style={{fontSize:9,color:"#16a34a",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("ncc")} + {t("late")} · {selectedDepots.join(", ")}</div>
             </div>
             <div style={{background:"#ffffff",border:"1px solid #ea580c20",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("nccDefects")}</div>
-              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#ea580c",fontFamily:"'Outfit',sans-serif"}}>{scStats.nccSum.toLocaleString()}</div>
-              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{t("notCallCompliant")}</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("nccDefects")}</div>
+              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#ea580c",fontFamily:"Arial, Helvetica, sans-serif"}}>{scStats.nccSum.toLocaleString()}</div>
+              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("notCallCompliant")}</div>
             </div>
             <div style={{background:"#ffffff",border:"1px solid #4f46e520",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("lateDefects")}</div>
-              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#4338ca",fontFamily:"'Outfit',sans-serif"}}>{scStats.lateSum.toLocaleString()}</div>
-              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{scStats.gt15Sum} {t("severe15min")}</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("lateDefects")}</div>
+              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#4338ca",fontFamily:"Arial, Helvetica, sans-serif"}}>{scStats.lateSum.toLocaleString()}</div>
+              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{scStats.gt15Sum} {t("severe15min")}</div>
             </div>
             <div style={{background:"#ffffff",border:"1px solid #dc262620",borderRadius:10,padding:isMobile?"14px":"18px",textAlign:"center"}}>
-              <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("dualOffenders")}</div>
-              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#b91c1c",fontFamily:"'Outfit',sans-serif"}}>{scStats.dual}</div>
-              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{t("driversWithBoth")}</div>
+              <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>{t("dualOffenders")}</div>
+              <div style={{fontSize:isMobile?28:36,fontWeight:800,color:"#b91c1c",fontFamily:"Arial, Helvetica, sans-serif"}}>{scStats.dual}</div>
+              <div style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("driversWithBoth")}</div>
             </div>
           </div>
           <div style={{display:"flex",gap:12,alignItems:"center",marginBottom:14,flexWrap:"wrap"}}>
-            <span style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase"}}>{t("minCombined")}</span>
-            {[1,5,10,20,40].map(n=>(<button key={n} onClick={()=>setScorecardMinTotal(n)} style={{background:scorecardMinTotal===n?"#e5e7eb":"transparent",border:scorecardMinTotal===n?"1px solid #9ca3af":"1px solid #e5e7eb",color:scorecardMinTotal===n?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:10,fontWeight:600,fontFamily:"'DM Mono',monospace"}}>{n}+</button>))}
-            <span style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{scorecardFiltered.length} {t("driversShown")} · {selectedDepots.join(", ")}</span>
+            <span style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase"}}>{t("minCombined")}</span>
+            {[1,5,10,20,40].map(n=>(<button key={n} onClick={()=>setScorecardMinTotal(n)} style={{background:scorecardMinTotal===n?"#e5e7eb":"transparent",border:scorecardMinTotal===n?"1px solid #9ca3af":"1px solid #e5e7eb",color:scorecardMinTotal===n?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:10,fontWeight:600,fontFamily:"Arial, Helvetica, sans-serif"}}>{n}+</button>))}
+            <span style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{scorecardFiltered.length} {t("driversShown")} · {selectedDepots.join(", ")}</span>
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"16px",overflowX:"auto"}}>
             <table style={{width:"100%",borderCollapse:"separate",borderSpacing:"2px 3px",minWidth:800}}>
               <thead><tr>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:30}}>#</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",minWidth:160}}>Driver</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:50}}>City</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:60}}>Station</th>
-                <th style={{padding:"6px",fontSize:8,color:"#ea580c",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:45}}>{t("ncc")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#4338ca",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:45}}>{t("late")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#b91c1c",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:40}}>+15</th>
-                <th style={{padding:"6px",fontSize:8,color:"#16a34a",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:55}}>{t("combinedDefects")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:60}}>{t("severity")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",minWidth:120}}>{t("defectMix")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:30}}>#</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",minWidth:160}}>Driver</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:50}}>City</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:60}}>Station</th>
+                <th style={{padding:"6px",fontSize:8,color:"#ea580c",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:45}}>{t("ncc")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#4338ca",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:45}}>{t("late")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#b91c1c",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:40}}>+15</th>
+                <th style={{padding:"6px",fontSize:8,color:"#16a34a",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",fontWeight:800,width:55}}>{t("combinedDefects")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:60}}>{t("severity")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",minWidth:120}}>{t("defectMix")}</th>
               </tr></thead>
               <tbody>{scorecardFiltered.map((d,i)=>{const isTop5=i<5;const nccPct=d.combined>0?Math.round((d.ncc/d.combined)*100):0;const latePct=100-nccPct;const sevColors={CRITICAL:{bg:"#fef2f2",text:"#b91c1c",border:"#dc2626"},HIGH:{bg:"#fffbeb",text:"#b45309",border:"#d97706"},MEDIUM:{bg:"#172554",text:"#1d4ed8",border:"#2563eb"},LOW:{bg:"#ffffff",text:"#6b7280",border:"#e5e7eb"}};const sc=sevColors[d.severity];return(<tr key={i} style={{background:isTop5?"#f0fdf408":"transparent"}}>
-                <td style={{padding:"5px 6px",fontSize:10,fontWeight:700,color:isTop5?"#15803d":"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{i+1}</td>
-                <td style={{padding:"5px 6px",fontSize:11,fontWeight:isTop5?700:500,color:isTop5?"#15803d":"#111827",fontFamily:"'DM Mono',monospace",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:180}}>{d.name.startsWith("ID:")||d.name.startsWith("A")?<span style={{color:"#6b7280",fontStyle:"italic",fontSize:9}}>{d.name.slice(0,16)}</span>:d.name}</td>
-                <td style={{padding:"5px 6px",fontSize:9,color:"#6b7280",textAlign:"center",fontFamily:"'DM Mono',monospace"}}>{d.loc}</td>
-                <td style={{padding:"5px 6px",textAlign:"center"}}>{d.stations.map(s=><span key={s} style={{display:"inline-block",fontSize:8,fontWeight:700,color:DEPOT_COLORS[s],background:`${DEPOT_COLORS[s]}15`,padding:"1px 5px",borderRadius:3,margin:"0 1px",fontFamily:"'DM Mono',monospace"}}>{s}</span>)}</td>
-                <td style={{padding:"5px 6px",textAlign:"center",fontSize:12,fontWeight:700,color:d.ncc>0?"#ea580c":"#e5e7eb",fontFamily:"'DM Mono',monospace",background:d.ncc>=15?"#ea580c12":"transparent",borderRadius:3}}>{d.ncc||"·"}</td>
-                <td style={{padding:"5px 6px",textAlign:"center",fontSize:12,fontWeight:700,color:d.late>0?"#4338ca":"#e5e7eb",fontFamily:"'DM Mono',monospace",background:d.late>=20?"#4f46e512":"transparent",borderRadius:3}}>{d.late||"·"}</td>
-                <td style={{padding:"5px 6px",textAlign:"center",fontSize:11,fontWeight:700,color:d.gt15>0?"#b91c1c":"#e5e7eb",fontFamily:"'DM Mono',monospace"}}>{d.gt15||"·"}</td>
-                <td style={{padding:"5px 6px",textAlign:"center",fontSize:14,fontWeight:800,color:d.combined>=50?"#dc2626":d.combined>=30?"#ea580c":"#15803d",fontFamily:"'Outfit',sans-serif",background:d.combined>=50?"#dc262618":d.combined>=30?"#ea580c12":"#16a34a08",borderRadius:4}}>{d.combined}</td>
-                <td style={{padding:"5px 6px",textAlign:"center"}}><span style={{fontSize:8,fontWeight:700,color:sc.text,background:`${sc.border}18`,padding:"2px 8px",borderRadius:4,fontFamily:"'DM Mono',monospace",letterSpacing:0.5}}>{d.severity}</span></td>
+                <td style={{padding:"5px 6px",fontSize:10,fontWeight:700,color:isTop5?"#15803d":"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{i+1}</td>
+                <td style={{padding:"5px 6px",fontSize:11,fontWeight:isTop5?700:500,color:isTop5?"#15803d":"#111827",fontFamily:"Arial, Helvetica, sans-serif",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",maxWidth:180}}>{d.name.startsWith("ID:")||d.name.startsWith("A")?<span style={{color:"#6b7280",fontStyle:"italic",fontSize:9}}>{d.name.slice(0,16)}</span>:d.name}</td>
+                <td style={{padding:"5px 6px",fontSize:9,color:"#6b7280",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif"}}>{d.loc}</td>
+                <td style={{padding:"5px 6px",textAlign:"center"}}>{d.stations.map(s=><span key={s} style={{display:"inline-block",fontSize:8,fontWeight:700,color:DEPOT_COLORS[s],background:`${DEPOT_COLORS[s]}15`,padding:"1px 5px",borderRadius:3,margin:"0 1px",fontFamily:"Arial, Helvetica, sans-serif"}}>{s}</span>)}</td>
+                <td style={{padding:"5px 6px",textAlign:"center",fontSize:12,fontWeight:700,color:d.ncc>0?"#ea580c":"#e5e7eb",fontFamily:"Arial, Helvetica, sans-serif",background:d.ncc>=15?"#ea580c12":"transparent",borderRadius:3}}>{d.ncc||"·"}</td>
+                <td style={{padding:"5px 6px",textAlign:"center",fontSize:12,fontWeight:700,color:d.late>0?"#4338ca":"#e5e7eb",fontFamily:"Arial, Helvetica, sans-serif",background:d.late>=20?"#4f46e512":"transparent",borderRadius:3}}>{d.late||"·"}</td>
+                <td style={{padding:"5px 6px",textAlign:"center",fontSize:11,fontWeight:700,color:d.gt15>0?"#b91c1c":"#e5e7eb",fontFamily:"Arial, Helvetica, sans-serif"}}>{d.gt15||"·"}</td>
+                <td style={{padding:"5px 6px",textAlign:"center",fontSize:14,fontWeight:800,color:d.combined>=50?"#dc2626":d.combined>=30?"#ea580c":"#15803d",fontFamily:"Arial, Helvetica, sans-serif",background:d.combined>=50?"#dc262618":d.combined>=30?"#ea580c12":"#16a34a08",borderRadius:4}}>{d.combined}</td>
+                <td style={{padding:"5px 6px",textAlign:"center"}}><span style={{fontSize:8,fontWeight:700,color:sc.text,background:`${sc.border}18`,padding:"2px 8px",borderRadius:4,fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:0.5}}>{d.severity}</span></td>
                 <td style={{padding:"5px 6px"}}><div style={{display:"flex",height:10,borderRadius:3,overflow:"hidden",background:"#e5e7eb",minWidth:80}}>
                   {d.ncc>0&&<div style={{width:`${nccPct}%`,background:"#ea580c",minWidth:d.ncc>0?2:0}} title={`NCC: ${d.ncc}`}/>}
                   {d.late>0&&<div style={{width:`${Math.round((d.late/d.combined)*100)}%`,background:"#4f46e5",minWidth:d.late>0?2:0}} title={`Late: ${d.late}`}/>}
@@ -2279,11 +2279,11 @@ function DashboardInner() {
             </table>
           </div>
           <div style={{marginTop:14,padding:"12px 16px",background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:8,display:"flex",gap:16,flexWrap:"wrap",alignItems:"center"}}>
-            <div style={{display:"flex",alignItems:"center",gap:6,fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}><div style={{width:12,height:6,borderRadius:2,background:"#ea580c"}}/>{t("ncc")}</div>
-            <div style={{display:"flex",alignItems:"center",gap:6,fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}><div style={{width:12,height:6,borderRadius:2,background:"#4f46e5"}}/>{t("late")}</div>
-            <div style={{display:"flex",alignItems:"center",gap:6,fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}><div style={{width:12,height:6,borderRadius:2,background:"#dc2626"}}/>{t("latePlus15Label")}</div>
+            <div style={{display:"flex",alignItems:"center",gap:6,fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}><div style={{width:12,height:6,borderRadius:2,background:"#ea580c"}}/>{t("ncc")}</div>
+            <div style={{display:"flex",alignItems:"center",gap:6,fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}><div style={{width:12,height:6,borderRadius:2,background:"#4f46e5"}}/>{t("late")}</div>
+            <div style={{display:"flex",alignItems:"center",gap:6,fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}><div style={{width:12,height:6,borderRadius:2,background:"#dc2626"}}/>{t("latePlus15Label")}</div>
             <div style={{width:1,height:16,background:"#e5e7eb"}}/>
-            <span style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{t("severityLegend")}</span>
+            <span style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("severityLegend")}</span>
           </div>
         </>)}
 
@@ -2302,7 +2302,7 @@ function DashboardInner() {
           const maxDrv = drvItems.length>0?Math.max(...drvItems.map(d=>d.count)):1;
 
           const ColHeader = ({label})=>(
-            <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:14,paddingBottom:8,borderBottom:"1px solid #e5e7eb",display:"flex",alignItems:"center",gap:6}}>
+            <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:14,paddingBottom:8,borderBottom:"1px solid #e5e7eb",display:"flex",alignItems:"center",gap:6}}>
               <div style={{width:4,height:4,borderRadius:"50%",background:TEAL}}/>
               {label}
             </div>
@@ -2325,22 +2325,22 @@ function DashboardInner() {
               {label:"Defect Rate",val:`${fd.pctDef}%`,color:"#b91c1c",sub:"orders with defects"},
             ].map((kpi,i)=>(
               <div key={i} style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:8,padding:"12px 16px"}}>
-                <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{kpi.label}</div>
-                <div style={{fontSize:isMobile?22:28,fontWeight:800,color:kpi.color,fontFamily:"'Outfit',sans-serif",lineHeight:1}}>{kpi.val}</div>
-                <div style={{fontSize:9,color:"#d1d5db",fontFamily:"'DM Mono',monospace",marginTop:4}}>{kpi.sub}</div>
+                <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{kpi.label}</div>
+                <div style={{fontSize:isMobile?22:28,fontWeight:800,color:kpi.color,fontFamily:"Arial, Helvetica, sans-serif",lineHeight:1}}>{kpi.val}</div>
+                <div style={{fontSize:9,color:"#d1d5db",fontFamily:"Arial, Helvetica, sans-serif",marginTop:4}}>{kpi.sub}</div>
               </div>
             ))}
           </div>
 
-          {fd.weeks.length===0&&<div style={{padding:"14px 16px",marginBottom:14,background:"#fffbeb",border:"1px solid #d9770640",borderRadius:8,fontSize:10,color:"#b45309",fontFamily:"'DM Mono',monospace"}}>No order-level data for {effectiveFrom}–{effectiveTo} / {yearLabel}. Defect Flow covers {Object.keys(FLOW_WEEKS).length ? Object.keys(FLOW_WEEKS).sort()[0].replace("-"," ") + " → " + Object.keys(FLOW_WEEKS).sort().slice(-1)[0].replace("-"," ") : "no weeks"} — adjust the week filter.</div>}
+          {fd.weeks.length===0&&<div style={{padding:"14px 16px",marginBottom:14,background:"#fffbeb",border:"1px solid #d9770640",borderRadius:8,fontSize:10,color:"#b45309",fontFamily:"Arial, Helvetica, sans-serif"}}>No order-level data for {effectiveFrom}–{effectiveTo} / {yearLabel}. Defect Flow covers {Object.keys(FLOW_WEEKS).length ? Object.keys(FLOW_WEEKS).sort()[0].replace("-"," ") + " → " + Object.keys(FLOW_WEEKS).sort().slice(-1)[0].replace("-"," ") : "no weeks"} — adjust the week filter.</div>}
           {/* Breadcrumb + hint */}
           <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14,flexWrap:"wrap"}}>
-            <div style={{fontSize:9,color:"#d97706",fontFamily:"'DM Mono',monospace",fontWeight:700,background:"#d9770615",padding:"3px 10px",borderRadius:4,border:"1px solid #d9770630"}}>{fd.week}</div>
-            {flowDefect&&<><span style={{color:"#d1d5db",fontSize:12}}>›</span><div style={{fontSize:9,color:"#0f766e",fontFamily:"'DM Mono',monospace",background:"#0f766e15",padding:"3px 10px",borderRadius:4,border:"1px solid #0f766e30"}}>{fd.defectTypes.find(d=>d.key===flowDefect)?.label}</div></>}
-            {flowAttr&&<><span style={{color:"#d1d5db",fontSize:12}}>›</span><div style={{fontSize:9,color:"#0f766e",fontFamily:"'DM Mono',monospace",background:"#0f766e15",padding:"3px 10px",borderRadius:4,border:"1px solid #0f766e30"}}>{selAttrs.find(a=>a.key===flowAttr)?.label?.slice(0,24)}</div></>}
-            {flowSite&&<><span style={{color:"#d1d5db",fontSize:12}}>›</span><div style={{fontSize:9,color:DEPOT_COLORS[flowSite],fontFamily:"'DM Mono',monospace",background:`${DEPOT_COLORS[flowSite]}15`,padding:"3px 10px",borderRadius:4,border:`1px solid ${DEPOT_COLORS[flowSite]}30`}}>{flowSite}</div></>}
-            <div style={{marginLeft:8,fontSize:9,color:"#d1d5db",fontFamily:"'DM Mono',monospace"}}>{t("flowInstr")}</div>
-            {(flowDefect||flowAttr||flowSite)&&<button onClick={()=>{setFlowDefect(null);setFlowAttr(null);setFlowSite(null);}} style={{marginLeft:"auto",background:"transparent",border:"1px solid #e5e7eb",color:"#6b7280",borderRadius:4,padding:"3px 10px",cursor:"pointer",fontSize:9,fontFamily:"'DM Mono',monospace"}}>✕ Reset</button>}
+            <div style={{fontSize:9,color:"#d97706",fontFamily:"Arial, Helvetica, sans-serif",fontWeight:700,background:"#d9770615",padding:"3px 10px",borderRadius:4,border:"1px solid #d9770630"}}>{fd.week}</div>
+            {flowDefect&&<><span style={{color:"#d1d5db",fontSize:12}}>›</span><div style={{fontSize:9,color:"#0f766e",fontFamily:"Arial, Helvetica, sans-serif",background:"#0f766e15",padding:"3px 10px",borderRadius:4,border:"1px solid #0f766e30"}}>{fd.defectTypes.find(d=>d.key===flowDefect)?.label}</div></>}
+            {flowAttr&&<><span style={{color:"#d1d5db",fontSize:12}}>›</span><div style={{fontSize:9,color:"#0f766e",fontFamily:"Arial, Helvetica, sans-serif",background:"#0f766e15",padding:"3px 10px",borderRadius:4,border:"1px solid #0f766e30"}}>{selAttrs.find(a=>a.key===flowAttr)?.label?.slice(0,24)}</div></>}
+            {flowSite&&<><span style={{color:"#d1d5db",fontSize:12}}>›</span><div style={{fontSize:9,color:DEPOT_COLORS[flowSite],fontFamily:"Arial, Helvetica, sans-serif",background:`${DEPOT_COLORS[flowSite]}15`,padding:"3px 10px",borderRadius:4,border:`1px solid ${DEPOT_COLORS[flowSite]}30`}}>{flowSite}</div></>}
+            <div style={{marginLeft:8,fontSize:9,color:"#d1d5db",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("flowInstr")}</div>
+            {(flowDefect||flowAttr||flowSite)&&<button onClick={()=>{setFlowDefect(null);setFlowAttr(null);setFlowSite(null);}} style={{marginLeft:"auto",background:"transparent",border:"1px solid #e5e7eb",color:"#6b7280",borderRadius:4,padding:"3px 10px",cursor:"pointer",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}}>✕ Reset</button>}
           </div>
 
           {/* Main Flow Grid */}
@@ -2355,11 +2355,11 @@ function DashboardInner() {
                   return(
                     <div key={i} onClick={()=>{setFlowDefect(isSel?null:dt.key);setFlowAttr(null);setFlowSite(null);}} style={{cursor:"pointer",padding:"8px 10px",borderRadius:7,background:isSel?"#0f766e18":"transparent",border:`1px solid ${isSel?"#0f766e50":"transparent"}`,transition:"all 0.15s",marginRight:16}}>
                       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:2}}>
-                        <span style={{fontSize:12,fontWeight:isSel?700:400,color:isSel?"#0f766e":"#4b5563",fontFamily:"'DM Mono',monospace"}}>{dt.label}</span>
-                        <span style={{fontSize:10,color:isSel?"#0f766e":"#9ca3af",fontFamily:"'DM Mono',monospace",marginLeft:8}}>{dt.pct}%</span>
+                        <span style={{fontSize:12,fontWeight:isSel?700:400,color:isSel?"#0f766e":"#4b5563",fontFamily:"Arial, Helvetica, sans-serif"}}>{dt.label}</span>
+                        <span style={{fontSize:10,color:isSel?"#0f766e":"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif",marginLeft:8}}>{dt.pct}%</span>
                       </div>
                       <FlowBar count={dt.count} maxVal={maxDef} color={TEAL} selected={isSel}/>
-                      <div style={{fontSize:13,fontWeight:700,color:isSel?"#111827":"#6b7280",fontFamily:"'Outfit',sans-serif",marginTop:4}}>{dt.count}</div>
+                      <div style={{fontSize:13,fontWeight:700,color:isSel?"#111827":"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",marginTop:4}}>{dt.count}</div>
                     </div>
                   );
                 })}
@@ -2375,9 +2375,9 @@ function DashboardInner() {
                     const isSel=flowAttr===attr.key;
                     return(
                       <div key={i} onClick={()=>{setFlowAttr(isSel?null:attr.key);setFlowSite(null);}} style={{cursor:"pointer",padding:"8px 10px",borderRadius:7,background:isSel?"#0f766e18":"transparent",border:`1px solid ${isSel?"#0f766e50":"transparent"}`,transition:"all 0.15s",marginRight:16}}>
-                        <div style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontSize:11,fontWeight:isSel?700:400,color:isSel?"#0f766e":"#4b5563",fontFamily:"'DM Mono',monospace",marginBottom:2}}>{attr.label}</div>
+                        <div style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontSize:11,fontWeight:isSel?700:400,color:isSel?"#0f766e":"#4b5563",fontFamily:"Arial, Helvetica, sans-serif",marginBottom:2}}>{attr.label}</div>
                         <FlowBar count={attr.count} maxVal={maxAttrVal} color={TEAL} selected={isSel}/>
-                        <div style={{fontSize:13,fontWeight:700,color:isSel?"#111827":"#6b7280",fontFamily:"'Outfit',sans-serif",marginTop:4}}>{attr.count}</div>
+                        <div style={{fontSize:13,fontWeight:700,color:isSel?"#111827":"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",marginTop:4}}>{attr.count}</div>
                       </div>
                     );
                   })}
@@ -2386,7 +2386,7 @@ function DashboardInner() {
             ):(
               <div style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",padding:"40px",gap:12}}>
                 <div style={{fontSize:36,color:"#d1d5db"}}>→</div>
-                <div style={{fontSize:11,color:"#d1d5db",fontFamily:"'DM Mono',monospace",textAlign:"center",lineHeight:1.8}}>{t("flowSelectHint")}</div>
+                <div style={{fontSize:11,color:"#d1d5db",fontFamily:"Arial, Helvetica, sans-serif",textAlign:"center",lineHeight:1.8}}>{t("flowSelectHint")}</div>
               </div>
             )}
 
@@ -2400,11 +2400,11 @@ function DashboardInner() {
                     const dc=DEPOT_COLORS[site.name]||TEAL;
                     return(
                       <div key={i} onClick={()=>setFlowSite(isSel?null:site.name)} style={{cursor:"pointer",padding:"8px 10px",borderRadius:7,background:isSel?`${dc}18`:"transparent",border:`1px solid ${isSel?dc+"50":"transparent"}`,transition:"all 0.15s",marginRight:16}}>
-                        <div style={{fontSize:13,fontWeight:700,color:isSel?dc:"#4b5563",fontFamily:"'DM Mono',monospace",marginBottom:2}}>{site.name}</div>
+                        <div style={{fontSize:13,fontWeight:700,color:isSel?dc:"#4b5563",fontFamily:"Arial, Helvetica, sans-serif",marginBottom:2}}>{site.name}</div>
                         <div style={{height:5,background:"#ffffff",borderRadius:3,overflow:"hidden",marginTop:3}}>
                           <div style={{width:`${Math.max((site.count/maxSite)*100,2)}%`,height:"100%",background:isSel?dc:dc+"60",borderRadius:3,transition:"width 0.3s ease"}}/>
                         </div>
-                        <div style={{fontSize:13,fontWeight:700,color:isSel?"#111827":"#6b7280",fontFamily:"'Outfit',sans-serif",marginTop:4}}>{site.count}</div>
+                        <div style={{fontSize:13,fontWeight:700,color:isSel?"#111827":"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",marginTop:4}}>{site.count}</div>
                       </div>
                     );
                   })}
@@ -2420,16 +2420,16 @@ function DashboardInner() {
                   <div style={{display:"flex",flexDirection:"column",gap:6}}>
                     {drvItems.map((drv,i)=>(
                       <div key={i} style={{padding:"6px 10px",borderRadius:7}}>
-                        <div style={{fontSize:11,color:"#4b5563",fontFamily:"'DM Mono',monospace",marginBottom:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{drv.name}</div>
+                        <div style={{fontSize:11,color:"#4b5563",fontFamily:"Arial, Helvetica, sans-serif",marginBottom:2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{drv.name}</div>
                         <div style={{height:5,background:"#ffffff",borderRadius:3,overflow:"hidden",marginTop:3}}>
                           <div style={{width:`${Math.max((drv.count/maxDrv)*100,4)}%`,height:"100%",background:DEPOT_COLORS[flowSite]||TEAL,borderRadius:3}}/>
                         </div>
-                        <div style={{fontSize:13,fontWeight:700,color:"#6b7280",fontFamily:"'Outfit',sans-serif",marginTop:4}}>{drv.count}</div>
+                        <div style={{fontSize:13,fontWeight:700,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",marginTop:4}}>{drv.count}</div>
                       </div>
                     ))}
                   </div>
                 ):(
-                  <div style={{fontSize:10,color:"#d1d5db",fontFamily:"'DM Mono',monospace",marginTop:20}}>No driver data for this combination</div>
+                  <div style={{fontSize:10,color:"#d1d5db",fontFamily:"Arial, Helvetica, sans-serif",marginTop:20}}>No driver data for this combination</div>
                 )}
               </div>
             )}
@@ -2445,10 +2445,10 @@ function DashboardInner() {
             ].map((l,i)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:5}}>
                 <div style={{width:10,height:10,borderRadius:2,background:l.color}}/>
-                <span style={{fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{l.label}</span>
+                <span style={{fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{l.label}</span>
               </div>
             ))}
-            <div style={{marginLeft:"auto",fontSize:9,color:"#d1d5db",fontFamily:"'DM Mono',monospace"}}>Bars are proportional to max value within each column · Data: {fd.week}</div>
+            <div style={{marginLeft:"auto",fontSize:9,color:"#d1d5db",fontFamily:"Arial, Helvetica, sans-serif"}}>Bars are proportional to max value within each column · Data: {fd.week}</div>
           </div>
         </>);
         })()}
@@ -2486,9 +2486,9 @@ function DashboardInner() {
               {label:"Defect Types On",val:`${geoDefectFilter.length}/${defTypes.length}`,sub:"use filter panel →",color:PURPLE},
             ].map((kpi,i)=>(
               <div key={i} style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:8,padding:"12px 16px"}}>
-                <div style={{fontSize:8,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{kpi.label}</div>
-                <div style={{fontSize:isMobile?20:26,fontWeight:800,color:kpi.color,fontFamily:"'Outfit',sans-serif",lineHeight:1}}>{kpi.val}</div>
-                <div style={{fontSize:9,color:"#d1d5db",fontFamily:"'DM Mono',monospace",marginTop:4}}>{kpi.sub}</div>
+                <div style={{fontSize:8,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:4}}>{kpi.label}</div>
+                <div style={{fontSize:isMobile?20:26,fontWeight:800,color:kpi.color,fontFamily:"Arial, Helvetica, sans-serif",lineHeight:1}}>{kpi.val}</div>
+                <div style={{fontSize:9,color:"#d1d5db",fontFamily:"Arial, Helvetica, sans-serif",marginTop:4}}>{kpi.sub}</div>
               </div>
             ))}
           </div>
@@ -2503,9 +2503,9 @@ function DashboardInner() {
 
                 {/* REAL LEAFLET MAP */}
                 <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:16,position:"relative",minHeight:420,boxShadow:"0 1px 2px rgba(0,0,0,.04)"}}>
-                  <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                  <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                     <span>{t("geoMap")}</span>
-                    {geoSiteFilter&&<button onClick={()=>setGeoSiteFilter(null)} style={{background:"transparent",border:"1px solid #e5e7eb",color:"#6b7280",borderRadius:4,padding:"2px 8px",cursor:"pointer",fontSize:8,fontFamily:"'DM Mono',monospace"}}>✕ {geoSiteFilter}</button>}
+                    {geoSiteFilter&&<button onClick={()=>setGeoSiteFilter(null)} style={{background:"transparent",border:"1px solid #e5e7eb",color:"#6b7280",borderRadius:4,padding:"2px 8px",cursor:"pointer",fontSize:8,fontFamily:"Arial, Helvetica, sans-serif"}}>✕ {geoSiteFilter}</button>}
                   </div>
                   <div style={{height:360,borderRadius:8,overflow:"hidden"}}>
                     <LeafletMap
@@ -2525,8 +2525,8 @@ function DashboardInner() {
                       const cnt=geoDefectFilter.reduce((sum,dt)=>sum+(s.defects[dt]||0),0);
                       return(<div key={s.key} onClick={()=>setGeoSiteFilter(isSel?null:s.key)} style={{display:"flex",alignItems:"center",gap:5,cursor:"pointer",padding:"3px 8px",borderRadius:5,background:isSel?`${dc}20`:"transparent",border:`1px solid ${isSel?dc+"60":"#e5e7eb"}`}}>
                         <div style={{width:8,height:8,borderRadius:"50%",background:dc,opacity:isSel?1:0.5}}/>
-                        <span style={{fontSize:9,fontWeight:700,color:isSel?dc:"#6b7280",fontFamily:"'DM Mono',monospace"}}>{s.key}</span>
-                        <span style={{fontSize:9,color:"#d1d5db",fontFamily:"'DM Mono',monospace"}}>{cnt}</span>
+                        <span style={{fontSize:9,fontWeight:700,color:isSel?dc:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}>{s.key}</span>
+                        <span style={{fontSize:9,color:"#d1d5db",fontFamily:"Arial, Helvetica, sans-serif"}}>{cnt}</span>
                       </div>);
                     })}
                   </div>
@@ -2534,7 +2534,7 @@ function DashboardInner() {
 
                 {/* Bar chart: defects by type for selected site */}
                 <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:16}}>
-                  <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:12}}>
+                  <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:12}}>
                     Defect Count — {geoSiteFilter||"All Sites"} · {GEO_DATA.year}
                   </div>
                   <div style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -2544,8 +2544,8 @@ function DashboardInner() {
                       const dc = DefTypeColor[dt]||PURPLE;
                       return(<div key={dt}>
                         <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
-                          <span style={{fontSize:10,color:"#4b5563",fontFamily:"'DM Mono',monospace"}}>{dt}</span>
-                          <span style={{fontSize:10,fontWeight:700,color:dc,fontFamily:"'DM Mono',monospace"}}>{count.toLocaleString()}</span>
+                          <span style={{fontSize:10,color:"#4b5563",fontFamily:"Arial, Helvetica, sans-serif"}}>{dt}</span>
+                          <span style={{fontSize:10,fontWeight:700,color:dc,fontFamily:"Arial, Helvetica, sans-serif"}}>{count.toLocaleString()}</span>
                         </div>
                         <div style={{height:14,background:"#ffffff",borderRadius:3,overflow:"hidden"}}>
                           <div style={{width:`${barW}%`,height:"100%",background:dc,borderRadius:3,opacity:0.8,transition:"width 0.3s"}}/>
@@ -2555,10 +2555,10 @@ function DashboardInner() {
                   </div>
                   {/* Site buttons */}
                   <div style={{marginTop:16,display:"flex",gap:6,flexWrap:"wrap"}}>
-                    <button onClick={()=>setGeoSiteFilter(null)} style={{background:!geoSiteFilter?"#e5e7eb":"transparent",border:`1px solid ${!geoSiteFilter?"#9ca3af":"#e5e7eb"}`,color:!geoSiteFilter?"#111827":"#9ca3af",borderRadius:5,padding:"3px 8px",cursor:"pointer",fontSize:9,fontFamily:"'DM Mono',monospace"}}>All</button>
+                    <button onClick={()=>setGeoSiteFilter(null)} style={{background:!geoSiteFilter?"#e5e7eb":"transparent",border:`1px solid ${!geoSiteFilter?"#9ca3af":"#e5e7eb"}`,color:!geoSiteFilter?"#111827":"#9ca3af",borderRadius:5,padding:"3px 8px",cursor:"pointer",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}}>All</button>
                     {GEO_DATA.sites.map(s=>{
                       const isSel=geoSiteFilter===s.key;const dc=DEPOT_COLORS[s.key];
-                      return(<button key={s.key} onClick={()=>setGeoSiteFilter(isSel?null:s.key)} style={{background:isSel?`${dc}20`:"transparent",border:`1px solid ${isSel?dc+"60":"#e5e7eb"}`,color:isSel?dc:"#9ca3af",borderRadius:5,padding:"3px 8px",cursor:"pointer",fontSize:9,fontWeight:700,fontFamily:"'DM Mono',monospace"}}>
+                      return(<button key={s.key} onClick={()=>setGeoSiteFilter(isSel?null:s.key)} style={{background:isSel?`${dc}20`:"transparent",border:`1px solid ${isSel?dc+"60":"#e5e7eb"}`,color:isSel?dc:"#9ca3af",borderRadius:5,padding:"3px 8px",cursor:"pointer",fontSize:9,fontWeight:700,fontFamily:"Arial, Helvetica, sans-serif"}}>
                         <span style={{display:"inline-block",width:5,height:5,borderRadius:"50%",background:isSel?dc:"#d1d5db",marginRight:4,verticalAlign:"middle"}}/>{s.key}
                       </button>);
                     })}
@@ -2568,13 +2568,13 @@ function DashboardInner() {
 
               {/* Attribution × Defect Table */}
               <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:16}}>
-                <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:12}}>{t("geoAttribTable")} — {geoSiteFilter||"All Sites"}</div>
+                <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:12}}>{t("geoAttribTable")} — {geoSiteFilter||"All Sites"}</div>
                 <div style={{overflowX:"auto"}}>
                   <table style={{width:"100%",borderCollapse:"separate",borderSpacing:"2px 2px",minWidth:500}}>
                     <thead><tr>
-                      <th style={{padding:"5px 8px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",minWidth:80}}>ior_defect</th>
-                      <th style={{padding:"5px 8px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",minWidth:200}}>ior_attribution</th>
-                      <th style={{padding:"5px 8px",fontSize:8,color:"#9ca3af",textAlign:"right",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:60}}>Count</th>
+                      <th style={{padding:"5px 8px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",minWidth:80}}>ior_defect</th>
+                      <th style={{padding:"5px 8px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",minWidth:200}}>ior_attribution</th>
+                      <th style={{padding:"5px 8px",fontSize:8,color:"#9ca3af",textAlign:"right",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:60}}>Count</th>
                       <th style={{padding:"5px 8px",minWidth:120}}/>
                     </tr></thead>
                     <tbody>
@@ -2582,9 +2582,9 @@ function DashboardInner() {
                         const dc=DefTypeColor[row.defect]||PURPLE;
                         const maxAtt=Math.max(...filteredAttribs.map(r=>r.count),1);
                         return(<tr key={i} style={{background:i%2===0?"#ffffff08":"transparent"}}>
-                          <td style={{padding:"4px 8px"}}><span style={{fontSize:9,fontWeight:700,color:dc,background:`${dc}18`,padding:"2px 6px",borderRadius:3,fontFamily:"'DM Mono',monospace"}}>{row.defect}</span></td>
-                          <td style={{padding:"4px 8px",fontSize:10,color:"#4b5563",fontFamily:"'DM Mono',monospace"}}>{row.attribution}</td>
-                          <td style={{padding:"4px 8px",fontSize:11,fontWeight:700,color:"#111827",textAlign:"right",fontFamily:"'Outfit',sans-serif"}}>{row.count.toLocaleString()}</td>
+                          <td style={{padding:"4px 8px"}}><span style={{fontSize:9,fontWeight:700,color:dc,background:`${dc}18`,padding:"2px 6px",borderRadius:3,fontFamily:"Arial, Helvetica, sans-serif"}}>{row.defect}</span></td>
+                          <td style={{padding:"4px 8px",fontSize:10,color:"#4b5563",fontFamily:"Arial, Helvetica, sans-serif"}}>{row.attribution}</td>
+                          <td style={{padding:"4px 8px",fontSize:11,fontWeight:700,color:"#111827",textAlign:"right",fontFamily:"Arial, Helvetica, sans-serif"}}>{row.count.toLocaleString()}</td>
                           <td style={{padding:"4px 8px"}}>
                             <div style={{height:6,background:"#ffffff",borderRadius:3,overflow:"hidden"}}>
                               <div style={{width:`${(row.count/maxAtt)*100}%`,height:"100%",background:dc,opacity:0.7,borderRadius:3}}/>
@@ -2593,8 +2593,8 @@ function DashboardInner() {
                         </tr>);
                       })}
                       <tr style={{borderTop:"1px solid #e5e7eb"}}>
-                        <td colSpan={2} style={{padding:"5px 8px",fontSize:9,fontWeight:700,color:"#6b7280",fontFamily:"'DM Mono',monospace",textTransform:"uppercase"}}>Total</td>
-                        <td style={{padding:"5px 8px",fontSize:12,fontWeight:800,color:"#111827",textAlign:"right",fontFamily:"'Outfit',sans-serif"}}>{filteredAttribs.reduce((s,r)=>s+r.count,0).toLocaleString()}</td>
+                        <td colSpan={2} style={{padding:"5px 8px",fontSize:9,fontWeight:700,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",textTransform:"uppercase"}}>Total</td>
+                        <td style={{padding:"5px 8px",fontSize:12,fontWeight:800,color:"#111827",textAlign:"right",fontFamily:"Arial, Helvetica, sans-serif"}}>{filteredAttribs.reduce((s,r)=>s+r.count,0).toLocaleString()}</td>
                         <td/>
                       </tr>
                     </tbody>
@@ -2604,27 +2604,27 @@ function DashboardInner() {
 
               {/* Driver matrix */}
               <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:16}}>
-                <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:12}}>{t("geoDriverMatrix")} — {GEO_DATA.year}</div>
+                <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:12}}>{t("geoDriverMatrix")} — {GEO_DATA.year}</div>
                 <div style={{overflowX:"auto"}}>
                   <table style={{width:"100%",borderCollapse:"separate",borderSpacing:"2px 2px",minWidth:700}}>
                     <thead><tr>
-                      <th style={{padding:"5px 8px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",minWidth:180}}>Last Name, First Name</th>
+                      <th style={{padding:"5px 8px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",minWidth:180}}>Last Name, First Name</th>
                       {geoDefectFilter.map(dt=>(
-                        <th key={dt} style={{padding:"5px 6px",fontSize:8,color:DefTypeColor[dt]||PURPLE,textAlign:"center",fontFamily:"'DM Mono',monospace",fontWeight:800,width:50}}>{dt}</th>
+                        <th key={dt} style={{padding:"5px 6px",fontSize:8,color:DefTypeColor[dt]||PURPLE,textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",fontWeight:800,width:50}}>{dt}</th>
                       ))}
-                      <th style={{padding:"5px 8px",fontSize:8,color:"#15803d",textAlign:"center",fontFamily:"'DM Mono',monospace",fontWeight:800,width:55}}>Total</th>
+                      <th style={{padding:"5px 8px",fontSize:8,color:"#15803d",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",fontWeight:800,width:55}}>Total</th>
                       <th style={{padding:"5px 8px",minWidth:80}}/>
                     </tr></thead>
                     <tbody>
                       {driverRows.map((d,i)=>{
                         const isTop=i<3;
                         return(<tr key={i} style={{background:isTop?"#f5f3ff":"transparent"}}>
-                          <td style={{padding:"4px 8px",fontSize:11,fontWeight:isTop?700:400,color:isTop?"#6d28d9":"#4b5563",fontFamily:"'DM Mono',monospace",whiteSpace:"nowrap"}}>{d.name}</td>
+                          <td style={{padding:"4px 8px",fontSize:11,fontWeight:isTop?700:400,color:isTop?"#6d28d9":"#4b5563",fontFamily:"Arial, Helvetica, sans-serif",whiteSpace:"nowrap"}}>{d.name}</td>
                           {geoDefectFilter.map(dt=>{
                             const val=d[dt]||0;const dc=DefTypeColor[dt]||PURPLE;
-                            return(<td key={dt} style={{padding:"4px 6px",textAlign:"center",fontSize:10,fontWeight:val>20?700:400,color:val>30?dc:val>10?dc+"cc":"#9ca3af",fontFamily:"'DM Mono',monospace",background:val>30?`${dc}15`:"transparent",borderRadius:2}}>{val||"·"}</td>);
+                            return(<td key={dt} style={{padding:"4px 6px",textAlign:"center",fontSize:10,fontWeight:val>20?700:400,color:val>30?dc:val>10?dc+"cc":"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif",background:val>30?`${dc}15`:"transparent",borderRadius:2}}>{val||"·"}</td>);
                           })}
-                          <td style={{padding:"4px 8px",textAlign:"center",fontSize:12,fontWeight:800,color:isTop?"#6d28d9":"#15803d",fontFamily:"'Outfit',sans-serif"}}>{d._filtTotal}</td>
+                          <td style={{padding:"4px 8px",textAlign:"center",fontSize:12,fontWeight:800,color:isTop?"#6d28d9":"#15803d",fontFamily:"Arial, Helvetica, sans-serif"}}>{d._filtTotal}</td>
                           <td style={{padding:"4px 8px"}}>
                             <div style={{height:5,background:"#ffffff",borderRadius:3,overflow:"hidden"}}>
                               <div style={{width:`${(d._filtTotal/maxDriverTotal)*100}%`,height:"100%",background:PURPLE,opacity:0.6,borderRadius:3}}/>
@@ -2634,12 +2634,12 @@ function DashboardInner() {
                       })}
                       {/* Total row */}
                       {totalRow&&<tr style={{borderTop:"2px solid #e5e7eb",background:"#12101f"}}>
-                        <td style={{padding:"5px 8px",fontSize:9,fontWeight:800,color:"#6b7280",fontFamily:"'DM Mono',monospace",textTransform:"uppercase"}}>Total</td>
+                        <td style={{padding:"5px 8px",fontSize:9,fontWeight:800,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",textTransform:"uppercase"}}>Total</td>
                         {geoDefectFilter.map(dt=>{
                           const val=totalRow[dt]||0;const dc=DefTypeColor[dt]||PURPLE;
-                          return(<td key={dt} style={{padding:"5px 6px",textAlign:"center",fontSize:10,fontWeight:700,color:dc,fontFamily:"'DM Mono',monospace"}}>{val.toLocaleString()}</td>);
+                          return(<td key={dt} style={{padding:"5px 6px",textAlign:"center",fontSize:10,fontWeight:700,color:dc,fontFamily:"Arial, Helvetica, sans-serif"}}>{val.toLocaleString()}</td>);
                         })}
-                        <td style={{padding:"5px 8px",textAlign:"center",fontSize:12,fontWeight:800,color:"#111827",fontFamily:"'Outfit',sans-serif"}}>{geoDefectFilter.reduce((s,dt)=>s+(totalRow[dt]||0),0).toLocaleString()}</td>
+                        <td style={{padding:"5px 8px",textAlign:"center",fontSize:12,fontWeight:800,color:"#111827",fontFamily:"Arial, Helvetica, sans-serif"}}>{geoDefectFilter.reduce((s,dt)=>s+(totalRow[dt]||0),0).toLocaleString()}</td>
                         <td/>
                       </tr>}
                     </tbody>
@@ -2652,35 +2652,35 @@ function DashboardInner() {
             {!isMobile&&(
             <div style={{width:200,flexShrink:0}}>
               <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:16,position:"sticky",top:20}}>
-                <div style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",letterSpacing:1.5,textTransform:"uppercase",marginBottom:14,paddingBottom:8,borderBottom:"1px solid #e5e7eb"}}>
+                <div style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1.5,textTransform:"uppercase",marginBottom:14,paddingBottom:8,borderBottom:"1px solid #e5e7eb"}}>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                     <span>{t("geoFilter")}</span>
-                    <button onClick={()=>setGeoDefectFilter([...GEO_DATA.defectTypes])} style={{background:"transparent",border:"none",color:"#d1d5db",fontSize:8,cursor:"pointer",fontFamily:"'DM Mono',monospace"}}>ALL</button>
+                    <button onClick={()=>setGeoDefectFilter([...GEO_DATA.defectTypes])} style={{background:"transparent",border:"none",color:"#d1d5db",fontSize:8,cursor:"pointer",fontFamily:"Arial, Helvetica, sans-serif"}}>ALL</button>
                   </div>
                 </div>
                 {/* Site filter */}
-                <div style={{fontSize:8,color:"#9ca3af",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",marginBottom:8}}>Site</div>
+                <div style={{fontSize:8,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",marginBottom:8}}>Site</div>
                 {["ALL",...GEO_DATA.sites.map(s=>s.key)].map(sk=>{
                   const isSel=sk==="ALL"?!geoSiteFilter:geoSiteFilter===sk;
                   const dc=sk==="ALL"?"#6b7280":(DEPOT_COLORS[sk]||PURPLE);
                   return(<div key={sk} onClick={()=>setGeoSiteFilter(sk==="ALL"?null:(geoSiteFilter===sk?null:sk))} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",marginBottom:4,cursor:"pointer",borderRadius:5,background:isSel?`${dc}15`:"transparent",border:`1px solid ${isSel?dc+"40":"transparent"}`}}>
                     <div style={{width:10,height:10,borderRadius:2,background:isSel?dc:"#e5e7eb",border:`1px solid ${isSel?dc:"#d1d5db"}`,flexShrink:0}}/>
-                    <span style={{fontSize:10,color:isSel?dc:"#6b7280",fontFamily:"'DM Mono',monospace",fontWeight:isSel?700:400}}>{sk}</span>
+                    <span style={{fontSize:10,color:isSel?dc:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",fontWeight:isSel?700:400}}>{sk}</span>
                   </div>);
                 })}
                 <div style={{borderTop:"1px solid #e5e7eb",margin:"12px 0"}}/>
                 {/* ior_defect filter */}
-                <div style={{fontSize:8,color:"#9ca3af",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",marginBottom:8}}>ior_defect in Table Order</div>
+                <div style={{fontSize:8,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",marginBottom:8}}>ior_defect in Table Order</div>
                 {defTypes.map(dt=>{
                   const isSel=geoDefectFilter.includes(dt);const dc=DefTypeColor[dt]||PURPLE;
                   return(<div key={dt} onClick={()=>toggleDefect(dt)} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 6px",marginBottom:4,cursor:"pointer",borderRadius:5,background:isSel?`${dc}10`:"transparent"}}>
                     <div style={{width:10,height:10,borderRadius:2,background:isSel?dc:"#e5e7eb",border:`1px solid ${isSel?dc:"#d1d5db"}`,flexShrink:0}}/>
-                    <span style={{fontSize:10,color:isSel?dc:"#6b7280",fontFamily:"'DM Mono',monospace",fontWeight:isSel?600:400}}>{dt}</span>
-                    <span style={{marginLeft:"auto",fontSize:9,color:"#d1d5db",fontFamily:"'DM Mono',monospace"}}>{GEO_DATA.defectTotals[dt]?.count}</span>
+                    <span style={{fontSize:10,color:isSel?dc:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",fontWeight:isSel?600:400}}>{dt}</span>
+                    <span style={{marginLeft:"auto",fontSize:9,color:"#d1d5db",fontFamily:"Arial, Helvetica, sans-serif"}}>{GEO_DATA.defectTotals[dt]?.count}</span>
                   </div>);
                 })}
                 <div style={{borderTop:"1px solid #e5e7eb",margin:"12px 0"}}/>
-                <div style={{display:"flex",justifyContent:"space-between",fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}>
+                <div style={{display:"flex",justifyContent:"space-between",fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}>
                   <span>ior_defect Total</span>
                   <span style={{color:"#111827",fontWeight:700}}>{geoDefectFilter.reduce((s,dt)=>s+(GEO_DATA.defectTotals[dt]?.count||0),0).toLocaleString()}</span>
                 </div>
@@ -2695,58 +2695,58 @@ function DashboardInner() {
           <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":`repeat(${Math.min(4,Math.max(1,prodDepots.length))},1fr)`,gap:12,marginBottom:20}}>
             {prodDepots.map(d=>{const st=sprStats[d]; const tgt=st.target; const ratio=st.last!=null&&tgt?st.last/tgt:null; const col=ratio==null?"#4b5563":ratio<0.8?"#b91c1c":ratio<0.9?"#b45309":"#15803d"; const delta=st.last!=null&&st.prev!=null?st.last-st.prev:null; return(
               <div key={d} style={{background:"#ffffff",border:`1px solid ${DEPOT_COLORS[d]}30`,borderLeft:`3px solid ${DEPOT_COLORS[d]}`,borderRadius:10,padding:isMobile?"14px":"16px 18px"}}>
-                <div style={{display:"flex",alignItems:"baseline",gap:8}}><span style={{fontSize:15,fontWeight:800,color:DEPOT_COLORS[d],fontFamily:"'Outfit',sans-serif"}}>{d}</span><span style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}>{DEPOT_LABELS[d]}</span><span style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>{st.lastWeek||"—"}</span></div>
-                <div style={{display:"flex",alignItems:"baseline",gap:8,marginTop:8}}><span style={{fontSize:28,fontWeight:800,color:col,fontFamily:"'Outfit',sans-serif"}}>{st.last!=null?st.last.toFixed(1):"—"}</span><span style={{fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace"}}>{t("sprUnit")}</span>{delta!=null&&<span style={{fontSize:10,fontWeight:700,color:delta>=0?"#15803d":"#b91c1c",fontFamily:"'DM Mono',monospace"}}>{delta>=0?"▲":"▼"} {Math.abs(delta).toFixed(1)}</span>}</div>
-                <div style={{display:"flex",gap:12,marginTop:8,fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",flexWrap:"wrap"}}><span>{t("sprAvg")} <b style={{color:"#4b5563"}}>{st.avg!=null?st.avg.toFixed(1):"—"}</b></span><span>{t("sprTarget")} <b style={{color:"#4b5563"}}>{tgt!=null?tgt.toFixed(1):"—"}</b></span><span>{st.orders.toLocaleString()} {t("sprOrders").toLowerCase()} / {st.routes.toLocaleString()} {t("sprRoutes").toLowerCase()}</span></div>
+                <div style={{display:"flex",alignItems:"baseline",gap:8}}><span style={{fontSize:15,fontWeight:800,color:DEPOT_COLORS[d],fontFamily:"Arial, Helvetica, sans-serif"}}>{d}</span><span style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}>{DEPOT_LABELS[d]}</span><span style={{marginLeft:"auto",fontSize:9,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>{st.lastWeek||"—"}</span></div>
+                <div style={{display:"flex",alignItems:"baseline",gap:8,marginTop:8}}><span style={{fontSize:28,fontWeight:800,color:col,fontFamily:"Arial, Helvetica, sans-serif"}}>{st.last!=null?st.last.toFixed(1):"—"}</span><span style={{fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif"}}>{t("sprUnit")}</span>{delta!=null&&<span style={{fontSize:10,fontWeight:700,color:delta>=0?"#15803d":"#b91c1c",fontFamily:"Arial, Helvetica, sans-serif"}}>{delta>=0?"▲":"▼"} {Math.abs(delta).toFixed(1)}</span>}</div>
+                <div style={{display:"flex",gap:12,marginTop:8,fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",flexWrap:"wrap"}}><span>{t("sprAvg")} <b style={{color:"#4b5563"}}>{st.avg!=null?st.avg.toFixed(1):"—"}</b></span><span>{t("sprTarget")} <b style={{color:"#4b5563"}}>{tgt!=null?tgt.toFixed(1):"—"}</b></span><span>{st.orders.toLocaleString()} {t("sprOrders").toLowerCase()} / {st.routes.toLocaleString()} {t("sprRoutes").toLowerCase()}</span></div>
               </div>);})}
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"20px",marginBottom:20}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,flexWrap:"wrap",gap:8}}>
-              <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:0,fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>{t("sprTitle")} — {effectiveFrom} → {effectiveTo} / {yearLabel}</h3>
-              <button onClick={()=>setSprShowValues(v=>!v)} style={{background:sprShowValues?"#e5e7eb":"transparent",border:sprShowValues?"1px solid #9ca3af":"1px solid #e5e7eb",color:sprShowValues?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:9,fontWeight:600,fontFamily:"'DM Mono',monospace"}}>{t("sprValues")}</button>
+              <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:0,fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>{t("sprTitle")} — {effectiveFrom} → {effectiveTo} / {yearLabel}</h3>
+              <button onClick={()=>setSprShowValues(v=>!v)} style={{background:sprShowValues?"#e5e7eb":"transparent",border:sprShowValues?"1px solid #9ca3af":"1px solid #e5e7eb",color:sprShowValues?"#111827":"#9ca3af",borderRadius:4,padding:"3px 8px",cursor:"pointer",fontSize:9,fontWeight:600,fontFamily:"Arial, Helvetica, sans-serif"}}>{t("sprValues")}</button>
             </div>
-            {sprWeekly.length===0 ? <div style={{padding:"40px 0",textAlign:"center",fontSize:11,color:"#9ca3af",fontFamily:"'DM Mono',monospace"}}>— no data in range —</div> : (
+            {sprWeekly.length===0 ? <div style={{padding:"40px 0",textAlign:"center",fontSize:11,color:"#9ca3af",fontFamily:"Arial, Helvetica, sans-serif"}}>— no data in range —</div> : (
             <ResponsiveContainer width="100%" height={isMobile?260:360}>
               <LineChart data={sprWeekly} margin={{top:18,right:isMobile?10:30,bottom:5,left:0}}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb"/>
-                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}} interval={Math.max(0,Math.floor(sprWeekly.length/16))}/>
-                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"DM Mono"}} axisLine={{stroke:"#e5e7eb"}} domain={[0,"auto"]}/>
+                <XAxis dataKey="label" tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}} interval={Math.max(0,Math.floor(sprWeekly.length/16))}/>
+                <YAxis tick={{fill:"#9ca3af",fontSize:9,fontFamily:"Arial, Helvetica, sans-serif"}} axisLine={{stroke:"#e5e7eb"}} domain={[0,"auto"]}/>
                 <Tooltip content={<SprTooltip/>}/>
                 {prodDepots.map(d=>(<Line key={d} type="monotone" dataKey={d} stroke={DEPOT_COLORS[d]} strokeWidth={2} dot={{r:2.5,fill:DEPOT_COLORS[d],strokeWidth:0}} activeDot={{r:5}} name={d} connectNulls isAnimationActive={false} label={sprShowValues?<SprLabel color={DEPOT_COLORS[d]}/>:false}/>))}
               </LineChart>
             </ResponsiveContainer>)}
             <div style={{display:"flex",gap:16,justifyContent:"center",marginTop:8,flexWrap:"wrap"}}>
-              {prodDepots.map(d=>(<div key={d} style={{display:"flex",alignItems:"center",gap:5,fontSize:10,color:DEPOT_COLORS[d],fontFamily:"'DM Mono',monospace"}}><div style={{width:12,height:3,borderRadius:2,background:DEPOT_COLORS[d]}}/>{d}</div>))}
+              {prodDepots.map(d=>(<div key={d} style={{display:"flex",alignItems:"center",gap:5,fontSize:10,color:DEPOT_COLORS[d],fontFamily:"Arial, Helvetica, sans-serif"}}><div style={{width:12,height:3,borderRadius:2,background:DEPOT_COLORS[d]}}/>{d}</div>))}
             </div>
           </div>
           <div style={{background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:10,padding:"16px",overflowX:"auto"}}>
-            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 12px",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase"}}>{t("sprTable")}</h3>
+            <h3 style={{fontSize:11,fontWeight:700,color:"#6b7280",margin:"0 0 12px",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase"}}>{t("sprTable")}</h3>
             <table style={{width:"100%",borderCollapse:"separate",borderSpacing:"2px 3px",minWidth:sprWeekly.length*52+160}}>
               <thead><tr>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",minWidth:70}}>{t("station")}</th>
-                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",letterSpacing:1,textTransform:"uppercase",width:50}}>{t("sprTarget")}</th>
-                {sprWeekly.map(r=><th key={r.label} style={{padding:"4px 3px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"'DM Mono',monospace",whiteSpace:"nowrap"}}>{r.label}</th>)}
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"left",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",minWidth:70}}>{t("station")}</th>
+                <th style={{padding:"6px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1,textTransform:"uppercase",width:50}}>{t("sprTarget")}</th>
+                {sprWeekly.map(r=><th key={r.label} style={{padding:"4px 3px",fontSize:8,color:"#9ca3af",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",whiteSpace:"nowrap"}}>{r.label}</th>)}
               </tr></thead>
               <tbody>
                 {prodDepots.map(d=>(<tr key={d}>
-                  <td style={{padding:"5px 6px",fontSize:11,fontWeight:700,color:DEPOT_COLORS[d],fontFamily:"'DM Mono',monospace"}}>{d}</td>
-                  <td style={{padding:"5px 6px",fontSize:10,color:"#4b5563",textAlign:"center",fontFamily:"'DM Mono',monospace"}}>{SPR_TARGET[d]!=null?SPR_TARGET[d].toFixed(1):"—"}</td>
-                  {sprWeekly.map(r=>{const v=r[d];const c=sprCell(v,SPR_TARGET[d]);return(<td key={r.label} title={v!=null?`${r[d+"_o"]} orders / ${r[d+"_r"]} routes`:""} style={{padding:"5px 4px",fontSize:10,fontWeight:600,textAlign:"center",fontFamily:"'DM Mono',monospace",borderRadius:3,background:c.bg,color:c.color}}>{v!=null?v.toFixed(1):"·"}</td>);})}
+                  <td style={{padding:"5px 6px",fontSize:11,fontWeight:700,color:DEPOT_COLORS[d],fontFamily:"Arial, Helvetica, sans-serif"}}>{d}</td>
+                  <td style={{padding:"5px 6px",fontSize:10,color:"#4b5563",textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif"}}>{SPR_TARGET[d]!=null?SPR_TARGET[d].toFixed(1):"—"}</td>
+                  {sprWeekly.map(r=>{const v=r[d];const c=sprCell(v,SPR_TARGET[d]);return(<td key={r.label} title={v!=null?`${r[d+"_o"]} orders / ${r[d+"_r"]} routes`:""} style={{padding:"5px 4px",fontSize:10,fontWeight:600,textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",borderRadius:3,background:c.bg,color:c.color}}>{v!=null?v.toFixed(1):"·"}</td>);})}
                 </tr>))}
                 <tr>
-                  <td style={{padding:"5px 6px",fontSize:10,fontWeight:700,color:"#4b5563",fontFamily:"'DM Mono',monospace",borderTop:"1px solid #e5e7eb"}}>{t("sprNetwork")}</td>
+                  <td style={{padding:"5px 6px",fontSize:10,fontWeight:700,color:"#4b5563",fontFamily:"Arial, Helvetica, sans-serif",borderTop:"1px solid #e5e7eb"}}>{t("sprNetwork")}</td>
                   <td style={{borderTop:"1px solid #e5e7eb"}}/>
-                  {sprWeekly.map(r=><td key={r.label} style={{padding:"5px 4px",fontSize:10,fontWeight:600,textAlign:"center",fontFamily:"'DM Mono',monospace",color:"#111827",borderTop:"1px solid #e5e7eb"}}>{r.network!=null?r.network.toFixed(1):"·"}</td>)}
+                  {sprWeekly.map(r=><td key={r.label} style={{padding:"5px 4px",fontSize:10,fontWeight:600,textAlign:"center",fontFamily:"Arial, Helvetica, sans-serif",color:"#111827",borderTop:"1px solid #e5e7eb"}}>{r.network!=null?r.network.toFixed(1):"·"}</td>)}
                 </tr>
               </tbody>
             </table>
           </div>
-          <div style={{marginTop:14,padding:"12px 16px",background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:8,fontSize:9,color:"#6b7280",fontFamily:"'DM Mono',monospace",lineHeight:1.6}}>{t("sprNote")}</div>
+          <div style={{marginTop:14,padding:"12px 16px",background:"#ffffff",border:"1px solid #e5e7eb",borderRadius:8,fontSize:9,color:"#6b7280",fontFamily:"Arial, Helvetica, sans-serif",lineHeight:1.6}}>{t("sprNote")}</div>
         </>)}
 
         {/* FOOTER */}
         <div style={{textAlign:"center",padding:"20px 0 8px",marginTop:24,borderTop:"1px solid #e5e7eb"}}>
-          <p style={{fontSize:9,color:"#d1d5db",fontFamily:"'DM Mono',monospace",letterSpacing:1}}><span onClick={()=>window.__dspLock&&window.__dspLock()} title="Lock dashboard" style={{cursor:"pointer",color:"#9ca3af"}}>🔒 LOCK</span> · {t("footer")} · {yearLabel} · {t("generated")} {new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase()}</p>
+          <p style={{fontSize:9,color:"#d1d5db",fontFamily:"Arial, Helvetica, sans-serif",letterSpacing:1}}><span onClick={()=>window.__dspLock&&window.__dspLock()} title="Lock dashboard" style={{cursor:"pointer",color:"#9ca3af"}}>🔒 LOCK</span> · {t("footer")} · {yearLabel} · {t("generated")} {new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase()}</p>
         </div>
       </div>
     </div>
