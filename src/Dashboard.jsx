@@ -171,9 +171,9 @@ const T = {
   "en": {
     tabGoals: "Scorecard", scNetwork: "Network", scSource: "Amazon Lighthouse · weekly · goal vs actual", scWeek: "WEEK", scPartial: "partial", scPartialNote: "partial week — data up to the last refresh",
     scGoal: "Goal", scActual: "Actual", scTarget: "target", scRadarNote: "each axis = actual ÷ goal (goal = inner pentagon)", scOrders: "orders", scNoRca: "no attributed orders for this metric",
-    scDefectiveOrders: "Defective orders in the week", scKeyMetrics: "Key metrics", scCatRouting: "Routing", scCatVolume: "Volume", scCatPunctuality: "Punctuality",
-    scOwnerStation: "Station", scOwnerCustomer: "Customer", scOwnerNetwork: "Network", scOwnerPending: "Pending", scOwnerOther: "Other", scNoData: "no data in the selected range",
-    scFootnote: "DNR = PDNR + FDNR. RCA = Amazon root-cause attribution of each defective order (Lighthouse Order Level View); owner tags are LSRL's classification. Goals: monthly Amazon goals when defined, otherwise the 2026 targets.",
+    scDefectiveOrders: "Orders with this defect in the week", scKeyMetrics: "Key metrics", scCatRouting: "Routing", scCatVolume: "Volume", scCatPunctuality: "Punctuality",
+    scOwnerStation: "Station", scOwnerCustomer: "Customer", scOwnerNetwork: "Network", scOwnerPending: "Pending", scOwnerOther: "Other", scNoData: "no data in the selected range", scSmallerCauses: "smaller causes", scCarried: "carried over",
+    scFootnote: "DNR = PDNR + FDNR. RCA = Amazon root-cause attribution of each defective order (Lighthouse Order Level View); owner tags are LSRL's classification. Goals: monthly Amazon goals when defined, otherwise the 2026 targets. Lighthouse values can differ slightly from Amazon's weekly performance-review email (FTFDF, FOND OC and PDNR use different definitions/snapshots) — the email is the contractual reference.",
     brand: "Last Mile DSP — Italy", title: "Delivery Performance", latestInRange: "Latest in Range",
     stations: "stations", station: "station",
     tabOverview: "Overview", tabDepots: "Depot Deep-Dive", tabUpstream: "Upstream vs Controllable",
@@ -235,9 +235,9 @@ const T = {
   "it": {
     tabGoals: "Scorecard", scNetwork: "Rete", scSource: "Amazon Lighthouse · settimanale · obiettivo vs effettivo", scWeek: "SETTIMANA", scPartial: "parziale", scPartialNote: "settimana parziale — dati fino all'ultimo aggiornamento",
     scGoal: "Obiettivo", scActual: "Effettivo", scTarget: "target", scRadarNote: "ogni asse = effettivo ÷ obiettivo (obiettivo = pentagono interno)", scOrders: "ordini", scNoRca: "nessun ordine attribuito per questa metrica",
-    scDefectiveOrders: "Ordini difettosi nella settimana", scKeyMetrics: "Metriche chiave", scCatRouting: "Routing", scCatVolume: "Volumi", scCatPunctuality: "Puntualità",
-    scOwnerStation: "Stazione", scOwnerCustomer: "Cliente", scOwnerNetwork: "Rete", scOwnerPending: "In attesa", scOwnerOther: "Altro", scNoData: "nessun dato nell'intervallo selezionato",
-    scFootnote: "DNR = PDNR + FDNR. RCA = attribuzione Amazon della causa radice di ogni ordine difettoso (Lighthouse Order Level View); le etichette del responsabile sono la classificazione LSRL. Obiettivi: mensili Amazon se definiti, altrimenti i target 2026.",
+    scDefectiveOrders: "Ordini con questo difetto nella settimana", scKeyMetrics: "Metriche chiave", scCatRouting: "Routing", scCatVolume: "Volumi", scCatPunctuality: "Puntualità",
+    scOwnerStation: "Stazione", scOwnerCustomer: "Cliente", scOwnerNetwork: "Rete", scOwnerPending: "In attesa", scOwnerOther: "Altro", scNoData: "nessun dato nell'intervallo selezionato", scSmallerCauses: "cause minori", scCarried: "riportato dal mese precedente",
+    scFootnote: "DNR = PDNR + FDNR. RCA = attribuzione Amazon della causa radice di ogni ordine difettoso (Lighthouse Order Level View); le etichette del responsabile sono la classificazione LSRL. Obiettivi: mensili Amazon se definiti, altrimenti i target 2026. I valori Lighthouse possono differire leggermente dall'email settimanale di performance review di Amazon (FTFDF, FOND OC e PDNR hanno definizioni/snapshot diversi) — l'email è il riferimento contrattuale.",
     brand: "Ultimo Miglio DSP — Italia", title: "Performance di Consegna", latestInRange: "Ultima nel Range",
     stations: "stazioni", station: "stazione",
     tabOverview: "Panoramica", tabDepots: "Analisi Depositi", tabUpstream: "Upstream vs Controllabile",
@@ -289,9 +289,9 @@ const T = {
   "es": {
     tabGoals: "Scorecard", scNetwork: "Red", scSource: "Amazon Lighthouse · semanal · objetivo vs real", scWeek: "SEMANA", scPartial: "parcial", scPartialNote: "semana parcial — datos hasta la última actualización",
     scGoal: "Objetivo", scActual: "Real", scTarget: "target", scRadarNote: "cada eje = real ÷ objetivo (objetivo = pentágono interior)", scOrders: "pedidos", scNoRca: "sin pedidos atribuidos para esta métrica",
-    scDefectiveOrders: "Pedidos defectuosos en la semana", scKeyMetrics: "Métricas clave", scCatRouting: "Routing", scCatVolume: "Volumen", scCatPunctuality: "Puntualidad",
-    scOwnerStation: "Estación", scOwnerCustomer: "Cliente", scOwnerNetwork: "Red", scOwnerPending: "Pendiente", scOwnerOther: "Otro", scNoData: "sin datos en el rango seleccionado",
-    scFootnote: "DNR = PDNR + FDNR. RCA = atribución Amazon de la causa raíz de cada pedido defectuoso (Lighthouse Order Level View); las etiquetas de responsable son la clasificación de LSRL. Objetivos: mensuales de Amazon si están definidos; si no, los targets 2026.",
+    scDefectiveOrders: "Pedidos con este defecto en la semana", scKeyMetrics: "Métricas clave", scCatRouting: "Routing", scCatVolume: "Volumen", scCatPunctuality: "Puntualidad",
+    scOwnerStation: "Estación", scOwnerCustomer: "Cliente", scOwnerNetwork: "Red", scOwnerPending: "Pendiente", scOwnerOther: "Otro", scNoData: "sin datos en el rango seleccionado", scSmallerCauses: "causas menores", scCarried: "arrastrado del mes anterior",
+    scFootnote: "DNR = PDNR + FDNR. RCA = atribución Amazon de la causa raíz de cada pedido defectuoso (Lighthouse Order Level View); las etiquetas de responsable son la clasificación de LSRL. Objetivos: mensuales de Amazon si están definidos; si no, los targets 2026. Los valores de Lighthouse pueden diferir ligeramente del email semanal de performance review de Amazon (FTFDF, FOND OC y PDNR usan definiciones/snapshots distintos) — el email es la referencia contractual.",
     brand: "Última Milla DSP — Italia", title: "Rendimiento de Entrega", latestInRange: "Última en Rango",
     stations: "estaciones", station: "estación",
     tabOverview: "Resumen", tabDepots: "Análisis de Depósitos", tabUpstream: "Upstream vs Controlable",
@@ -1195,24 +1195,30 @@ const SC_ATTR = {
   "Unclear Delivery Recepient": ["Unclear recipient", "Recipient could not be identified."],
   "Unattended Order Lost": ["Unattended order lost", "Left unattended and lost."],
   "Geocode Issue": ["Geocode issue", "Wrong address geocode."],
+  "Open": ["Open", "Order still open at cut-off."], "ONP": ["ONP", "Order not picked up."], "Early": ["Early", "Delivered before the window."],
+  "Not geocompliant": ["Not geocompliant", "Delivery scan outside the geofence."], "Missing OTR": ["Missing on the road", "Package missing on the road."],
+  "Damaged OTR": ["Damaged on the road", "Package damaged on the road."], "Missing Items": ["Missing items", "Item missing from the delivery."],
+  "Damaged Items": ["Damaged items", "Item delivered damaged."], "Other": ["Other", "Case-by-case review."],
 };
 const SC_PIE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];  // paleta categórica validada (modo claro)
 const SC_OTHER = "#9ca3af";
 const SC_SECONDARY = [  // métricas secundarias (Lighthouse)
   { key: "rfc",      cat: "routing",     label: "RFC — Route Fulfillment Compliance", fmt: v => v.toFixed(2) + "%" },
-  { key: "dpr",      cat: "routing",     label: "DpR — stops per route",             fmt: v => v.toFixed(2) },
+  { key: "dpr",      cat: "routing",     label: "DpR — orders per route",             fmt: v => v.toFixed(2) },
   { key: "orders",   cat: "volume",      label: "Orders",                            fmt: v => v.toLocaleString("en-GB") },
   { key: "routes",   cat: "volume",      label: "Routes",                            fmt: v => v.toLocaleString("en-GB") },
   { key: "latePk",   cat: "punctuality", label: "Late pickup routes",                fmt: v => v.toFixed(2) + "%" },
   { key: "latePkFW", cat: "punctuality", label: "Late pickup — first window",        fmt: v => v.toFixed(2) + "%" },
 ];
+const DATA_THROUGH = "2026-09-27";  // último delivery_date presente en la exportación (lo actualiza lighthouse_to_dashboard.py)
 const scSunday = (year, week) => { const d = new Date(Date.UTC(2025, 11, 28)); d.setUTCDate(d.getUTCDate() + (year - 2026) * 364 + (weekNum(week) - 1) * 7); return d; };
 function scGoalsFor(year, week) {
-  const d = scSunday(year, week); const ym = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+  const d = scSunday(year, week); d.setUTCDate(d.getUTCDate() + 3);  // el miércoles decide el mes de la semana
+  const ym = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
   const keys = Object.keys(SC_GOALS).sort();
   const use = keys.includes(ym) ? ym : keys.filter(k => k < ym).pop();
-  if (use) { const [y, m] = use.split("-"); return { goals: SC_GOALS[use], label: `${SC_MONTHS[+m - 1]} ${y}`, monthly: true }; }
-  return { goals: SC_ANNUAL, label: `${year}`, monthly: false };
+  if (use) { const [y, m] = use.split("-"); return { goals: SC_GOALS[use], label: `${SC_MONTHS[+m - 1]} ${y}`, monthly: true, carried: use !== ym }; }
+  return { goals: SC_ANNUAL, label: `${year}`, monthly: false, carried: false };
 }
 
 function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeeks, effectiveFrom, effectiveTo, t, isMobile, lang }) {
@@ -1227,14 +1233,18 @@ function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeek
       const rows = selectedDepots.map(d => (ALL_DEPOT_DATA[d] || []).find(r => r.year === year && r.week === w)).filter(Boolean);
       if (rows.length || orders) out.push({ week: w, orders });
     });
-    out.forEach((x, i) => { x.partial = i > 0 && x.orders != null && out[i - 1].orders && x.orders < 0.5 * out[i - 1].orders; });
+    out.forEach((x, i) => {
+      const sat = scSunday(year, x.week); sat.setUTCDate(sat.getUTCDate() + 6);
+      const covered = typeof DATA_THROUGH === "string" && DATA_THROUGH ? DATA_THROUGH : new Date(Date.now() - 2 * 864e5).toISOString().slice(0, 10);
+      x.partial = sat.toISOString().slice(0, 10) > covered;  // la semana no está completa en los datos (Lighthouse llega con 2 días de retraso)
+    });
     return out;
   }, [availableWeeks, effectiveFrom, effectiveTo, year, selectedDepots]);
   const defaultWeek = useMemo(() => { const full = weekInfo.filter(x => !x.partial); return (full.length ? full[full.length - 1] : weekInfo[weekInfo.length - 1])?.week || null; }, [weekInfo]);
   const [pickedWeek, setPickedWeek] = useState(null);
   const week = pickedWeek && weekInfo.some(x => x.week === pickedWeek) ? pickedWeek : defaultWeek;
   const weekIdx = weekInfo.findIndex(x => x.week === week);
-  const prevWeek = weekIdx > 0 ? weekInfo[weekIdx - 1].week : null;
+  const prevWeek = weekIdx > 0 && weekNum(weekInfo[weekIdx - 1].week) === weekNum(week) - 1 ? weekInfo[weekIdx - 1].week : null;  // sólo la semana inmediatamente anterior
   const isPartial = weekInfo[weekIdx]?.partial;
   const [metric, setMetric] = useState(null);
 
@@ -1254,7 +1264,7 @@ function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeek
   }, [year, selectedDepots, allSelected]);
   const cur = useMemo(() => valuesFor(week), [valuesFor, week]);
   const prev = useMemo(() => valuesFor(prevWeek), [valuesFor, prevWeek]);
-  const { goals, label: goalLabel, monthly } = useMemo(() => week ? scGoalsFor(year, week) : { goals: SC_ANNUAL, label: "", monthly: false }, [year, week]);
+  const { goals, label: goalLabel, monthly, carried } = useMemo(() => week ? scGoalsFor(year, week) : { goals: SC_ANNUAL, label: "", monthly: false, carried: false }, [year, week]);
 
   const radarData = useMemo(() => SC_METRICS.map(m => { const v = cur?.[m.key]; const g = goals[m.key]; return { metric: m.label, goal: 1, actual: v != null && g ? Math.min(v / g, 3) : 0, raw: v, goalRaw: g }; }), [cur, goals]);
   const radarMax = Math.max(2, ...radarData.map(r => r.actual));
@@ -1271,9 +1281,9 @@ function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeek
     const sorted = Object.entries(acc).sort((a, b) => b[1] - a[1]);
     const top = sorted.slice(0, 8), rest = sorted.slice(8).reduce((s, [, n]) => s + n, 0);
     const items = top.map(([a, n], i) => ({ attr: a, name: SC_ATTR[a]?.[0] || a, desc: SC_ATTR[a]?.[1] || "", owner: SC_OWNER[a] || "OTHER", n, pct: total ? Math.round(100 * n / total) : 0, color: SC_PIE[i] }));
-    if (rest) items.push({ attr: "__other", name: "Other", desc: `${sorted.length - 8} smaller causes`, owner: "OTHER", n: rest, pct: Math.round(100 * rest / total), color: SC_OTHER });
+    if (rest) items.push({ attr: "__other", name: t("scOwnerOther"), desc: `${sorted.length - 8} ${t("scSmallerCauses")}`, owner: "OTHER", n: rest, pct: Math.round(100 * rest / total), color: SC_OTHER });
     return { items, total };
-  }, [year, week, selDef, selectedDepots]);
+  }, [year, week, selDef, selectedDepots, lang]);
 
   const fmtPct = v => v == null ? "—" : v.toFixed(2) + "%";
   const withData = selectedDepots.filter(d => (ALL_DEPOT_DATA[d] || []).some(r => r.year === year && r.week === week && r.late != null));
@@ -1384,7 +1394,7 @@ function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeek
                 <div style={{ flex: 1, borderRight: "1px solid #e5e7eb" }}><div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: miss ? "#dc2626" : "#15803d" }}>{fmtPct(v)}</div><div style={{ fontSize: 9, color: "#9ca3af", fontFamily: M }}>WK{weekNum(week)}</div></div>
                 <div style={{ flex: 1 }}><div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 800, color: "#2563eb" }}>{fmtPct(g)}</div><div style={{ fontSize: 9, color: "#9ca3af", fontFamily: M }}>{t("scGoal").toUpperCase()}</div></div>
               </div>
-              <div style={{ fontSize: 10, color: "#2563eb", fontWeight: 600, marginTop: 8, letterSpacing: 0.5, textTransform: "uppercase" }}>{goalLabel} {monthly ? t("scGoal") : t("scTarget")}</div>
+              <div style={{ fontSize: 10, color: "#2563eb", fontWeight: 600, marginTop: 8, letterSpacing: 0.5, textTransform: "uppercase" }}>{goalLabel} {monthly ? t("scGoal") : t("scTarget")}{carried ? ` · ${t("scCarried")}` : ""}</div>
               {d != null && prevWeek && <div style={{ fontSize: 10, color: d > 0 ? "#dc2626" : d < 0 ? "#15803d" : "#6b7280", fontFamily: M, marginTop: 4 }}>{d > 0 ? "▲" : d < 0 ? "▼" : "•"} {d > 0 ? "+" : ""}{d.toFixed(2)} pp vs WK{weekNum(prevWeek)}</div>}
             </div>); })}
         </div>

@@ -51,7 +51,7 @@ while [ $# -gt 0 ]; do
     --no-push)     PUSH=0 ;;
     --force-deploy) FORCE=1 ;;
     --headed)      HEADLESS="" ;;
-    --weeks)       WEEKS="$2"; shift ;;
+    --weeks)       WEEKS="${2:-}"; [ -n "$WEEKS" ] || { echo "Falta el número tras --weeks"; exit 2; }; shift ;;
     *) echo "Opción desconocida: $1"; exit 2 ;;
   esac; shift
 done
@@ -69,23 +69,37 @@ if [ "$DOWNLOAD" = 1 ]; then
 fi
 LATEST="$(ls -d "$REPO"/data/lighthouse/*/ 2>/dev/null | sort | tail -1)"
 [ -n "$LATEST" ] || fail "no hay carpetas en data/lighthouse"
-ls "$LATEST"/order_level_defects_*.csv >/dev/null 2>&1 || fail "la carpeta $LATEST no tiene order_level_defects_*.csv"
+if [ "$DOWNLOAD" = 1 ] && [ "$(basename "$LATEST")" != "$(date +%Y-%m-%d)" ]; then fail "la descarga no ha dejado la carpeta de hoy (última: $(basename "$LATEST"))"; fi
+for f in quality_metrics_by_station quality_metrics_network business_metrics_by_station order_level_defects; do
+  ls "$LATEST"/${f}_*.csv >/dev/null 2>&1 || fail "la carpeta $LATEST no tiene ${f}_*.csv"
+done
 echo "── Datos: $LATEST"
 
 # ── 2. fusión en Dashboard.jsx ─────────────────────────────────
 python3 scripts/lighthouse_to_dashboard.py "$LATEST" --jsx src/Dashboard.jsx || fail "fusión en Dashboard.jsx"
 
-# ── 3. git ─────────────────────────────────────────────────────
+# ── 3. build (antes de tocar git: un JSX roto se restaura y no llega a main) ──
 rm -f .git/HEAD.lock .git/index.lock .git/objects/maintenance.lock 2>/dev/null; find .git/objects -name 'tmp_obj_*' -delete 2>/dev/null
 git add src/Dashboard.jsx >/dev/null 2>&1
 CHANGED=0
+if ! git diff --cached --quiet || [ "$FORCE" = 1 ]; then
+  [ -d node_modules ] || { echo "── npm install"; npm install --no-audit --no-fund --silent || fail "npm install"; }
+  echo "── Build"
+  if ! npm run build --silent; then
+    git reset -q src/Dashboard.jsx; git checkout -- src/Dashboard.jsx 2>/dev/null
+    fail "vite build (Dashboard.jsx restaurado al último commit)"
+  fi
+fi
+
+# ── 4. git ─────────────────────────────────────────────────────
 if ! git diff --cached --quiet; then
   # identidad de respaldo si git no tiene user.email (sin arrays: bash 3.2 de macOS + set -u no admite arrays vacíos)
   if [ -n "$(git config user.email)" ]; then
-    git commit -qm "data: Lighthouse daily update $(date +%d/%m/%Y) ($(basename "$LATEST"))" && CHANGED=1 && echo "── Commit hecho"
+    git commit -qm "data: Lighthouse daily update $(date +%d/%m/%Y) ($(basename "$LATEST"))" || fail "git commit"
   else
-    git -c user.name="Lighthouse daily update" -c user.email="ercilio@deliverymates.com" commit -qm "data: Lighthouse daily update $(date +%d/%m/%Y) ($(basename "$LATEST"))" && CHANGED=1 && echo "── Commit hecho"
+    git -c user.name="Lighthouse daily update" -c user.email="ercilio@deliverymates.com" commit -qm "data: Lighthouse daily update $(date +%d/%m/%Y) ($(basename "$LATEST"))" || fail "git commit"
   fi
+  CHANGED=1; echo "── Commit hecho"
 else
   echo "── Sin cambios en Dashboard.jsx"
 fi
@@ -93,20 +107,19 @@ if [ "$PUSH" = 1 ] && [ "$CHANGED" = 1 ]; then
   git push -q origin main && echo "── Push OK" || echo "[WARN] git push falló (¿credenciales?) — el deploy sigue"
 fi
 
-# ── 4. build + deploy ──────────────────────────────────────────
+# ── 5. deploy (el build ya se ha hecho en el paso 3) ───────────
 if [ "$DEPLOY" = 1 ] && { [ "$CHANGED" = 1 ] || [ "$FORCE" = 1 ]; }; then
-  [ -d node_modules ] || { echo "── npm install"; npm install --no-audit --no-fund --silent || fail "npm install"; }
-  echo "── Build"; npm run build --silent || fail "vite build"
+  [ -d dist ] || fail "no existe dist/ (¿build?)"
   echo "── Deploy a Netlify ($SITE_ID)"
   npx -y netlify-cli deploy --prod --dir dist --site "$SITE_ID" --message "daily update $(date +%d/%m/%Y)" ${NETLIFY_AUTH_TOKEN:+--auth "$NETLIFY_AUTH_TOKEN"} || fail "netlify deploy (¿has hecho 'npx netlify-cli login'?)"
   echo "── Deploy OK"
 fi
 
-# ── 5. limpieza: carpetas de datos de más de 30 días ───────────
+# ── 6. limpieza: carpetas de datos de más de 30 días ───────────
 find "$REPO/data/lighthouse" -mindepth 1 -maxdepth 1 -type d -mtime +30 -exec rm -rf {} + 2>/dev/null || true
 find "$LOG_DIR" -name 'daily_*.log' -mtime +60 -delete 2>/dev/null || true
 
-WEEKS_IN="$(grep -o '"2026-W[0-9]*"' "$REPO/src/Dashboard.jsx" | sort -t W -k2 -n | tail -1 | tr -d '"')"
+WEEKS_IN="$(grep -o '"20[0-9][0-9]-W[0-9]*"' "$REPO/src/Dashboard.jsx" | tr -d '"' | sort -t- -k1,1n -k2.2n | tail -1)"
 MSG="Datos hasta $WEEKS_IN · $( [ "$CHANGED" = 1 ] && echo 'cambios desplegados' || echo 'sin cambios' )"
 echo "══════ $(date '+%H:%M:%S') — fin: $MSG ══════"
 notify "Lighthouse daily update — OK" "$MSG"

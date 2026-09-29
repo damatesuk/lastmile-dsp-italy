@@ -127,6 +127,7 @@ def main():
             network[w]["pondFP"] = round(100 * net_pond[w]["FP"] / o, 2); network[w]["pondPP"] = round(100 * net_pond[w]["PP"] / o, 2)
     weeks = sorted(weeks | set(w for _, w in depot))
     print(f"Semanas en los datos: {[wkey(*w) for w in weeks]}")
+    data_through = max((r["delivery_date"][:10] for r in rows), default=None)  # última fecha con datos (pestaña Scorecard: semana parcial)
     # Semanas «abiertas»: se borran del JSX y se vuelven a cargar (la semana en curso llega parcial y crece cada día)
     refresh = set(weeks) if a.refresh_all else set(weeks[-a.refresh:]) if a.refresh > 0 else set()
     refresh_keys = {wkey(*w) for w in refresh}
@@ -358,6 +359,9 @@ def main():
 
     # 3g. cabecera de rango en el comentario de datos
     last = weeks[-1]; src = src.replace("(Order-Level, W47/25–W7/26)", f"(Order-Level, W47/25–W{last[1]}/{str(last[0])[2:]})")
+
+    if data_through and re.search(r'const DATA_THROUGH = "[^"]*";', src):
+        src = re.sub(r'const DATA_THROUGH = "[^"]*";', f'const DATA_THROUGH = "{data_through}";', src, count=1); print(f"DATA_THROUGH = {data_through}")
 
     if a.dry_run: print("--dry-run: no se escribe nada"); return
     if src != orig:
