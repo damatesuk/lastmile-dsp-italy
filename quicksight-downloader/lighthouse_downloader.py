@@ -60,14 +60,16 @@ def is_logged_in(page):
             and "/auth/signin" not in path and "midway" not in u.netloc)
 
 
-def _login_step(page, timeout_ms=30000):
-    """Espera al siguiente estado del login: 'in' (ya dentro), 'pwd' (pide contraseña) o 'user' (pide usuario/cuenta)."""
+def _login_step(page, timeout_ms=30000, after_choose=False):
+    """Espera al siguiente estado del login: 'in' (ya dentro), 'choose' (selector de cuenta), 'pwd' (pide contraseña) o 'user' (pide usuario/cuenta).
+    after_choose=True: acabamos de pulsar la cuenta recordada; el selector sigue visible unos segundos mientras redirige → no contarlo."""
     t0 = time.time()
     while (time.time() - t0) * 1000 < timeout_ms:
         if is_logged_in(page): return "in"
-        if page.get_by_text(re.compile(r"Choose your account", re.I)).count(): return "choose"
         if page.locator("input[type=password]:visible").count(): return "pwd"
-        if page.locator("input[type=text]:visible, input[type=email]:visible").count(): return "user"
+        chooser = page.get_by_text(re.compile(r"Choose your account", re.I)).count()
+        if chooser and not after_choose: return "choose"
+        if not chooser and page.locator("input[type=text]:visible, input[type=email]:visible").count(): return "user"
         page.wait_for_timeout(500)
     return "?"
 
@@ -83,7 +85,8 @@ def login(page, user, pwd):
         acct = page.get_by_role("button").filter(has_text=re.compile(re.escape(ACCOUNT)))
         if not acct.count(): acct = page.get_by_text(ACCOUNT, exact=False)
         acct.first.click(); log("Cuenta recordada seleccionada")
-        st = _login_step(page, 45000)
+        st = _login_step(page, 60000, after_choose=True)
+        log(f"Tras el selector de cuenta: estado «{st}» en {page.url[:80]}")
     if st == "user":
         # Paso 0: nombre de cuenta (sólo si lo pide)
         if ACCOUNT not in page.content():
@@ -110,8 +113,12 @@ def login(page, user, pwd):
     if "midway" in page.url.lower():
         raise RuntimeError("Redirigido a Midway: la cuenta exige SSO. Revisa ACCOUNT / usuario.")
     if not is_logged_in(page):
-        page.screenshot(path=str(HERE / "login_error.png"))
-        raise RuntimeError(f"Login fallido, URL: {page.url} (ver login_error.png)")
+        try:
+            page.screenshot(path=str(HERE / "login_error.png"), timeout=10000)
+            (HERE / "logs").mkdir(exist_ok=True); (HERE / "logs" / "login_error.html").write_text(page.content(), encoding="utf-8")
+        except Exception as e:
+            log(f"Sin captura del fallo de login: {e}", "WARN")
+        raise RuntimeError(f"Login fallido (estado «{st}»), URL: {page.url} (ver login_error.png / logs/login_error.html)")
     log("Login OK")
 
 
@@ -318,20 +325,25 @@ def export_visual(page, title_pattern, anchor_text, out_path: Path):
     """Pasa el ratón por el visual (su ⋮ sólo existe en hover) → «Menu options, <título>» → Export to CSV."""
     dismiss_popovers(page)
     menu = page.get_by_role("button", name=re.compile(r"^Menu options, " + title_pattern))
-    candidates = (page.locator('[data-automation-id="grid-block"]').filter(has_text=re.compile(title_pattern)),
+    candidates = (page.locator('[data-automation-id="analysis_visual"][data-automation-context*="' + anchor_text.replace('"', '') + '"]'),
+                  page.locator('[data-automation-id="grid-block"]').filter(has_text=re.compile(title_pattern)),
                   page.get_by_text(anchor_text, exact=True),
                   page.get_by_text(re.compile(title_pattern)))
-    for anchor in candidates:
-        if menu.count():
-            break
-        for i in range(min(anchor.count(), 3)):
-            a = anchor.nth(anchor.count() - 1 - i)  # de atrás hacia delante (el visual suele ir después del texto de cabecera)
-            try:
-                a.scroll_into_view_if_needed(timeout=5000); a.hover(timeout=5000); page.wait_for_timeout(900)
-            except PWTimeout:
-                continue
+    for attempt in range(8):  # el visual puede tardar en cargar (banner «New data present»); reintentamos ~1 min
+        for anchor in candidates:
             if menu.count():
                 break
+            for i in range(min(anchor.count(), 3)):
+                a = anchor.nth(anchor.count() - 1 - i)  # de atrás hacia delante (el visual suele ir después del texto de cabecera)
+                try:
+                    a.scroll_into_view_if_needed(timeout=5000); a.hover(timeout=5000); page.wait_for_timeout(1200)
+                except PWTimeout:
+                    continue
+                if menu.count():
+                    break
+        if menu.count():
+            break
+        page.mouse.move(5, 5); page.wait_for_timeout(5000)
     if not menu.count():
         dump_debug(page, "export_" + re.sub(r"\W+", "_", title_pattern)[:30])
         raise RuntimeError(f"No encuentro el menú del visual «{title_pattern}» (ancla «{anchor_text}»)")
