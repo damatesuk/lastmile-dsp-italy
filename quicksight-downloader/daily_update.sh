@@ -67,12 +67,21 @@ if [ "$DOWNLOAD" = 1 ]; then
   echo "── Descarga (últimas $WEEKS semanas) con $PY"
   "$PY" "$SCRIPT_DIR/lighthouse_downloader.py" $HEADLESS --weeks "$WEEKS" --out "$REPO/data/lighthouse" || fail "descarga de QuickSight"
 fi
-LATEST="$(ls -d "$REPO"/data/lighthouse/*/ 2>/dev/null | sort | tail -1)"
-[ -n "$LATEST" ] || fail "no hay carpetas en data/lighthouse"
-if [ "$DOWNLOAD" = 1 ] && [ "$(basename "$LATEST")" != "$(date +%Y-%m-%d)" ]; then fail "la descarga no ha dejado la carpeta de hoy (última: $(basename "$LATEST"))"; fi
-for f in quality_metrics_by_station quality_metrics_network business_metrics_by_station order_level_defects; do
-  ls "$LATEST"/${f}_*.csv >/dev/null 2>&1 || fail "la carpeta $LATEST no tiene ${f}_*.csv"
-done
+CSVS="quality_metrics_by_station quality_metrics_network business_metrics_by_station order_level_defects"
+complete_dir() { local f; for f in $CSVS; do ls "$1"/${f}_*.csv >/dev/null 2>&1 || return 1; done; }
+if [ "$DOWNLOAD" = 1 ]; then
+  # tras descargar, la carpeta de hoy tiene que existir y estar completa (si no, la descarga ha fallado a medias)
+  LATEST="$REPO/data/lighthouse/$(date +%Y-%m-%d)/"
+  [ -d "$LATEST" ] || fail "la descarga no ha dejado la carpeta de hoy ($(basename "$LATEST"))"
+  for f in $CSVS; do ls "$LATEST"/${f}_*.csv >/dev/null 2>&1 || fail "la carpeta $LATEST no tiene ${f}_*.csv"; done
+else
+  # --no-download: la carpeta más reciente que tenga los 4 CSV (una descarga a medias deja carpetas incompletas)
+  LATEST=""
+  for d in $(ls -d "$REPO"/data/lighthouse/*/ 2>/dev/null | sort -r); do
+    if complete_dir "$d"; then LATEST="$d"; break; else echo "── Salto $(basename "$d"): faltan CSV"; fi
+  done
+  [ -n "$LATEST" ] || fail "no hay ninguna carpeta completa (4 CSV) en data/lighthouse"
+fi
 echo "── Datos: $LATEST"
 
 # ── 2. fusión en Dashboard.jsx ─────────────────────────────────

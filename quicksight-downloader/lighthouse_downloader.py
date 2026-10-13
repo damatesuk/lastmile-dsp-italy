@@ -217,15 +217,42 @@ def select_combo(page, control_name, option_text):
     log(f"{control_name} → {option_text}")
 
 
+def open_dropdowns(page):
+    """Controles de hoja con la lista desplegada (aria-expanded=true): su popover tapa el visual y bloquea el hover."""
+    return page.locator('[role="combobox"][aria-expanded="true"]')
+
+
+# Popovers MUI: las clases llevan sufijo numérico (MuiPopover-root-519), así que «.MuiPopover-root» no casa.
+POPOVER = '[role="presentation"][data-automation-id$="-menu"]:visible, [class*="MuiPopover-root"]:visible'
+
+
 def dismiss_popovers(page):
-    """Cierra popovers MUI abiertos (calendario, listas) que interceptan los clics."""
-    for _ in range(3):
-        if not page.locator('.MuiPopover-root:visible, [role="presentation"] [role="dialog"]:visible').count():
+    """Cierra popovers MUI (calendario, listas de controles) que interceptan clics y hover.
+    Escape no cierra la lista multi-selección («Defect»): lo fiable es pinchar en su fondo (backdrop), como un usuario que pincha fuera."""
+    for _ in range(4):
+        if not (page.locator(POPOVER).count() or page.locator('[role="presentation"] [role="dialog"]:visible').count() or open_dropdowns(page).count()):
             return
-        page.keyboard.press("Escape"); page.wait_for_timeout(600)
-    if page.locator('.MuiPopover-root:visible').count():
+        backdrop = page.locator('[role="presentation"][data-automation-id$="-menu"]:visible > div[aria-hidden="true"], [class*="MuiPopover-root"]:visible > div[aria-hidden="true"]')
+        if backdrop.count():
+            try:
+                backdrop.first.click(position={"x": 5, "y": 5}, timeout=3000)
+            except Exception:
+                page.keyboard.press("Escape")
+        else:
+            btn = page.get_by_role("button", name=re.compile(r"^Cancel$"))  # p. ej. lista aún en «Loading»
+            if btn.count():
+                try:
+                    btn.first.click(timeout=3000)
+                except Exception:
+                    page.keyboard.press("Escape")
+            else:
+                page.keyboard.press("Escape")
+        page.wait_for_timeout(700)
+    if page.locator(POPOVER).count() or open_dropdowns(page).count():
         tab = page.get_by_role("tab", selected=True)
         if tab.count(): tab.first.click(); page.wait_for_timeout(600)
+    if page.locator(POPOVER).count() or open_dropdowns(page).count():
+        log("Sigue habiendo un desplegable abierto; puede bloquear el hover sobre el visual", "WARN")
 
 
 def set_radio(page, value):
@@ -306,19 +333,29 @@ def select_all_multi(page, control_name):
         log(f"No encuentro el control «{control_name}»", "WARN"); return
     if (combo.first.inner_text() or "").strip() == "All":
         return
-    dismiss_popovers(page)
-    combo.first.scroll_into_view_if_needed(); combo.first.click(); page.wait_for_timeout(1500)
     sel = page.locator('[data-automation-id="dropdown_select_all_search_result_entry"]')
-    if not sel.count():
-        dump_debug(page, "multi_" + re.sub(r"\W+", "_", control_name)); dismiss_popovers(page)
-        log(f"No encuentro «Select all» en «{control_name}»", "WARN"); return
-    if sel.first.get_attribute("aria-selected") != "true":
-        sel.first.click(); page.wait_for_timeout(800)
-    close = page.get_by_role("button", name=re.compile(r"^Close$"))
-    if close.count(): close.first.click()
-    else: page.keyboard.press("Escape")
-    page.wait_for_timeout(5000)
-    log(f"{control_name} → {(combo.first.inner_text() or '').strip()}")
+    tag = "multi_" + re.sub(r"\W+", "_", control_name)
+    for attempt in range(1, 4):
+        dismiss_popovers(page)
+        combo.first.scroll_into_view_if_needed(); combo.first.click(); page.wait_for_timeout(1000)
+        # la lista de valores se pide al servidor («Loading»); a primera hora tarda más de los 1,5 s que esperábamos antes
+        try:
+            sel.first.wait_for(state="visible", timeout=45000)
+        except PWTimeout:
+            log(f"«{control_name}»: la lista sigue en «Loading» tras 45 s (intento {attempt}/3)", "WARN")
+            if attempt == 3: dump_debug(page, tag)
+            continue
+        if sel.first.get_attribute("aria-selected") != "true":
+            sel.first.click(); page.wait_for_timeout(800)
+        dismiss_popovers(page)  # cerrar pinchando fuera (Escape y el botón «Close» no cierran esta lista)
+        page.wait_for_timeout(5000)
+        val = (combo.first.inner_text() or "").strip()
+        log(f"{control_name} → {val}")
+        if val == "All":
+            return
+        log(f"«{control_name}» sigue en «{val}» (intento {attempt}/3)", "WARN")
+    dismiss_popovers(page)
+    log(f"No he podido poner «{control_name}» en «All»; la exportación saldrá filtrada", "WARN")
 
 
 def export_visual(page, title_pattern, anchor_text, out_path: Path):
@@ -330,6 +367,8 @@ def export_visual(page, title_pattern, anchor_text, out_path: Path):
                   page.get_by_text(anchor_text, exact=True),
                   page.get_by_text(re.compile(title_pattern)))
     for attempt in range(8):  # el visual puede tardar en cargar (banner «New data present»); reintentamos ~1 min
+        if open_dropdowns(page).count():  # un desplegable abierto tapa el visual y el ⋮ nunca aparece
+            dismiss_popovers(page)
         for anchor in candidates:
             if menu.count():
                 break
