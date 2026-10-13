@@ -406,8 +406,9 @@ def main():
     ap.add_argument("--to", dest="date_to", help="YYYY-MM-DD (por defecto hoy)")
     ap.add_argument("--out", default=str(REPO / "data" / "lighthouse"), help="carpeta de salida")
     ap.add_argument("--headless", action="store_true")
-    ap.add_argument("--steps", default="setup,network,orders",
-                    help="fases a ejecutar (setup = métricas por estación, network = métricas red, orders = pedidos); por defecto todas")
+    ap.add_argument("--steps", default="setup,network,orders,daily",
+                    help="fases a ejecutar (setup = métricas por estación, network = métricas red, orders = pedidos, daily = métricas diarias últimas 5 semanas); por defecto todas")
+    ap.add_argument("--daily-weeks", type=int, default=5, help="semanas (incluida la actual) que cubre la exportación diaria (por defecto 5)")
     ap.add_argument("--merge", action="store_true", help="ejecuta scripts/lighthouse_to_dashboard.py al terminar")
     ap.add_argument("--commit", action="store_true", help="git add + commit (sin push) tras el merge")
     ap.add_argument("--push", action="store_true", help="git push tras el commit (dispara el deploy de Netlify)")
@@ -425,6 +426,8 @@ def main():
         last_sunday = end - dt.timedelta(days=(end.weekday() + 1) % 7)
         start = last_sunday - dt.timedelta(weeks=a.weeks - 1)
     rng = f"{amazon_week(start)}-{amazon_week(end)}"
+    daily_start = (end - dt.timedelta(days=(end.weekday() + 1) % 7)) - dt.timedelta(weeks=a.daily_weeks - 1)  # domingo de la semana actual − (N−1) semanas
+    drng = f"D{daily_start:%m%d}-{end:%m%d}"
     out_dir = Path(a.out) / f"{today:%Y-%m-%d}"
     log(f"Rango {start} → {end} ({rng}); salida {out_dir}")
 
@@ -472,6 +475,19 @@ def main():
             select_all_multi(page, "Defect")
             log_controls(page, expect_all=("region_id equals", "country equals", "program equals", "delivery_station_code equals", "provider_company_name equals", "Defect", "Rootcause"))
             export_visual(page, r"Order Level Data", "Order Level Data", out_dir / f"order_level_defects_{rng}.csv")
+          if "daily" in steps:
+            # ── Hoja 1 en granularidad diaria (pestaña PIP Tracker: desglose por día y semana en curso) ──
+            open_sheet(page, "DSP Lighthouse metrics")
+            set_date_range(page, daily_start, end)
+            select_combo(page, "Time Granularity", "1. Daily")
+            select_combo(page, "Show By", "4. By Station Code")
+            select_combo(page, "Split By", "5. No Split")
+            export_visual(page, r"Business Metrics", "Routes (% Change PoP)", out_dir / f"business_metrics_daily_{drng}.csv")
+            export_visual(page, r"Metric by Show By", "Sub Category", out_dir / f"quality_metrics_daily_{drng}.csv")
+            select_combo(page, "Show By", "5. By DSP Company")
+            export_visual(page, r"Business Metrics", "Routes (% Change PoP)", out_dir / f"business_metrics_network_daily_{drng}.csv")
+            export_visual(page, r"Metric by Show By", "Sub Category", out_dir / f"quality_metrics_network_daily_{drng}.csv")
+            select_combo(page, "Show By", "4. By Station Code"); select_combo(page, "Time Granularity", "2. Weekly")  # dejamos la vista semanal
 
         except Exception:
           dump_debug(page, "fail"); raise

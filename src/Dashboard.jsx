@@ -169,6 +169,7 @@ function useIsMobile(breakpoint = 768) {
 // ─── TRANSLATIONS ───────────────────────────────────────────────────
 const T = {
   "en": {
+    tabPip: "PIP Tracker", pipTitle: "PIP — assessment week", pipDataThrough: "data through", pipDaysIn: "days in the data", pipLag: "Lighthouse publishes with ~2 days' delay", pipWtd: "Week to date", pipWeekResult: "Full week", pipDefects: "defects", pipOrders: "Orders", pipMax: "Max for the week", pipForecast: "forecast orders", pipLeft: "left", pipOnRemaining: "on the remaining orders", pipOver: "over budget by", pipForecastNote: "Budget = goal × forecast orders for the full week; forecast = orders already in the data + the previous week's volume on the weekdays still to come. Defect counts are recovered from Lighthouse's daily % × orders.", pipByStation: "By station", pipTotal: "Total", pipByDay: "Day by day", pipDay: "Day", pipDayNote: "Numbers in brackets = defective orders that day. Red = above the goal, green = within.", pipQuality: "Quality report — last 5 weeks", pipMetric: "Metric", pipTrend: "Trend", pipWow: "Δ WoW", pipQualityNote: "* week in progress. Goals: Amazon's monthly goals for the five key metrics; FOND OC, FTPDF PP and F/P DNR from Amazon's Quality Report targets. Δ WoW in basis points vs the previous week. RFC is the Lighthouse route-level metric.", pipNoDaily: "no daily data yet — run the daily update",
     tabGoals: "Scorecard", scNetwork: "Network", scSource: "Amazon Lighthouse · weekly · goal vs actual", scWeek: "WEEK", scPartial: "partial", scPartialNote: "partial week — data up to the last refresh",
     scGoal: "Goal", scActual: "Actual", scTarget: "target", scRadarNote: "each axis = actual ÷ goal (goal = inner pentagon)", scOrders: "orders", scNoRca: "no attributed orders for this metric",
     scDefectiveOrders: "Orders with this defect in the week", scKeyMetrics: "Key metrics", scCatRouting: "Routing", scCatVolume: "Volume", scCatPunctuality: "Punctuality",
@@ -233,6 +234,7 @@ const T = {
     defects: "defects", across: "across",
   },
   "it": {
+    tabPip: "PIP Tracker", pipTitle: "PIP — settimana di valutazione", pipDataThrough: "dati fino al", pipDaysIn: "giorni nei dati", pipLag: "Lighthouse pubblica con ~2 giorni di ritardo", pipWtd: "Settimana in corso", pipWeekResult: "Settimana completa", pipDefects: "difetti", pipOrders: "Ordini", pipMax: "Massimo per la settimana", pipForecast: "ordini previsti", pipLeft: "rimasti", pipOnRemaining: "sugli ordini rimanenti", pipOver: "oltre il budget di", pipForecastNote: "Budget = obiettivo × ordini previsti per l'intera settimana; previsione = ordini già nei dati + volume della settimana precedente negli stessi giorni ancora da fare. I conteggi dei difetti derivano dal % giornaliero di Lighthouse × ordini.", pipByStation: "Per stazione", pipTotal: "Totale", pipByDay: "Giorno per giorno", pipDay: "Giorno", pipDayNote: "Tra parentesi = ordini difettosi del giorno. Rosso = sopra l'obiettivo, verde = entro.", pipQuality: "Report qualità — ultime 5 settimane", pipMetric: "Metrica", pipTrend: "Trend", pipWow: "Δ WoW", pipQualityNote: "* settimana in corso. Obiettivi: obiettivi mensili Amazon per le cinque metriche chiave; FOND OC, FTPDF PP e F/P DNR dai target del Quality Report di Amazon. Δ WoW in punti base vs la settimana precedente. RFC è la metrica Lighthouse a livello di rotta.", pipNoDaily: "ancora nessun dato giornaliero — esegui l'aggiornamento giornaliero",
     tabGoals: "Scorecard", scNetwork: "Rete", scSource: "Amazon Lighthouse · settimanale · obiettivo vs effettivo", scWeek: "SETTIMANA", scPartial: "parziale", scPartialNote: "settimana parziale — dati fino all'ultimo aggiornamento",
     scGoal: "Obiettivo", scActual: "Effettivo", scTarget: "target", scRadarNote: "ogni asse = effettivo ÷ obiettivo (obiettivo = pentagono interno)", scOrders: "ordini", scNoRca: "nessun ordine attribuito per questa metrica",
     scDefectiveOrders: "Ordini con questo difetto nella settimana", scKeyMetrics: "Metriche chiave", scCatRouting: "Routing", scCatVolume: "Volumi", scCatPunctuality: "Puntualità",
@@ -287,6 +289,7 @@ const T = {
     defects: "difetti", across: "su",
   },
   "es": {
+    tabPip: "PIP Tracker", pipTitle: "PIP — semana de evaluación", pipDataThrough: "datos hasta el", pipDaysIn: "días en los datos", pipLag: "Lighthouse publica con ~2 días de retraso", pipWtd: "Semana en curso", pipWeekResult: "Semana completa", pipDefects: "defectos", pipOrders: "Pedidos", pipMax: "Máximo de la semana", pipForecast: "pedidos previstos", pipLeft: "disponibles", pipOnRemaining: "sobre los pedidos restantes", pipOver: "por encima del presupuesto en", pipForecastNote: "Presupuesto = objetivo × pedidos previstos de la semana completa; previsión = pedidos ya en los datos + volumen de la semana anterior en los días que faltan. Los recuentos de defectos se recuperan del % diario de Lighthouse × pedidos.", pipByStation: "Por estación", pipTotal: "Total", pipByDay: "Día a día", pipDay: "Día", pipDayNote: "Entre paréntesis = pedidos con defecto ese día. Rojo = por encima del objetivo, verde = dentro.", pipQuality: "Informe de calidad — últimas 5 semanas", pipMetric: "Métrica", pipTrend: "Tendencia", pipWow: "Δ WoW", pipQualityNote: "* semana en curso. Objetivos: objetivos mensuales de Amazon para las cinco métricas clave; FOND OC, FTPDF PP y F/P DNR de los targets del Quality Report de Amazon. Δ WoW en puntos básicos vs la semana anterior. RFC es la métrica de Lighthouse a nivel de ruta.", pipNoDaily: "aún no hay datos diarios — ejecuta la actualización diaria",
     tabGoals: "Scorecard", scNetwork: "Red", scSource: "Amazon Lighthouse · semanal · objetivo vs real", scWeek: "SEMANA", scPartial: "parcial", scPartialNote: "semana parcial — datos hasta la última actualización",
     scGoal: "Objetivo", scActual: "Real", scTarget: "target", scRadarNote: "cada eje = real ÷ objetivo (objetivo = pentágono interior)", scOrders: "pedidos", scNoRca: "sin pedidos atribuidos para esta métrica",
     scDefectiveOrders: "Pedidos con este defecto en la semana", scKeyMetrics: "Métricas clave", scCatRouting: "Routing", scCatVolume: "Volumen", scCatPunctuality: "Puntualidad",
@@ -1448,6 +1451,267 @@ function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeek
   );
 }
 
+// ─── DAILY — métricas diarias (últimas semanas) por estación y red — generado por scripts/lighthouse_to_dashboard.py ──
+// DAILY["YYYY-MM-DD"][estación|NETWORK] = { o: pedidos, r: rutas, late, ftfdf, fond (FOND OC), ftpdf, ftdc, pdnr, fdnr, miss, dmg, rfc (en %) }
+const DAILY = {
+"2026-09-13":{"NETWORK":{"dmg":1.85,"fdnr":0.21,"fond":0.51,"ftdc":0.21,"ftfdf":2.06,"ftpdf":1.23,"late":1.03,"miss":3.19,"o":972,"pdnr":1.23,"r":216,"rfc":95.83},"UBA1":{"dmg":0.0,"fdnr":0.0,"fond":0.0,"ftdc":1.56,"ftfdf":4.69,"ftpdf":0.0,"late":0.0,"miss":0.0,"o":64,"pdnr":3.12,"r":15,"rfc":100.0},"UIL7":{"dmg":0.0,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":1.11,"late":4.44,"miss":2.22,"o":90,"pdnr":2.22,"r":12,"rfc":100.0},"UIT1":{"dmg":1.79,"fdnr":0.0,"fond":0.36,"ftdc":0.36,"ftfdf":1.79,"ftpdf":1.08,"late":0.36,"miss":1.79,"o":279,"pdnr":0.36,"r":57,"rfc":100.0},"UIT4":{"dmg":2.41,"fdnr":0.37,"fond":0.74,"ftdc":0.0,"ftfdf":2.23,"ftpdf":1.48,"late":0.93,"miss":4.45,"o":539,"pdnr":1.3,"r":132,"rfc":87.5}},
+"2026-09-14":{"NETWORK":{"dmg":1.66,"fdnr":0.08,"fond":0.42,"ftdc":0.0,"ftfdf":1.58,"ftpdf":1.75,"late":4.07,"miss":2.99,"o":1203,"pdnr":0.42,"r":251,"rfc":100.0},"UBA1":{"dmg":0.0,"fdnr":0.0,"fond":1.27,"ftdc":0.0,"ftfdf":3.8,"ftpdf":0.0,"late":0.0,"miss":3.8,"o":79,"pdnr":0.0,"r":17,"rfc":100.0},"UIL7":{"dmg":1.11,"fdnr":0.0,"fond":1.11,"ftdc":0.0,"ftfdf":1.11,"ftpdf":0.0,"late":11.11,"miss":2.22,"o":90,"pdnr":0.0,"r":12,"rfc":100.0},"UIT1":{"dmg":1.06,"fdnr":0.0,"fond":0.8,"ftdc":0.0,"ftfdf":1.06,"ftpdf":1.06,"late":1.06,"miss":0.8,"o":376,"pdnr":0.0,"r":71,"rfc":100.0},"UIT4":{"dmg":2.28,"fdnr":0.15,"fond":0.0,"ftdc":0.0,"ftfdf":1.67,"ftpdf":2.58,"late":5.32,"miss":4.26,"o":658,"pdnr":0.76,"r":151,"rfc":100.0}},
+"2026-09-15":{"NETWORK":{"dmg":1.8,"fdnr":0.18,"fond":1.08,"ftdc":0.18,"ftfdf":2.07,"ftpdf":1.08,"late":4.05,"miss":2.52,"o":1112,"pdnr":0.54,"r":239,"rfc":100.0},"UBA1":{"dmg":2.82,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":1.41,"late":0.0,"miss":0.0,"o":71,"pdnr":0.0,"r":15,"rfc":100.0},"UIL7":{"dmg":0.96,"fdnr":0.0,"fond":1.92,"ftdc":0.0,"ftfdf":2.88,"ftpdf":1.92,"late":10.58,"miss":0.0,"o":104,"pdnr":0.0,"r":13,"rfc":100.0},"UIT1":{"dmg":0.91,"fdnr":0.0,"fond":1.52,"ftdc":0.61,"ftfdf":2.74,"ftpdf":0.91,"late":2.74,"miss":1.22,"o":328,"pdnr":0.0,"r":66,"rfc":100.0},"UIT4":{"dmg":2.3,"fdnr":0.33,"fond":0.82,"ftdc":0.0,"ftfdf":1.81,"ftpdf":0.99,"late":4.11,"miss":3.94,"o":609,"pdnr":0.99,"r":145,"rfc":100.0}},
+"2026-09-16":{"NETWORK":{"dmg":1.35,"fdnr":0.1,"fond":0.96,"ftdc":0.19,"ftfdf":2.02,"ftpdf":1.15,"late":1.54,"miss":2.98,"o":1039,"pdnr":1.15,"r":230,"rfc":100.0},"UBA1":{"dmg":4.29,"fdnr":0.0,"fond":1.43,"ftdc":0.0,"ftfdf":2.86,"ftpdf":0.0,"late":0.0,"miss":2.86,"o":70,"pdnr":1.43,"r":14,"rfc":100.0},"UIL7":{"dmg":1.18,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":1.18,"ftpdf":0.0,"late":3.53,"miss":0.0,"o":85,"pdnr":2.35,"r":13,"rfc":100.0},"UIT1":{"dmg":0.94,"fdnr":0.31,"fond":1.25,"ftdc":0.0,"ftfdf":1.88,"ftpdf":0.62,"late":0.94,"miss":2.5,"o":320,"pdnr":0.31,"r":64,"rfc":100.0},"UIT4":{"dmg":1.24,"fdnr":0.0,"fond":0.89,"ftdc":0.35,"ftfdf":2.13,"ftpdf":1.77,"late":1.77,"miss":3.72,"o":564,"pdnr":1.42,"r":139,"rfc":100.0}},
+"2026-09-17":{"NETWORK":{"dmg":2.24,"fdnr":0.39,"fond":1.07,"ftdc":0.1,"ftfdf":2.24,"ftpdf":1.46,"late":3.7,"miss":3.99,"o":1028,"pdnr":1.75,"r":234,"rfc":100.0},"UBA1":{"dmg":1.39,"fdnr":2.78,"fond":5.56,"ftdc":0.0,"ftfdf":5.56,"ftpdf":0.0,"late":0.0,"miss":5.56,"o":72,"pdnr":1.39,"r":14,"rfc":100.0},"UIL7":{"dmg":1.96,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":0.98,"late":11.76,"miss":4.9,"o":102,"pdnr":1.96,"r":13,"rfc":100.0},"UIT1":{"dmg":1.03,"fdnr":0.0,"fond":1.03,"ftdc":0.0,"ftfdf":2.41,"ftpdf":1.38,"late":3.45,"miss":1.03,"o":290,"pdnr":1.38,"r":58,"rfc":100.0},"UIT4":{"dmg":3.01,"fdnr":0.35,"fond":0.71,"ftdc":0.18,"ftfdf":2.13,"ftpdf":1.77,"late":2.84,"miss":5.14,"o":564,"pdnr":1.95,"r":149,"rfc":100.0}},
+"2026-09-18":{"NETWORK":{"dmg":1.49,"fdnr":0.19,"fond":1.02,"ftdc":0.19,"ftfdf":3.07,"ftpdf":2.88,"late":4.46,"miss":3.16,"o":1076,"pdnr":1.21,"r":236,"rfc":92.0},"UBA1":{"dmg":1.47,"fdnr":0.0,"fond":1.47,"ftdc":0.0,"ftfdf":1.47,"ftpdf":1.47,"late":1.47,"miss":0.0,"o":68,"pdnr":0.0,"r":12,"rfc":100.0},"UIL7":{"dmg":1.1,"fdnr":0.0,"fond":1.1,"ftdc":0.0,"ftfdf":1.1,"ftpdf":1.1,"late":2.2,"miss":2.2,"o":91,"pdnr":0.0,"r":13,"rfc":100.0},"UIT1":{"dmg":1.39,"fdnr":0.0,"fond":1.04,"ftdc":0.0,"ftfdf":3.12,"ftpdf":0.69,"late":0.35,"miss":1.39,"o":288,"pdnr":0.35,"r":59,"rfc":100.0},"UIT4":{"dmg":1.59,"fdnr":0.32,"fond":0.95,"ftdc":0.32,"ftfdf":3.5,"ftpdf":4.29,"late":7.0,"miss":4.45,"o":629,"pdnr":1.91,"r":152,"rfc":75.0}},
+"2026-09-19":{"NETWORK":{"dmg":2.04,"fdnr":0.29,"fond":0.97,"ftdc":0.29,"ftfdf":2.82,"ftpdf":1.75,"late":1.17,"miss":3.7,"o":1028,"pdnr":1.17,"r":223,"rfc":96.0},"UBA1":{"dmg":1.33,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":4.0,"ftpdf":1.33,"late":0.0,"miss":1.33,"o":75,"pdnr":2.67,"r":16,"rfc":83.33},"UIL7":{"dmg":3.09,"fdnr":0.0,"fond":1.03,"ftdc":0.0,"ftfdf":1.03,"ftpdf":2.06,"late":2.06,"miss":3.09,"o":97,"pdnr":1.03,"r":13,"rfc":100.0},"UIT1":{"dmg":2.65,"fdnr":0.38,"fond":1.14,"ftdc":0.38,"ftfdf":2.65,"ftpdf":1.52,"late":1.52,"miss":1.89,"o":264,"pdnr":0.76,"r":53,"rfc":100.0},"UIT4":{"dmg":1.69,"fdnr":0.34,"fond":1.01,"ftdc":0.34,"ftfdf":3.04,"ftpdf":1.86,"late":1.01,"miss":4.9,"o":592,"pdnr":1.18,"r":141,"rfc":100.0}},
+"2026-09-20":{"NETWORK":{"dmg":2.58,"fdnr":0.2,"fond":0.99,"ftdc":0.5,"ftfdf":2.58,"ftpdf":1.19,"late":1.19,"miss":3.07,"o":1009,"pdnr":1.19,"r":213,"rfc":100.0},"UBA1":{"dmg":1.56,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":1.56,"ftpdf":0.0,"late":0.0,"miss":0.0,"o":64,"pdnr":1.56,"r":15,"rfc":100.0},"UIL7":{"dmg":2.47,"fdnr":0.0,"fond":1.23,"ftdc":0.0,"ftfdf":2.47,"ftpdf":1.23,"late":2.47,"miss":6.17,"o":81,"pdnr":1.23,"r":11,"rfc":100.0},"UIT1":{"dmg":1.75,"fdnr":0.0,"fond":0.7,"ftdc":0.0,"ftfdf":2.11,"ftpdf":1.05,"late":0.0,"miss":0.7,"o":285,"pdnr":0.35,"r":60,"rfc":100.0},"UIT4":{"dmg":3.11,"fdnr":0.35,"fond":1.21,"ftdc":0.86,"ftfdf":2.94,"ftpdf":1.38,"late":1.73,"miss":4.15,"o":579,"pdnr":1.55,"r":127,"rfc":100.0}},
+"2026-09-21":{"NETWORK":{"dmg":1.38,"fdnr":0.08,"fond":0.81,"ftdc":0.08,"ftfdf":1.87,"ftpdf":1.63,"late":3.01,"miss":1.71,"o":1228,"pdnr":0.65,"r":264,"rfc":96.0},"UBA1":{"dmg":1.16,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":0.0,"late":0.0,"miss":3.49,"o":86,"pdnr":2.33,"r":20,"rfc":100.0},"UIL7":{"dmg":0.0,"fdnr":0.85,"fond":0.0,"ftdc":0.0,"ftfdf":0.85,"ftpdf":0.0,"late":6.84,"miss":0.0,"o":117,"pdnr":0.85,"r":16,"rfc":100.0},"UIT1":{"dmg":1.01,"fdnr":0.0,"fond":0.76,"ftdc":0.25,"ftfdf":1.76,"ftpdf":2.02,"late":2.02,"miss":1.26,"o":397,"pdnr":0.0,"r":84,"rfc":100.0},"UIT4":{"dmg":1.91,"fdnr":0.0,"fond":1.11,"ftdc":0.0,"ftfdf":2.39,"ftpdf":1.91,"late":3.34,"miss":2.07,"o":628,"pdnr":0.8,"r":144,"rfc":87.5}},
+"2026-09-22":{"NETWORK":{"dmg":2.33,"fdnr":0.09,"fond":0.93,"ftdc":0.19,"ftfdf":2.15,"ftpdf":1.21,"late":1.96,"miss":2.8,"o":1071,"pdnr":1.49,"r":228,"rfc":96.0},"UBA1":{"dmg":1.59,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":0.0,"late":0.0,"miss":1.59,"o":63,"pdnr":0.0,"r":13,"rfc":100.0},"UIL7":{"dmg":1.94,"fdnr":0.0,"fond":0.97,"ftdc":0.0,"ftfdf":1.94,"ftpdf":0.97,"late":1.94,"miss":2.91,"o":103,"pdnr":0.97,"r":15,"rfc":100.0},"UIT1":{"dmg":2.07,"fdnr":0.0,"fond":1.78,"ftdc":0.0,"ftfdf":2.66,"ftpdf":0.59,"late":0.3,"miss":1.18,"o":338,"pdnr":1.18,"r":67,"rfc":100.0},"UIT4":{"dmg":2.65,"fdnr":0.18,"fond":0.53,"ftdc":0.35,"ftfdf":2.12,"ftpdf":1.76,"late":3.17,"miss":3.88,"o":567,"pdnr":1.94,"r":133,"rfc":87.5}},
+"2026-09-23":{"NETWORK":{"dmg":1.59,"fdnr":0.09,"fond":1.12,"ftdc":0.56,"ftfdf":2.9,"ftpdf":1.59,"late":2.34,"miss":2.9,"o":1068,"pdnr":1.03,"r":230,"rfc":96.0},"UBA1":{"dmg":2.7,"fdnr":1.35,"fond":2.7,"ftdc":0.0,"ftfdf":4.05,"ftpdf":2.7,"late":1.35,"miss":1.35,"o":74,"pdnr":1.35,"r":15,"rfc":100.0},"UIL7":{"dmg":1.01,"fdnr":0.0,"fond":1.01,"ftdc":0.0,"ftfdf":2.02,"ftpdf":0.0,"late":2.02,"miss":4.04,"o":99,"pdnr":1.01,"r":13,"rfc":66.67},"UIT1":{"dmg":1.23,"fdnr":0.0,"fond":0.61,"ftdc":0.0,"ftfdf":3.37,"ftpdf":0.92,"late":2.15,"miss":1.84,"o":326,"pdnr":0.31,"r":69,"rfc":100.0},"UIT4":{"dmg":1.76,"fdnr":0.0,"fond":1.23,"ftdc":1.05,"ftfdf":2.64,"ftpdf":2.11,"late":2.64,"miss":3.51,"o":569,"pdnr":1.41,"r":133,"rfc":100.0}},
+"2026-09-24":{"NETWORK":{"dmg":1.76,"fdnr":0.21,"fond":0.83,"ftdc":0.31,"ftfdf":2.17,"ftpdf":1.34,"late":2.17,"miss":2.79,"o":967,"pdnr":0.72,"r":228,"rfc":88.0},"UBA1":{"dmg":1.69,"fdnr":0.0,"fond":1.69,"ftdc":0.0,"ftfdf":3.39,"ftpdf":0.0,"late":5.08,"miss":3.39,"o":59,"pdnr":3.39,"r":13,"rfc":100.0},"UIL7":{"dmg":2.35,"fdnr":0.0,"fond":1.18,"ftdc":0.0,"ftfdf":2.35,"ftpdf":1.18,"late":3.53,"miss":2.35,"o":85,"pdnr":0.0,"r":12,"rfc":33.33},"UIT1":{"dmg":1.37,"fdnr":0.34,"fond":0.68,"ftdc":0.0,"ftfdf":1.02,"ftpdf":1.37,"late":1.37,"miss":1.37,"o":293,"pdnr":0.34,"r":69,"rfc":100.0},"UIT4":{"dmg":1.89,"fdnr":0.19,"fond":0.75,"ftdc":0.57,"ftfdf":2.64,"ftpdf":1.51,"late":2.08,"miss":3.58,"o":530,"pdnr":0.75,"r":134,"rfc":87.5}},
+"2026-09-25":{"NETWORK":{"dmg":1.51,"fdnr":0.19,"fond":0.85,"ftdc":0.09,"ftfdf":2.36,"ftpdf":1.7,"late":3.39,"miss":4.15,"o":1061,"pdnr":1.32,"r":230,"rfc":100.0},"UBA1":{"dmg":1.64,"fdnr":0.0,"fond":4.92,"ftdc":0.0,"ftfdf":4.92,"ftpdf":0.0,"late":0.0,"miss":4.92,"o":61,"pdnr":0.0,"r":12,"rfc":100.0},"UIL7":{"dmg":0.0,"fdnr":0.0,"fond":2.41,"ftdc":0.0,"ftfdf":2.41,"ftpdf":1.2,"late":3.61,"miss":4.82,"o":83,"pdnr":1.2,"r":13,"rfc":100.0},"UIT1":{"dmg":0.99,"fdnr":0.33,"fond":0.99,"ftdc":0.0,"ftfdf":2.31,"ftpdf":0.66,"late":1.65,"miss":2.31,"o":303,"pdnr":0.66,"r":61,"rfc":100.0},"UIT4":{"dmg":1.95,"fdnr":0.16,"fond":0.16,"ftdc":0.16,"ftfdf":2.12,"ftpdf":2.44,"late":4.56,"miss":4.89,"o":614,"pdnr":1.79,"r":144,"rfc":100.0}},
+"2026-09-26":{"NETWORK":{"dmg":2.19,"fdnr":0.4,"fond":0.5,"ftdc":0.0,"ftfdf":1.69,"ftpdf":0.99,"late":2.39,"miss":3.48,"o":1006,"pdnr":0.8,"r":206,"rfc":96.0},"UBA1":{"dmg":3.28,"fdnr":1.64,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":1.64,"late":0.0,"miss":4.92,"o":61,"pdnr":0.0,"r":13,"rfc":100.0},"UIL7":{"dmg":1.16,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":2.33,"late":2.33,"miss":1.16,"o":86,"pdnr":1.16,"r":12,"rfc":100.0},"UIT1":{"dmg":2.24,"fdnr":0.0,"fond":0.75,"ftdc":0.0,"ftfdf":2.99,"ftpdf":0.37,"late":1.87,"miss":1.87,"o":268,"pdnr":0.0,"r":56,"rfc":100.0},"UIT4":{"dmg":2.2,"fdnr":0.51,"fond":0.51,"ftdc":0.0,"ftfdf":1.52,"ftpdf":1.02,"late":2.88,"miss":4.4,"o":591,"pdnr":1.18,"r":125,"rfc":87.5}},
+"2026-09-27":{"NETWORK":{"dmg":2.24,"fdnr":0.1,"fond":0.92,"ftdc":0.1,"ftfdf":2.75,"ftpdf":2.14,"late":1.32,"miss":3.77,"o":982,"pdnr":0.51,"r":206,"rfc":91.67},"UBA1":{"dmg":2.04,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":2.04,"ftpdf":0.0,"late":0.0,"miss":6.12,"o":49,"pdnr":0.0,"r":10,"rfc":100.0},"UIL7":{"dmg":2.25,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":1.12,"late":1.12,"miss":2.25,"o":89,"pdnr":0.0,"r":13,"rfc":33.33},"UIT1":{"dmg":0.0,"fdnr":0.0,"fond":0.73,"ftdc":0.0,"ftfdf":2.92,"ftpdf":1.09,"late":0.0,"miss":2.19,"o":274,"pdnr":0.36,"r":60,"rfc":100.0},"UIT4":{"dmg":3.33,"fdnr":0.18,"fond":1.23,"ftdc":0.18,"ftfdf":3.16,"ftpdf":2.98,"late":2.11,"miss":4.56,"o":570,"pdnr":0.7,"r":123,"rfc":100.0}},
+"2026-09-28":{"NETWORK":{"dmg":1.42,"fdnr":0.08,"fond":0.59,"ftdc":0.08,"ftfdf":1.93,"ftpdf":2.68,"late":1.34,"miss":2.68,"o":1194,"pdnr":0.67,"r":262,"rfc":96.0},"UBA1":{"dmg":2.15,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":1.08,"ftpdf":2.15,"late":1.08,"miss":2.15,"o":93,"pdnr":1.08,"r":20,"rfc":100.0},"UIL7":{"dmg":3.09,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":2.06,"ftpdf":4.12,"late":6.19,"miss":4.12,"o":97,"pdnr":0.0,"r":15,"rfc":100.0},"UIT1":{"dmg":1.29,"fdnr":0.0,"fond":0.26,"ftdc":0.0,"ftfdf":1.55,"ftpdf":1.29,"late":0.26,"miss":1.03,"o":388,"pdnr":1.03,"r":84,"rfc":100.0},"UIT4":{"dmg":1.14,"fdnr":0.16,"fond":0.97,"ftdc":0.16,"ftfdf":2.27,"ftpdf":3.41,"late":1.3,"miss":3.57,"o":616,"pdnr":0.49,"r":143,"rfc":87.5}},
+"2026-09-29":{"NETWORK":{"dmg":2.64,"fdnr":0.18,"fond":0.46,"ftdc":0.36,"ftfdf":1.73,"ftpdf":2.37,"late":1.09,"miss":2.73,"o":1097,"pdnr":1.0,"r":235,"rfc":88.0},"UBA1":{"dmg":1.14,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":1.14,"ftpdf":1.14,"late":0.0,"miss":2.27,"o":88,"pdnr":1.14,"r":18,"rfc":100.0},"UIL7":{"dmg":1.03,"fdnr":0.0,"fond":2.06,"ftdc":0.0,"ftfdf":2.06,"ftpdf":1.03,"late":1.03,"miss":4.12,"o":97,"pdnr":1.03,"r":14,"rfc":66.67},"UIT1":{"dmg":1.76,"fdnr":0.0,"fond":0.29,"ftdc":0.0,"ftfdf":1.18,"ftpdf":2.06,"late":1.47,"miss":2.06,"o":340,"pdnr":0.88,"r":69,"rfc":100.0},"UIT4":{"dmg":3.67,"fdnr":0.35,"fond":0.35,"ftdc":0.7,"ftfdf":2.1,"ftpdf":2.97,"late":1.05,"miss":2.97,"o":572,"pdnr":1.05,"r":134,"rfc":75.0}},
+"2026-09-30":{"NETWORK":{"dmg":2.19,"fdnr":0.2,"fond":0.6,"ftdc":0.5,"ftfdf":1.89,"ftpdf":1.6,"late":2.69,"miss":1.99,"o":1003,"pdnr":0.5,"r":219,"rfc":92.0},"UBA1":{"dmg":1.45,"fdnr":0.0,"fond":1.45,"ftdc":0.0,"ftfdf":1.45,"ftpdf":0.0,"late":1.45,"miss":2.9,"o":69,"pdnr":0.0,"r":14,"rfc":100.0},"UIL7":{"dmg":2.04,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":1.02,"ftpdf":3.06,"late":4.08,"miss":1.02,"o":98,"pdnr":0.0,"r":15,"rfc":66.67},"UIT1":{"dmg":2.61,"fdnr":0.0,"fond":0.98,"ftdc":0.0,"ftfdf":2.28,"ftpdf":1.63,"late":1.63,"miss":0.98,"o":307,"pdnr":0.98,"r":68,"rfc":100.0},"UIT4":{"dmg":2.08,"fdnr":0.38,"fond":0.38,"ftdc":0.95,"ftfdf":1.89,"ftpdf":1.51,"late":3.21,"miss":2.65,"o":529,"pdnr":0.38,"r":122,"rfc":87.5}},
+"2026-10-01":{"NETWORK":{"dmg":1.92,"fdnr":0.1,"fond":0.67,"ftdc":0.0,"ftfdf":1.34,"ftpdf":1.06,"late":1.92,"miss":2.69,"o":1042,"pdnr":0.86,"r":215,"rfc":92.0},"UBA1":{"dmg":1.69,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":3.39,"late":1.69,"miss":6.78,"o":59,"pdnr":5.08,"r":12,"rfc":100.0},"UIL7":{"dmg":0.94,"fdnr":0.0,"fond":1.89,"ftdc":0.0,"ftfdf":1.89,"ftpdf":0.94,"late":13.21,"miss":0.94,"o":106,"pdnr":0.0,"r":15,"rfc":66.67},"UIT1":{"dmg":0.63,"fdnr":0.0,"fond":0.32,"ftdc":0.0,"ftfdf":1.27,"ftpdf":0.32,"late":0.32,"miss":1.59,"o":315,"pdnr":0.0,"r":64,"rfc":100.0},"UIT4":{"dmg":2.85,"fdnr":0.18,"fond":0.71,"ftdc":0.0,"ftfdf":1.42,"ftpdf":1.25,"late":0.71,"miss":3.2,"o":562,"pdnr":1.07,"r":124,"rfc":87.5}},
+"2026-10-02":{"NETWORK":{"dmg":1.57,"fdnr":0.37,"fond":0.74,"ftdc":0.0,"ftfdf":2.21,"ftpdf":1.57,"late":2.68,"miss":3.6,"o":1084,"pdnr":1.38,"r":236,"rfc":100.0},"UBA1":{"dmg":1.43,"fdnr":1.43,"fond":0.0,"ftdc":0.0,"ftfdf":1.43,"ftpdf":1.43,"late":7.14,"miss":2.86,"o":70,"pdnr":2.86,"r":13,"rfc":100.0},"UIL7":{"dmg":1.02,"fdnr":0.0,"fond":1.02,"ftdc":0.0,"ftfdf":2.04,"ftpdf":0.0,"late":4.08,"miss":1.02,"o":98,"pdnr":0.0,"r":15,"rfc":100.0},"UIT1":{"dmg":1.97,"fdnr":0.0,"fond":0.33,"ftdc":0.0,"ftfdf":0.66,"ftpdf":0.33,"late":1.64,"miss":1.97,"o":304,"pdnr":0.33,"r":61,"rfc":100.0},"UIT4":{"dmg":1.47,"fdnr":0.49,"fond":0.98,"ftdc":0.0,"ftfdf":3.1,"ftpdf":2.45,"late":2.45,"miss":4.9,"o":612,"pdnr":1.96,"r":147,"rfc":100.0}},
+"2026-10-03":{"NETWORK":{"dmg":2.63,"fdnr":0.38,"fond":1.13,"ftdc":0.0,"ftfdf":3.2,"ftpdf":1.41,"late":2.16,"miss":3.38,"o":1064,"pdnr":1.6,"r":212,"rfc":84.0},"UBA1":{"dmg":2.82,"fdnr":1.41,"fond":1.41,"ftdc":0.0,"ftfdf":2.82,"ftpdf":0.0,"late":0.0,"miss":1.41,"o":71,"pdnr":0.0,"r":16,"rfc":100.0},"UIL7":{"dmg":2.54,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.85,"ftpdf":1.69,"late":3.39,"miss":0.0,"o":118,"pdnr":0.0,"r":14,"rfc":66.67},"UIT1":{"dmg":1.09,"fdnr":0.0,"fond":1.45,"ftdc":0.0,"ftfdf":3.27,"ftpdf":1.09,"late":2.18,"miss":2.91,"o":275,"pdnr":0.36,"r":53,"rfc":100.0},"UIT4":{"dmg":3.33,"fdnr":0.5,"fond":1.17,"ftdc":0.0,"ftfdf":3.67,"ftpdf":1.67,"late":2.17,"miss":4.5,"o":600,"pdnr":2.67,"r":129,"rfc":62.5}},
+"2026-10-04":{"NETWORK":{"dmg":3.21,"fdnr":0.46,"fond":0.61,"ftdc":0.0,"ftfdf":1.83,"ftpdf":0.46,"late":0.92,"miss":3.52,"o":654,"pdnr":0.76,"r":127,"rfc":100.0},"UBA1":{"dmg":0.0,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":3.23,"ftpdf":0.0,"late":0.0,"miss":3.23,"o":31,"pdnr":0.0,"r":6,"rfc":100.0},"UIL7":{"dmg":4.44,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":2.22,"late":11.11,"miss":2.22,"o":45,"pdnr":2.22,"r":5,"rfc":100.0},"UIT1":{"dmg":1.42,"fdnr":0.0,"fond":0.95,"ftdc":0.0,"ftfdf":3.32,"ftpdf":0.0,"late":0.0,"miss":0.95,"o":211,"pdnr":0.47,"r":42,"rfc":100.0},"UIT4":{"dmg":4.36,"fdnr":0.82,"fond":0.54,"ftdc":0.0,"ftfdf":1.09,"ftpdf":0.54,"late":0.27,"miss":5.18,"o":367,"pdnr":0.82,"r":74,"rfc":100.0}},
+"2026-10-05":{"NETWORK":{"dmg":1.33,"fdnr":0.08,"fond":0.78,"ftdc":0.31,"ftfdf":1.8,"ftpdf":1.73,"late":2.9,"miss":2.27,"o":1275,"pdnr":1.18,"r":269,"rfc":96.0},"UBA1":{"dmg":1.01,"fdnr":0.0,"fond":2.02,"ftdc":0.0,"ftfdf":4.04,"ftpdf":1.01,"late":0.0,"miss":0.0,"o":99,"pdnr":1.01,"r":20,"rfc":100.0},"UIL7":{"dmg":1.6,"fdnr":0.8,"fond":0.0,"ftdc":0.0,"ftfdf":1.6,"ftpdf":0.0,"late":5.6,"miss":1.6,"o":125,"pdnr":1.6,"r":15,"rfc":100.0},"UIT1":{"dmg":0.77,"fdnr":0.0,"fond":0.26,"ftdc":0.0,"ftfdf":0.77,"ftpdf":0.0,"late":1.53,"miss":1.79,"o":392,"pdnr":0.51,"r":80,"rfc":100.0},"UIT4":{"dmg":1.67,"fdnr":0.0,"fond":1.06,"ftdc":0.61,"ftfdf":2.12,"ftpdf":3.19,"late":3.64,"miss":3.03,"o":659,"pdnr":1.52,"r":154,"rfc":87.5}},
+"2026-10-06":{"NETWORK":{"dmg":1.58,"fdnr":0.09,"fond":0.7,"ftdc":0.18,"ftfdf":2.19,"ftpdf":1.31,"late":2.37,"miss":2.19,"o":1141,"pdnr":0.44,"r":242,"rfc":92.0},"UBA1":{"dmg":3.57,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":1.79,"late":1.79,"miss":0.0,"o":56,"pdnr":0.0,"r":13,"rfc":100.0},"UIL7":{"dmg":0.0,"fdnr":0.91,"fond":1.82,"ftdc":0.0,"ftfdf":3.64,"ftpdf":0.91,"late":15.45,"miss":3.64,"o":110,"pdnr":0.0,"r":14,"rfc":66.67},"UIT1":{"dmg":0.83,"fdnr":0.0,"fond":1.1,"ftdc":0.28,"ftfdf":1.93,"ftpdf":0.28,"late":1.66,"miss":0.83,"o":362,"pdnr":0.0,"r":74,"rfc":100.0},"UIT4":{"dmg":2.12,"fdnr":0.0,"fond":0.33,"ftdc":0.16,"ftfdf":2.28,"ftpdf":1.96,"late":0.49,"miss":2.94,"o":613,"pdnr":0.82,"r":141,"rfc":87.5}},
+"2026-10-07":{"NETWORK":{"dmg":2.97,"fdnr":0.0,"fond":0.46,"ftdc":0.0,"ftfdf":2.13,"ftpdf":0.83,"late":2.32,"miss":2.88,"o":1078,"pdnr":0.28,"r":220,"rfc":100.0},"UBA1":{"dmg":3.66,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":1.22,"ftpdf":2.44,"late":4.88,"miss":0.0,"o":82,"pdnr":0.0,"r":16,"rfc":100.0},"UIL7":{"dmg":1.59,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.79,"ftpdf":0.0,"late":5.56,"miss":0.79,"o":126,"pdnr":0.0,"r":15,"rfc":100.0},"UIT1":{"dmg":3.58,"fdnr":0.0,"fond":0.6,"ftdc":0.0,"ftfdf":3.58,"ftpdf":0.9,"late":2.39,"miss":2.39,"o":335,"pdnr":0.0,"r":69,"rfc":100.0},"UIT4":{"dmg":2.8,"fdnr":0.0,"fond":0.56,"ftdc":0.0,"ftfdf":1.68,"ftpdf":0.75,"late":1.12,"miss":4.11,"o":535,"pdnr":0.56,"r":120,"rfc":100.0}},
+"2026-10-08":{"NETWORK":{"dmg":1.73,"fdnr":0.0,"fond":0.81,"ftdc":0.0,"ftfdf":2.94,"ftpdf":1.42,"late":1.83,"miss":2.13,"o":985,"pdnr":0.61,"r":221,"rfc":100.0},"UBA1":{"dmg":0.0,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":0.0,"late":0.0,"miss":0.0,"o":63,"pdnr":0.0,"r":14,"rfc":100.0},"UIL7":{"dmg":0.83,"fdnr":0.0,"fond":0.83,"ftdc":0.0,"ftfdf":0.83,"ftpdf":0.83,"late":2.5,"miss":2.5,"o":120,"pdnr":0.0,"r":14,"rfc":100.0},"UIT1":{"dmg":2.38,"fdnr":0.0,"fond":0.68,"ftdc":0.0,"ftfdf":2.38,"ftpdf":0.34,"late":1.02,"miss":1.36,"o":294,"pdnr":0.0,"r":60,"rfc":100.0},"UIT4":{"dmg":1.77,"fdnr":0.0,"fond":0.98,"ftdc":0.0,"ftfdf":4.13,"ftpdf":2.36,"late":2.36,"miss":2.76,"o":508,"pdnr":1.18,"r":133,"rfc":100.0}},
+"2026-10-09":{"NETWORK":{"dmg":1.66,"fdnr":0.09,"fond":0.83,"ftdc":0.09,"ftfdf":1.75,"ftpdf":0.74,"late":3.96,"miss":2.4,"o":1085,"pdnr":0.92,"r":224,"rfc":100.0},"UBA1":{"dmg":1.39,"fdnr":0.0,"fond":2.78,"ftdc":0.0,"ftfdf":2.78,"ftpdf":1.39,"late":4.17,"miss":1.39,"o":72,"pdnr":2.78,"r":13,"rfc":100.0},"UIL7":{"dmg":0.0,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":2.48,"late":5.79,"miss":0.0,"o":121,"pdnr":0.0,"r":14,"rfc":100.0},"UIT1":{"dmg":1.82,"fdnr":0.3,"fond":0.61,"ftdc":0.0,"ftfdf":2.12,"ftpdf":0.3,"late":0.61,"miss":2.12,"o":330,"pdnr":0.91,"r":68,"rfc":100.0},"UIT4":{"dmg":1.96,"fdnr":0.0,"fond":0.89,"ftdc":0.18,"ftfdf":1.78,"ftpdf":0.53,"late":5.52,"miss":3.2,"o":562,"pdnr":0.89,"r":129,"rfc":100.0}},
+"2026-10-10":{"NETWORK":{"dmg":1.48,"fdnr":0.09,"fond":0.83,"ftdc":0.37,"ftfdf":2.22,"ftpdf":1.58,"late":1.95,"miss":1.95,"o":1079,"pdnr":0.09,"r":209,"rfc":100.0},"UBA1":{"dmg":2.22,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":2.22,"late":0.0,"miss":1.11,"o":90,"pdnr":0.0,"r":17,"rfc":100.0},"UIL7":{"dmg":0.79,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":3.97,"late":3.17,"miss":3.17,"o":126,"pdnr":0.0,"r":15,"rfc":100.0},"UIT1":{"dmg":1.4,"fdnr":0.0,"fond":1.05,"ftdc":0.0,"ftfdf":3.15,"ftpdf":0.0,"late":1.75,"miss":0.7,"o":286,"pdnr":0.0,"r":55,"rfc":100.0},"UIT4":{"dmg":1.56,"fdnr":0.17,"fond":1.04,"ftdc":0.69,"ftfdf":2.6,"ftpdf":1.73,"late":2.08,"miss":2.43,"o":577,"pdnr":0.17,"r":122,"rfc":100.0}},
+"2026-10-11":{"NETWORK":{"dmg":0.0,"fdnr":0.0,"fond":1.01,"ftdc":0.0,"ftfdf":2.02,"ftpdf":1.32,"late":0.91,"miss":0.0,"o":988,"pdnr":0.0,"r":188,"rfc":95.83},"UBA1":{"dmg":0.0,"fdnr":0.0,"fond":0.0,"ftdc":0.0,"ftfdf":0.0,"ftpdf":0.0,"late":0.0,"miss":0.0,"o":74,"pdnr":0.0,"r":14,"rfc":100.0},"UIL7":{"dmg":0.0,"fdnr":0.0,"fond":0.93,"ftdc":0.0,"ftfdf":0.93,"ftpdf":0.93,"late":0.93,"miss":0.0,"o":107,"pdnr":0.0,"r":12,"rfc":100.0},"UIT1":{"dmg":0.0,"fdnr":0.0,"fond":0.36,"ftdc":0.0,"ftfdf":1.43,"ftpdf":0.0,"late":1.08,"miss":0.0,"o":279,"pdnr":0.0,"r":55,"rfc":100.0},"UIT4":{"dmg":0.0,"fdnr":0.0,"fond":1.52,"ftdc":0.0,"ftfdf":2.84,"ftpdf":2.27,"late":0.95,"miss":0.0,"o":528,"pdnr":0.0,"r":107,"rfc":87.5}},
+};
+
+// ─── PIP TRACKER — semana de evaluación del Performance Improvement Plan vs objetivos ──
+// Usa DAILY (métricas diarias) para la semana en curso/seleccionada y los datos semanales (ALL_DEPOT_DATA / NETWORK) para el informe de calidad.
+const PIP = { year: 2026, week: "W42" };  // semana que cuenta para el PIP (Amazon, revisión WK41 del 13/10/2026)
+// Objetivos de las sub-métricas del «Quality Report» de Amazon (DSP Inspector, 13/10/2026); las 5 métricas clave usan SC_GOALS del mes
+const QR_TARGETS = { fond: 0.30, pondPP: 0.20, pondFP: null, pdnr: 0.35, fdnr: 0.10, miss: 1.40, dmg: 1.00, rfc: null };
+const PIP_METRICS = [  // columnas de las tablas diarias (clave DAILY, etiqueta, clave de objetivo)
+  { key: "ftdc",  label: "FTDC",      goal: "ftdc" },
+  { key: "ftfdf", label: "FTFDF",     goal: "ftfdf" },
+  { key: "late",  label: "Lates +15", goal: "late" },
+  { key: "ftpdf", label: "FTPDF",     goal: "ftpdf" },
+  { key: "dnr",   label: "DNR",       goal: "dnr" },
+];
+const pipIso = d => d.toISOString().slice(0, 10);
+const pipWeekDays = (year, week) => { const s = scSunday(year, week); return Array.from({ length: 7 }, (_, i) => { const d = new Date(s); d.setUTCDate(d.getUTCDate() + i); return pipIso(d); }); };
+// Recuento de defectos de un día/ámbito a partir del % y los pedidos (el % de Lighthouse es n ÷ pedidos, así que se recupera el entero)
+const pipCounts = (row) => {
+  if (!row) return null;
+  const o = row.o || 0, n = k => row[k] == null ? null : Math.round(row[k] * o / 100);
+  const pdnr = n("pdnr"), fdnr = n("fdnr");
+  return { o, r: row.r || 0, ftdc: n("ftdc"), ftfdf: n("ftfdf"), late: n("late"), ftpdf: n("ftpdf"), pdnr, fdnr, dnr: pdnr == null && fdnr == null ? null : (pdnr || 0) + (fdnr || 0), fond: n("fond"), miss: n("miss"), dmg: n("dmg") };
+};
+const pipSum = (rows) => rows.reduce((a, c) => { if (!c) return a; a.o += c.o; a.r += c.r; ["ftdc", "ftfdf", "late", "ftpdf", "pdnr", "fdnr", "dnr", "fond", "miss", "dmg"].forEach(k => { if (c[k] != null) a[k] = (a[k] || 0) + c[k]; }); return a; }, { o: 0, r: 0 });
+const pipPct = (c, k) => c && c.o && c[k] != null ? +(100 * c[k] / c.o).toFixed(2) : null;
+
+function PipTab({ selectedDepots, allSelected, t, isMobile, lang }) {
+  const F = "Arial, Helvetica, sans-serif";
+  const loc = lang === "it" ? "it-IT" : lang === "es" ? "es-ES" : "en-GB";
+  const fmtDay = iso => new Date(iso + "T00:00:00Z").toLocaleDateString(loc, { weekday: "short", day: "2-digit", month: "short", timeZone: "UTC" });
+  const fmtPct = v => v == null ? "—" : v.toFixed(2) + "%";
+  const days = useMemo(() => Object.keys(DAILY).sort(), []);
+  const scopeRow = useCallback((iso) => {  // recuentos del día para el ámbito (red = fila NETWORK; subconjunto = suma de estaciones)
+    const d = DAILY[iso]; if (!d) return null;
+    if (allSelected) return pipCounts(d.NETWORK) || pipSum(selectedDepots.map(s => pipCounts(d[s])));
+    return pipSum(selectedDepots.map(s => pipCounts(d[s])));
+  }, [allSelected, selectedDepots]);
+  // Semanas con datos diarios (la del PIP primero si existe)
+  const weeks = useMemo(() => {
+    const seen = new Map();
+    days.forEach(iso => { const s = new Date(iso + "T00:00:00Z"); s.setUTCDate(s.getUTCDate() - ((s.getUTCDay()) % 7)); const key = pipIso(s); if (!seen.has(key)) seen.set(key, { sunday: key, year: 2026, week: "W" + (Math.floor((s - Date.UTC(2025, 11, 28)) / 864e5 / 7) + 1) }); });
+    return [...seen.values()].sort((a, b) => a.sunday < b.sunday ? -1 : 1);
+  }, [days]);
+  const [pickedWeek, setPickedWeek] = useState(null);
+  const defaultWeek = weeks.find(w => w.year === PIP.year && w.week === PIP.week) || weeks[weeks.length - 1];
+  const wk = (pickedWeek && weeks.find(w => w.week === pickedWeek)) || defaultWeek;
+  if (!wk) return <div style={{ background: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 16, padding: 40, textAlign: "center", color: "#6b7280", fontFamily: F, fontSize: 12 }}>— {t("pipNoDaily")} —</div>;
+  const isPip = wk.year === PIP.year && wk.week === PIP.week;
+  const wdays = pipWeekDays(wk.year, wk.week);
+  const have = wdays.filter(iso => DAILY[iso]);
+  const prevDays = pipWeekDays(wk.year, "W" + (weekNum(wk.week) - 1));
+  const { goals, label: goalLabel, carried } = scGoalsFor(wk.year, wk.week);
+  const dayRows = have.map(iso => ({ iso, c: scopeRow(iso) }));
+  const wtd = pipSum(dayRows.map(r => r.c));
+  // Previsión de pedidos de la semana completa: pedidos ya en datos + volumen de la semana anterior en los días que faltan
+  const missing = wdays.filter(iso => !DAILY[iso]);
+  const prevAvg = (() => { const cs = prevDays.map(scopeRow).filter(Boolean); return cs.length ? cs.reduce((s, c) => s + c.o, 0) / cs.length : wtd.o / Math.max(1, have.length); })();
+  const forecast = Math.round(wtd.o + missing.reduce((s, iso) => { const p = scopeRow(prevDays[wdays.indexOf(iso)]); return s + (p ? p.o : prevAvg); }, 0));
+  const complete = missing.length === 0;
+  const stations = selectedDepots.filter(s => have.some(iso => DAILY[iso][s]?.o));  // sólo estaciones con pedidos en la semana (UIT7 está cerrada)
+  const weekRange = `${new Date(wdays[0] + "T00:00:00Z").toLocaleDateString(loc, { day: "2-digit", month: "short", timeZone: "UTC" })} – ${new Date(wdays[6] + "T00:00:00Z").toLocaleDateString(loc, { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" })}`;
+  const cellColor = (v, g) => v == null ? "#9ca3af" : g == null ? "#111827" : v > g ? "#dc2626" : "#15803d";
+
+  // Informe de calidad semanal (últimas 5 semanas) — valores de la pivot semanal (ALL_DEPOT_DATA / NETWORK), ámbito ponderado por pedidos
+  const qrWeeks = useMemo(() => { const n = weekNum(wk.week); return [n - 4, n - 3, n - 2, n - 1, n].filter(x => x > 0).map(x => "W" + x); }, [wk]);
+  const weeklyFor = useCallback((w) => {
+    const ordersOf = d => (PRODUCTIVITY[d] || []).find(x => x.year === wk.year && x.week === w)?.orders || 0;
+    const routesOf = d => (PRODUCTIVITY[d] || []).find(x => x.year === wk.year && x.week === w)?.routes || 0;
+    let orders = 0, routes = 0; selectedDepots.forEach(d => { orders += ordersOf(d); routes += routesOf(d); });
+    const agg = fld => { let s = 0, n = 0; selectedDepots.forEach(d => { const r = (ALL_DEPOT_DATA[d] || []).find(x => x.year === wk.year && x.week === w); const v = r?.[fld]; if (v == null) return; const k = ordersOf(d) || 1; s += v * k; n += k; }); return n ? +(s / n).toFixed(2) : null; };
+    const net = allSelected ? NETWORK.find(x => x.year === wk.year && x.week === w) : null;
+    const pick = (fld, netFld) => { const v = net ? net[netFld || fld] : null; return v != null ? v : agg(fld); };
+    const pdnr = pick("pdnr"), fdnr = pick("fdnr");
+    return { orders: orders || null, routes: routes || null, ftdc: pick("ftdc"), ftfdf: pick("ftfdf"), fond: net ? net.ftfdfOC : agg("fondCtrl"), ftpdf: pick("ftpdf"), pondPP: pick("pondPP"), pondFP: pick("pondFP"),
+             dnr: pdnr != null && fdnr != null ? +(pdnr + fdnr).toFixed(2) : (pdnr ?? fdnr), pdnr, fdnr, late: pick("late"), rfc: pick("rfc") };
+  }, [wk, selectedDepots, allSelected]);
+  const qr = useMemo(() => qrWeeks.map(w => ({ w, v: weeklyFor(w) })), [qrWeeks, weeklyFor]);
+  const QR_ROWS = [
+    { key: "orders", label: t("pipOrders"), goal: null, fmt: v => v == null ? "—" : v.toLocaleString(loc), unit: "n" },
+    { key: "ftdc",  label: "FTDC", goal: goals.ftdc },
+    { key: "ftfdf", label: "FTFDF", goal: goals.ftfdf },
+    { key: "fond",  label: "FOND OC", goal: QR_TARGETS.fond, sub: true },
+    { key: "ftpdf", label: "FTPDF", goal: goals.ftpdf },
+    { key: "pondPP", label: "FTPDF PP", goal: QR_TARGETS.pondPP, sub: true },
+    { key: "pondFP", label: "FTPDF FP", goal: QR_TARGETS.pondFP, sub: true },
+    { key: "dnr",   label: "DNR", goal: goals.dnr },
+    { key: "fdnr",  label: "F DNR", goal: QR_TARGETS.fdnr, sub: true },
+    { key: "pdnr",  label: "P DNR", goal: QR_TARGETS.pdnr, sub: true },
+    { key: "late",  label: "Late 15min +", goal: goals.late },
+    { key: "rfc",   label: "RFC (Lighthouse)", goal: null, higherBetter: true },
+  ];
+  const spark = (vals, goal, higherBetter) => {
+    const xs = vals.map((v, i) => [i, v]).filter(([, v]) => v != null); if (xs.length < 2) return null;
+    const vs = xs.map(x => x[1]), lo = Math.min(...vs, goal ?? Infinity), hi = Math.max(...vs, goal ?? -Infinity), span = hi - lo || 1;
+    const W = 64, H = 20, px = i => 4 + i * (W - 8) / (vals.length - 1), py = v => H - 3 - (v - lo) * (H - 6) / span;
+    const last = vs[vs.length - 1], bad = goal != null && (higherBetter ? last < goal : last > goal);
+    return (<svg width={W} height={H} style={{ display: "block" }}>
+      {goal != null && <line x1={0} x2={W} y1={py(goal)} y2={py(goal)} stroke="#93c5fd" strokeDasharray="2 2" />}
+      <polyline fill="none" stroke={bad ? "#dc2626" : "#15803d"} strokeWidth={1.5} points={xs.map(([i, v]) => `${px(i)},${py(v)}`).join(" ")} />
+      <circle cx={px(xs[xs.length - 1][0])} cy={py(last)} r={2} fill={bad ? "#dc2626" : "#15803d"} />
+    </svg>);
+  };
+  const th = { fontSize: 10, color: "#6b7280", letterSpacing: 1, textTransform: "uppercase", fontWeight: 600, padding: "8px 10px", textAlign: "right", borderBottom: "1px solid #e5e7eb", whiteSpace: "nowrap" };
+  const td = { fontSize: 12, padding: "7px 10px", textAlign: "right", borderBottom: "1px solid #f3f4f6", whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" };
+  const card = { background: "#fff", border: "1px solid #e5e7eb", borderRadius: 16, padding: isMobile ? 14 : 22, boxShadow: "0 1px 2px rgba(0,0,0,.04)", minWidth: 0 };  // minWidth 0: las tablas anchas se desplazan dentro de la tarjeta (móvil)
+  const scope = allSelected ? t("scNetwork") : selectedDepots.join(", ");
+
+  return (
+    <div style={{ color: "#111827", fontFamily: F, display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 16 }}>
+      {/* cabecera */}
+      <div style={{ ...card, borderColor: isPip ? "#111827" : "#e5e7eb" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+          <div>
+            <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 700, letterSpacing: -0.3 }}>{t("pipTitle")} <span style={{ color: "#9ca3af", fontWeight: 500 }}>| {scope}</span></div>
+            <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2 }}>
+              {isPip ? <span style={{ background: "#111827", color: "#fff", borderRadius: 999, padding: "2px 8px", fontSize: 10, fontWeight: 700, marginRight: 8 }}>PIP · WK{weekNum(PIP.week)}</span> : null}
+              WK{weekNum(wk.week)} · {weekRange} · {t("pipDataThrough")} {DATA_THROUGH ? new Date(DATA_THROUGH + "T00:00:00Z").toLocaleDateString(loc, { day: "2-digit", month: "short", timeZone: "UTC" }) : "—"} · {have.length}/7 {t("pipDaysIn")}{complete ? "" : ` · ${t("pipLag")}`}
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 10, color: "#6b7280", letterSpacing: 1.5 }}>{t("scWeek")}</span>
+            <select value={wk.week} onChange={e => setPickedWeek(e.target.value)} style={{ border: "1px solid #d1d5db", borderRadius: 8, padding: "6px 10px", fontFamily: F, fontSize: 12, background: "#fff", color: "#111827" }}>
+              {[...weeks].reverse().map(w => <option key={w.week} value={w.week}>WK{weekNum(w.week)}{w.week === PIP.week && w.year === PIP.year ? " · PIP" : ""}</option>)}
+            </select>
+          </div>
+        </div>
+
+        {/* tarjetas WTD vs objetivo con presupuesto de defectos */}
+        <div style={{ fontSize: 10, color: "#6b7280", letterSpacing: 2, textTransform: "uppercase", margin: "18px 0 10px" }}>{complete ? t("pipWeekResult") : t("pipWtd")} · {goalLabel} {t("scGoal")}{carried ? ` · ${t("scCarried")}` : ""}</div>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(5, minmax(0, 1fr))", gap: 10 }}>
+          {PIP_METRICS.map(m => {
+            const g = goals[m.goal], v = pipPct(wtd, m.key), n = wtd[m.key] ?? 0, miss = v != null && g != null && v > g;
+            const maxN = g != null ? Math.floor(g * forecast / 100) : null, left = maxN != null ? maxN - n : null;
+            return (
+              <div key={m.key} style={{ background: miss ? "#fff1f2" : "#f0fdf4", borderRadius: 12, padding: "14px 12px", minWidth: 0 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#374151", letterSpacing: 0.5 }}>{m.label.toUpperCase()}</div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 6 }}>
+                  <span style={{ fontSize: isMobile ? 20 : 24, fontWeight: 800, color: miss ? "#dc2626" : "#15803d" }}>{fmtPct(v)}</span>
+                  <span style={{ fontSize: 11, color: "#6b7280" }}>vs <b style={{ color: "#2563eb" }}>{fmtPct(g)}</b></span>
+                </div>
+                <div style={{ fontSize: 11, color: "#374151", marginTop: 6 }}>{n} {t("pipDefects")} / {wtd.o.toLocaleString(loc)} {t("pipOrders").toLowerCase()}</div>
+                {maxN != null && (
+                  <div style={{ fontSize: 10, color: "#6b7280", marginTop: 6, lineHeight: 1.45 }}>
+                    {t("pipMax")}: <b>{maxN}</b> ({fmtPct(g)} × {forecast.toLocaleString(loc)} {t("pipForecast")})<br />
+                    {left >= 0
+                      ? <span style={{ color: "#15803d" }}><b>{left}</b> {t("pipLeft")}{!complete && forecast > wtd.o ? ` · ≈ ${(100 * left / (forecast - wtd.o)).toFixed(2)}% ${t("pipOnRemaining")}` : ""}</span>
+                      : <span style={{ color: "#dc2626" }}><b>{t("pipOver")} {-left}</b></span>}
+                  </div>)}
+              </div>);
+          })}
+        </div>
+        <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 10, lineHeight: 1.5 }}>{t("pipForecastNote")}</div>
+      </div>
+
+      {/* por estación */}
+      <div style={card}>
+        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>{t("pipByStation")} <span style={{ color: "#9ca3af", fontWeight: 500 }}>| WK{weekNum(wk.week)}{complete ? "" : ` · ${t("pipWtd")}`}</span></div>
+        <div style={{ overflowX: "auto", minWidth: 0 }}>
+          <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 560 }}>
+            <thead><tr><th style={{ ...th, textAlign: "left" }}></th><th style={th}>{t("pipOrders")}</th>{PIP_METRICS.map(m => <th key={m.key} style={th}>{m.label}</th>)}</tr></thead>
+            <tbody>
+              {[{ name: t("pipTotal"), c: wtd, bold: true }, ...stations.map(s => ({ name: s, c: pipSum(have.map(iso => pipCounts(DAILY[iso]?.[s]))), color: DEPOT_COLORS[s] }))].map(r => (
+                <tr key={r.name}>
+                  <td style={{ ...td, textAlign: "left", fontWeight: r.bold ? 700 : 600, color: r.color || "#111827" }}>{r.name}</td>
+                  <td style={td}>{r.c.o.toLocaleString(loc)}</td>
+                  {PIP_METRICS.map(m => { const v = pipPct(r.c, m.key); return <td key={m.key} style={{ ...td, color: cellColor(v, goals[m.goal]), fontWeight: 600 }}>{fmtPct(v)}</td>; })}
+                </tr>))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* día a día */}
+      <div style={card}>
+        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>{t("pipByDay")} <span style={{ color: "#9ca3af", fontWeight: 500 }}>| {scope} · WK{weekNum(wk.week)}</span></div>
+        <div style={{ overflowX: "auto", minWidth: 0 }}>
+          <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 560 }}>
+            <thead><tr><th style={{ ...th, textAlign: "left" }}>{t("pipDay")}</th><th style={th}>{t("pipOrders")}</th>{PIP_METRICS.map(m => <th key={m.key} style={th}>{m.label}</th>)}</tr></thead>
+            <tbody>
+              <tr style={{ background: "#f9fafb" }}>
+                <td style={{ ...td, textAlign: "left", fontWeight: 700 }}>{complete ? t("pipWeekResult") : t("pipWtd")}</td><td style={{ ...td, fontWeight: 700 }}>{wtd.o.toLocaleString(loc)}</td>
+                {PIP_METRICS.map(m => { const v = pipPct(wtd, m.key); return <td key={m.key} style={{ ...td, color: cellColor(v, goals[m.goal]), fontWeight: 700 }}>{fmtPct(v)}</td>; })}
+              </tr>
+              {wdays.map(iso => { const r = dayRows.find(x => x.iso === iso); return (
+                <tr key={iso}>
+                  <td style={{ ...td, textAlign: "left", color: r ? "#111827" : "#9ca3af" }}>{fmtDay(iso)}</td>
+                  <td style={{ ...td, color: r ? "#111827" : "#9ca3af" }}>{r ? r.c.o.toLocaleString(loc) : "—"}</td>
+                  {PIP_METRICS.map(m => { const v = r ? pipPct(r.c, m.key) : null; return <td key={m.key} style={{ ...td, color: r ? cellColor(v, goals[m.goal]) : "#9ca3af" }}>{r ? `${fmtPct(v)}` : "—"}{r && r.c[m.key] ? <span style={{ color: "#9ca3af", fontSize: 10 }}> ({r.c[m.key]})</span> : null}</td>; })}
+                </tr>); })}
+            </tbody>
+          </table>
+        </div>
+        <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 8 }}>{t("pipDayNote")}</div>
+      </div>
+
+      {/* informe de calidad semanal */}
+      <div style={card}>
+        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>{t("pipQuality")} <span style={{ color: "#9ca3af", fontWeight: 500 }}>| {scope}</span></div>
+        <div style={{ overflowX: "auto", minWidth: 0 }}>
+          <table style={{ borderCollapse: "collapse", width: "100%", minWidth: 640 }}>
+            <thead><tr>
+              <th style={{ ...th, textAlign: "left" }}>{t("pipMetric")}</th><th style={{ ...th, color: "#2563eb" }}>{t("scGoal")}</th>
+              {qr.map(({ w }, i) => <th key={w} style={{ ...th, color: i === qr.length - 1 ? "#111827" : "#6b7280" }}>WK{weekNum(w)}{i === qr.length - 1 && !complete ? "*" : ""}</th>)}
+              <th style={th}>{t("pipTrend")}</th><th style={th}>{t("pipWow")}</th>
+            </tr></thead>
+            <tbody>
+              {QR_ROWS.map(row => {
+                const vals = qr.map(({ v }) => v?.[row.key] ?? null), last = vals[vals.length - 1], prev = vals[vals.length - 2];
+                const fmt = row.fmt || fmtPct, isN = row.unit === "n";
+                const delta = last != null && prev != null ? (isN ? last - prev : Math.round((last - prev) * 100)) : null;
+                const worse = delta == null ? null : isN ? null : row.higherBetter ? delta < 0 : delta > 0;
+                return (
+                  <tr key={row.key}>
+                    <td style={{ ...td, textAlign: "left", paddingLeft: row.sub ? 24 : 10, color: row.sub ? "#6b7280" : "#111827", fontWeight: row.sub ? 400 : 600 }}>{row.label}</td>
+                    <td style={{ ...td, color: "#2563eb" }}>{row.goal == null ? "—" : fmtPct(row.goal)}</td>
+                    {vals.map((v, i) => <td key={i} style={{ ...td, color: isN || row.goal == null ? "#111827" : row.higherBetter ? (v != null && v < row.goal ? "#dc2626" : "#15803d") : cellColor(v, row.goal), fontWeight: i === vals.length - 1 ? 700 : 400 }}>{fmt(v)}</td>)}
+                    <td style={{ ...td, padding: "4px 10px" }}>{isN ? "" : spark(vals, row.goal, row.higherBetter)}</td>
+                    <td style={{ ...td, color: worse == null ? "#6b7280" : worse ? "#dc2626" : "#15803d" }}>{delta == null ? "—" : isN ? (delta > 0 ? "+" : "") + delta.toLocaleString(loc) : `${delta > 0 ? "+" : ""}${delta} bps`}</td>
+                  </tr>);
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 8, lineHeight: 1.5 }}>{t("pipQualityNote")}</div>
+      </div>
+    </div>
+  );
+}
+
 function getStatusConfig(d) {
   if (!d || d.late == null) return {bg:"#e5e7eb",border:"#d1d5db",text:"#4b5563",label:"NO DATA",icon:"?"};
   if (d.late > 6 || (d.fondCtrl != null && d.fondCtrl > 2)) return {bg:"#fef2f2",border:"#dc2626",text:"#b91c1c",label:"CRITICAL",icon:"◆"};
@@ -1965,10 +2229,10 @@ function DashboardInner() {
           </div>
         </div>
         <div style={{display:"flex",gap:4,marginTop:isMobile?14:18,overflowX:isMobile?"auto":"visible",flexWrap:isMobile?"nowrap":"wrap",paddingBottom:isMobile?4:0,WebkitOverflowScrolling:"touch"}}>
-          {[{key:"goals",l:"tabGoals"},{key:"overview",l:"tabOverview"},{key:"depots",l:"tabDepots"},{key:"upstream",l:"tabUpstream"},{key:"cycles",l:"tabCycles"},{key:"ncc",l:"tabNcc"},{key:"late",l:"tabLate"},{key:"scorecard",l:"tabScorecard"},{key:"productivity",l:"tabProductivity"},{key:"flow",l:"tabFlow"},{key:"geo",l:"tabGeo"}].map(tab=>{
-            const isSpecial = tab.key==="goals"||tab.key==="ncc"||tab.key==="late"||tab.key==="scorecard"||tab.key==="productivity"||tab.key==="flow"||tab.key==="geo";
+          {[{key:"goals",l:"tabGoals"},{key:"pip",l:"tabPip"},{key:"overview",l:"tabOverview"},{key:"depots",l:"tabDepots"},{key:"upstream",l:"tabUpstream"},{key:"cycles",l:"tabCycles"},{key:"ncc",l:"tabNcc"},{key:"late",l:"tabLate"},{key:"scorecard",l:"tabScorecard"},{key:"productivity",l:"tabProductivity"},{key:"flow",l:"tabFlow"},{key:"geo",l:"tabGeo"}].map(tab=>{
+            const isSpecial = tab.key==="goals"||tab.key==="pip"||tab.key==="ncc"||tab.key==="late"||tab.key==="scorecard"||tab.key==="productivity"||tab.key==="flow"||tab.key==="geo";
             const isActive = selectedView===tab.key;
-            const specialColors = tab.key==="goals"?{bg:"#111827",border:"#111827",text:"#ffffff",dot:"#2a78d6"}:tab.key==="ncc"?{bg:"#fff7ed",border:"#ea580c",text:"#ea580c",dot:"#ea580c"}:tab.key==="late"?{bg:"#eef2ff",border:"#4f46e5",text:"#4338ca",dot:"#4f46e5"}:tab.key==="productivity"?{bg:"#fffbeb",border:"#d97706",text:"#b45309",dot:"#d97706"}:tab.key==="flow"?{bg:"#f0fdfa",border:"#0f766e",text:"#0f766e",dot:"#0f766e"}:tab.key==="geo"?{bg:"#f5f3ff",border:"#7c3aed",text:"#6d28d9",dot:"#7c3aed"}:{bg:"#f0fdf4",border:"#16a34a",text:"#15803d",dot:"#16a34a"};
+            const specialColors = tab.key==="goals"?{bg:"#111827",border:"#111827",text:"#ffffff",dot:"#2a78d6"}:tab.key==="pip"?{bg:"#fef2f2",border:"#dc2626",text:"#b91c1c",dot:"#dc2626"}:tab.key==="ncc"?{bg:"#fff7ed",border:"#ea580c",text:"#ea580c",dot:"#ea580c"}:tab.key==="late"?{bg:"#eef2ff",border:"#4f46e5",text:"#4338ca",dot:"#4f46e5"}:tab.key==="productivity"?{bg:"#fffbeb",border:"#d97706",text:"#b45309",dot:"#d97706"}:tab.key==="flow"?{bg:"#f0fdfa",border:"#0f766e",text:"#0f766e",dot:"#0f766e"}:tab.key==="geo"?{bg:"#f5f3ff",border:"#7c3aed",text:"#6d28d9",dot:"#7c3aed"}:{bg:"#f0fdf4",border:"#16a34a",text:"#15803d",dot:"#16a34a"};
             return(<button key={tab.key} onClick={()=>setSelectedView(tab.key)} style={{...tabStyle(isActive),
               ...(isSpecial&&isActive?{background:specialColors.bg,borderColor:specialColors.border,color:specialColors.text}:{})
             }}>{isSpecial&&<span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:isActive?specialColors.dot:(specialColors.dot+"60"),marginRight:5,verticalAlign:"middle"}}/>}{t(tab.l)}</button>);
@@ -1983,6 +2247,9 @@ function DashboardInner() {
         {/* OVERVIEW */}
         {selectedView==="goals"&&(
           <ScorecardTab selectedDepots={selectedDepots} allSelected={allSelected} selectedYear={selectedYear} availableWeeks={availableWeeks} effectiveFrom={effectiveFrom} effectiveTo={effectiveTo} t={t} isMobile={isMobile} lang={lang} />
+        )}
+        {selectedView==="pip"&&(
+          <PipTab selectedDepots={selectedDepots} allSelected={allSelected} t={t} isMobile={isMobile} lang={lang} />
         )}
         {selectedView==="overview"&&(<>
           <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":selectedDepots.length===1?"1fr":"repeat(2,1fr)",gap:12,marginBottom:24}}>

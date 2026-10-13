@@ -10,6 +10,9 @@ Entradas (carpeta data/lighthouse/<fecha>/):
   quality_metrics_network_*.csv      misma pivot con Show By = 5. By DSP Company
   business_metrics_by_station_*.csv  pivot "Business Metrics" (Orders / Routes) por estación y semana
   order_level_defects_*.csv          tabla "Order Level Data" (una fila por defecto de pedido)
+  business_metrics_daily_*.csv, quality_metrics_daily_*.csv,
+  business_metrics_network_daily_*.csv, quality_metrics_network_daily_*.csv   (opcionales) mismas pivots con
+                                     Time Granularity = 1. Daily, últimas 5 semanas → const DAILY (pestaña PIP Tracker)
 
 Uso:
   python3 scripts/lighthouse_to_dashboard.py data/lighthouse/2026-09-14 [--jsx src/Dashboard.jsx] [--dry-run]
@@ -40,6 +43,11 @@ NET_METRICS = {"late": "~ % Late > 15", "fond": "~ % FOND Ops controllable", "pd
                "ftfdf": "% FTFDF", "ftfdfOC": "~ % FOND Ops controllable",
                "fdnr": "% FDNR", "ftdc": "% FTDC", "ftpdf": "% FTPDF",
                "rfc": "% Route Fulfillment Compliance", "latePk": "% Late pickup routes", "latePkFW": "% Late pickup routes (First window)"}
+DAILY_METRICS = {  # campo JSX -> metric_name QuickSight (granularidad diaria)
+    "late": "~ % Late > 15", "ftfdf": "% FTFDF", "fond": "~ % FOND Ops controllable", "ftpdf": "% FTPDF", "ftdc": "% FTDC",
+    "pdnr": "% PDNR", "fdnr": "% FDNR", "miss": "% Missing Items", "dmg": "% Damage Items", "rfc": "% Route Fulfillment Compliance",
+}
+DAILY_KEEP_DAYS = 42
 DEPOT_FIELDS = ["late", "fondCtrl", "ftfdf", "pdnr", "fdnr", "ftdc", "pondFP", "pondPP", "ftpdf", "rfc", "latePk", "latePkFW"]
 NET_FIELDS = ["late", "fond", "pdnr", "ftfdf", "ftfdfOC", "fdnr", "ftdc", "ftpdf", "pondFP", "pondPP", "rfc", "latePk", "latePkFW"]
 
@@ -82,23 +90,23 @@ def main():
 
     # ── 1. Métricas semanales por estación ─────────────────────────────
     depot = defaultdict(dict)   # (stn, wk) -> {field: val}
-    for r in read(one("quality_metrics_by_station_*.csv", a.folder)):
+    for r in read(one("quality_metrics_by_station_W*.csv", a.folder)):
         stn = r["Show 4. By Station Code"]; y, n = week_of(r["Time Granularity (2. Weekly)"])
         for fld, mname in DEPOT_METRICS.items():
             if r["metric_name"] == mname:
                 depot[(stn, (y, n))][fld] = pct(r["Metric (CUSTOM)"])
     network = defaultdict(dict)
-    for r in read(one("quality_metrics_network_*.csv", a.folder)):
+    for r in read(one("quality_metrics_network_W*.csv", a.folder)):
         y, n = week_of(r["Time Granularity (2. Weekly)"])
         for fld, mname in NET_METRICS.items():
             if r["metric_name"] == mname:
                 network[(y, n)][fld] = pct(r["Metric (CUSTOM)"])
     orders = {}
-    for r in read(one("business_metrics_by_station_*.csv", a.folder)):
+    for r in read(one("business_metrics_by_station_W*.csv", a.folder)):
         orders[(r["Show 4. By Station Code"], week_of(r["Time Granularity"]))] = int(r["Orders"] or 0)
 
     # ── 2. Defectos a nivel de pedido ──────────────────────────────────
-    rows = read(one("order_level_defects_*.csv", a.folder))
+    rows = read(one("order_level_defects_W*.csv", a.folder))
     pond = defaultdict(lambda: {"FP": 0, "PP": 0})
     ncc_stn = defaultdict(lambda: defaultdict(int)); ncc_drv = defaultdict(lambda: {"stations": set(), "w": defaultdict(int)})
     late_stn = defaultdict(lambda: defaultdict(int)); gt15_stn = defaultdict(lambda: defaultdict(int))
@@ -268,7 +276,7 @@ def main():
     for (stn, w), o in orders.items():
         prod[stn][w] = o
     routes = {}
-    for r in read(one("business_metrics_by_station_*.csv", a.folder)):
+    for r in read(one("business_metrics_by_station_W*.csv", a.folder)):
         routes[(r["Show 4. By Station Code"], week_of(r["Time Granularity"]))] = int(r["Routes"] or 0)
     if "const PRODUCTIVITY = {" not in src:
         tpl = ("// ─── PRODUCTIVITY — stops per route (Orders ÷ Routes) por estación y semana ─\n"
@@ -356,6 +364,40 @@ def main():
     else:
         src = src.replace("function getStatusConfig(d) {", new_block + "\nfunction getStatusConfig(d) {", 1)
     print(f"FLOW_WEEKS: +{added} semanas (total {len(keep)}, {len(flow_attr)} atribuciones, {len(flow_tid)} TIDs)")
+
+    # 3j. DAILY — métricas diarias por estación y red (pestaña PIP Tracker); opcional
+    daily_files = sorted(glob.glob(os.path.join(a.folder, "quality_metrics_daily_*.csv")))
+    if daily_files:
+        def tcol(rows): return next(c for c in rows[0] if c.startswith("Time Granularity"))
+        daily = defaultdict(lambda: defaultdict(dict))  # day -> scope -> {field: val}
+        def load_quality(pattern, scope_col, scope_name=None):
+            rows_ = read(one(pattern, a.folder)); tc = tcol(rows_)
+            for r in rows_:
+                scope = scope_name or r[scope_col]
+                for fld, mname in DAILY_METRICS.items():
+                    if r["metric_name"] == mname:
+                        daily[r[tc][:10]][scope][fld] = pct(r["Metric (CUSTOM)"])
+        def load_business(pattern, scope_col, scope_name=None):
+            rows_ = read(one(pattern, a.folder)); tc = tcol(rows_)
+            for r in rows_:
+                scope = scope_name or r[scope_col]
+                daily[r[tc][:10]][scope]["o"] = int(r["Orders"] or 0); daily[r[tc][:10]][scope]["r"] = int(r["Routes"] or 0)
+        load_quality("quality_metrics_daily_*.csv", "Show 4. By Station Code")
+        load_business("business_metrics_daily_*.csv", "Show 4. By Station Code")
+        if glob.glob(os.path.join(a.folder, "quality_metrics_network_daily_*.csv")):
+            load_quality("quality_metrics_network_daily_*.csv", None, "NETWORK")
+            load_business("business_metrics_network_daily_*.csv", None, "NETWORK")
+        days = sorted(daily)[-DAILY_KEEP_DAYS:]
+        out = {d: {sc: dict(sorted(v.items())) for sc, v in sorted(daily[d].items())} for d in days}
+        new_block = ("// ─── DAILY — métricas diarias (últimas semanas) por estación y red — generado por scripts/lighthouse_to_dashboard.py ──\n"
+                     "// DAILY[\"YYYY-MM-DD\"][estación|NETWORK] = { o: pedidos, r: rutas, late, ftfdf, fond (FOND OC), ftpdf, ftdc, pdnr, fdnr, miss, dmg, rfc (en %) }\n"
+                     "const DAILY = {\n" + "\n".join(f'{json.dumps(d)}:{json.dumps(v, separators=(",", ":"))},' for d, v in out.items()) + "\n};\n")
+        md = re.search(r'// ─── DAILY — .*?\nconst DAILY = \{\n.*?\n\};\n', src, re.S)
+        if md: src = src.replace(md.group(0), new_block)
+        else: src = src.replace("function getStatusConfig(d) {", new_block + "\nfunction getStatusConfig(d) {", 1)
+        print(f"DAILY: {len(days)} días ({days[0]} → {days[-1]}), ámbitos {sorted(set(sc for d in out.values() for sc in d))}")
+    else:
+        print("DAILY: sin ficheros *_daily_*.csv — se mantiene el bloque existente (si lo hay)")
 
     # 3g. cabecera de rango en el comentario de datos
     last = weeks[-1]; src = src.replace("(Order-Level, W47/25–W7/26)", f"(Order-Level, W47/25–W{last[1]}/{str(last[0])[2:]})")
