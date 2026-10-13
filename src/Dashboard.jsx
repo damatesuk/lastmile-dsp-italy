@@ -1143,6 +1143,7 @@ const FLOW_WEEKS = {
 // (atribución Amazon de Lighthouse), tarjetas WK vs objetivo mensual y métricas secundarias.
 const SC_GOALS = {  // objetivos mensuales (clave "YYYY-MM"); DNR = PDNR + FDNR
   "2026-09": { ftdc: 0.10, ftfdf: 1.30, late: 2.05, ftpdf: 0.45, dnr: 0.50 },
+  "2026-10": { ftdc: 0.10, ftfdf: 1.30, late: 2.05, ftpdf: 0.45, dnr: 0.45 },  // DSP Inspector de Amazon, revisión WK41 (13/10/2026)
 };
 const SC_ANNUAL = { ftdc: 0.10, ftfdf: 1.20, late: 1.50, ftpdf: 0.30, dnr: 0.40 };  // respaldo: objetivos 2026
 const SC_METRICS = [  // orden de las tarjetas y del radar
@@ -1236,7 +1237,7 @@ const SC_ATTR = {
 const SC_PIE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];  // paleta categórica validada (modo claro)
 const SC_OTHER = "#9ca3af";
 const SC_SECONDARY = [  // métricas secundarias (Lighthouse)
-  { key: "rfc",      cat: "routing",     label: "RFC — Route Fulfillment Compliance", fmt: v => v.toFixed(2) + "%" },
+  { key: "rfc",      cat: "routing",     label: "RFC — Lighthouse route-level (≠ Amazon review RFC)", fmt: v => v.toFixed(2) + "%" },
   { key: "dpr",      cat: "routing",     label: "DpR — orders per route",             fmt: v => v.toFixed(2) },
   { key: "orders",   cat: "volume",      label: "Orders",                            fmt: v => v.toLocaleString("en-GB") },
   { key: "routes",   cat: "volume",      label: "Routes",                            fmt: v => v.toLocaleString("en-GB") },
