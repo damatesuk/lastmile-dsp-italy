@@ -169,7 +169,8 @@ function useIsMobile(breakpoint = 768) {
 // ─── TRANSLATIONS ───────────────────────────────────────────────────
 const T = {
   "en": {
-    tabPip: "PIP Tracker", pipTitle: "PIP — assessment week", pipDataThrough: "data through", pipDaysIn: "days in the data", pipLag: "Lighthouse publishes with ~2 days' delay", pipWtd: "Week to date", pipWeekResult: "Full week", pipDefects: "defects", pipOrders: "Orders", pipMax: "Max for the week", pipForecast: "forecast orders", pipLeft: "left", pipOnRemaining: "on the remaining orders", pipOver: "over budget by", pipForecastNote: "Budget = goal × forecast orders for the full week; forecast = orders already in the data + the previous week's volume on the weekdays still to come. Defect counts are recovered from Lighthouse's daily % × orders.", pipByStation: "By station", pipTotal: "Total", pipByDay: "Day by day", pipDay: "Day", pipDayNote: "Numbers in brackets = defective orders that day. Red = above the goal, green = within.", pipQuality: "Quality report — last 5 weeks", pipMetric: "Metric", pipTrend: "Trend", pipWow: "Δ WoW", pipQualityNote: "* week in progress. Goals: Amazon's monthly goals for the five key metrics; FOND OC, FTPDF PP and F/P DNR from Amazon's Quality Report targets. Δ WoW in basis points vs the previous week. RFC is the Lighthouse route-level metric.", pipNoDaily: "no daily data yet — run the daily update",
+    pipTitleWeek: "PIP tracker — weekly", pipNoRange: "no daily data in the selected year / week range — widen the filters",
+    tabPip: "PIP Tracker", pipTitle: "PIP — assessment week", pipDataThrough: "data through", pipDaysIn: "days in the data", pipLag: "Lighthouse publishes with ~2 days' delay", pipWtd: "Week to date", pipWeekResult: "Full week", pipDefects: "defects", pipOrders: "Orders", pipMax: "Max for the week", pipForecast: "forecast orders", pipLeft: "left", pipOnRemaining: "on the remaining orders", pipOver: "over budget by", pipForecastNote: "Budget = goal × forecast orders for the full week; forecast = orders already in the data + the previous week's volume on the weekdays still to come. Defect counts are recovered from Lighthouse's daily % × orders.", pipByStation: "By station", pipTotal: "Total", pipByDay: "Day by day", pipDay: "Day", pipDayNote: "Numbers in brackets = defective orders that day. Red = above the goal, green = within.", pipQuality: "Quality report — last 5 weeks", pipMetric: "Metric", pipTrend: "Trend", pipWow: "Δ WoW", pipQualityNote: "* week in progress. Goals: Amazon's monthly goals for the five key metrics; FOND OC, FTPDF PP and F/P DNR from Amazon's Quality Report targets. Δ WoW in basis points vs the previous week. RFC is the Lighthouse route-level metric. Weekly figures come from Lighthouse's weekly pivot and can differ by ±0.01 pp from the daily-count tiles above.", pipNoDaily: "no daily data yet — run the daily update",
     tabGoals: "Scorecard", scNetwork: "Network", scSource: "Amazon Lighthouse · weekly · goal vs actual", scWeek: "WEEK", scPartial: "partial", scPartialNote: "partial week — data up to the last refresh",
     scGoal: "Goal", scActual: "Actual", scTarget: "target", scRadarNote: "each axis = actual ÷ goal (goal = inner pentagon)", scOrders: "orders", scNoRca: "no attributed orders for this metric",
     scDefectiveOrders: "Orders with this defect in the week", scKeyMetrics: "Key metrics", scCatRouting: "Routing", scCatVolume: "Volume", scCatPunctuality: "Punctuality",
@@ -234,7 +235,8 @@ const T = {
     defects: "defects", across: "across",
   },
   "it": {
-    tabPip: "PIP Tracker", pipTitle: "PIP — settimana di valutazione", pipDataThrough: "dati fino al", pipDaysIn: "giorni nei dati", pipLag: "Lighthouse pubblica con ~2 giorni di ritardo", pipWtd: "Settimana in corso", pipWeekResult: "Settimana completa", pipDefects: "difetti", pipOrders: "Ordini", pipMax: "Massimo per la settimana", pipForecast: "ordini previsti", pipLeft: "rimasti", pipOnRemaining: "sugli ordini rimanenti", pipOver: "oltre il budget di", pipForecastNote: "Budget = obiettivo × ordini previsti per l'intera settimana; previsione = ordini già nei dati + volume della settimana precedente negli stessi giorni ancora da fare. I conteggi dei difetti derivano dal % giornaliero di Lighthouse × ordini.", pipByStation: "Per stazione", pipTotal: "Totale", pipByDay: "Giorno per giorno", pipDay: "Giorno", pipDayNote: "Tra parentesi = ordini difettosi del giorno. Rosso = sopra l'obiettivo, verde = entro.", pipQuality: "Report qualità — ultime 5 settimane", pipMetric: "Metrica", pipTrend: "Trend", pipWow: "Δ WoW", pipQualityNote: "* settimana in corso. Obiettivi: obiettivi mensili Amazon per le cinque metriche chiave; FOND OC, FTPDF PP e F/P DNR dai target del Quality Report di Amazon. Δ WoW in punti base vs la settimana precedente. RFC è la metrica Lighthouse a livello di rotta.", pipNoDaily: "ancora nessun dato giornaliero — esegui l'aggiornamento giornaliero",
+    pipTitleWeek: "PIP tracker — settimanale", pipNoRange: "nessun dato giornaliero nell'anno / intervallo di settimane selezionato — allarga i filtri",
+    tabPip: "PIP Tracker", pipTitle: "PIP — settimana di valutazione", pipDataThrough: "dati fino al", pipDaysIn: "giorni nei dati", pipLag: "Lighthouse pubblica con ~2 giorni di ritardo", pipWtd: "Settimana in corso", pipWeekResult: "Settimana completa", pipDefects: "difetti", pipOrders: "Ordini", pipMax: "Massimo per la settimana", pipForecast: "ordini previsti", pipLeft: "rimasti", pipOnRemaining: "sugli ordini rimanenti", pipOver: "oltre il budget di", pipForecastNote: "Budget = obiettivo × ordini previsti per l'intera settimana; previsione = ordini già nei dati + volume della settimana precedente negli stessi giorni ancora da fare. I conteggi dei difetti derivano dal % giornaliero di Lighthouse × ordini.", pipByStation: "Per stazione", pipTotal: "Totale", pipByDay: "Giorno per giorno", pipDay: "Giorno", pipDayNote: "Tra parentesi = ordini difettosi del giorno. Rosso = sopra l'obiettivo, verde = entro.", pipQuality: "Report qualità — ultime 5 settimane", pipMetric: "Metrica", pipTrend: "Trend", pipWow: "Δ WoW", pipQualityNote: "* settimana in corso. Obiettivi: obiettivi mensili Amazon per le cinque metriche chiave; FOND OC, FTPDF PP e F/P DNR dai target del Quality Report di Amazon. Δ WoW in punti base vs la settimana precedente. RFC è la metrica Lighthouse a livello di rotta. I valori settimanali vengono dalla pivot settimanale di Lighthouse e possono differire di ±0,01 pp dalle card giornaliere sopra.", pipNoDaily: "ancora nessun dato giornaliero — esegui l'aggiornamento giornaliero",
     tabGoals: "Scorecard", scNetwork: "Rete", scSource: "Amazon Lighthouse · settimanale · obiettivo vs effettivo", scWeek: "SETTIMANA", scPartial: "parziale", scPartialNote: "settimana parziale — dati fino all'ultimo aggiornamento",
     scGoal: "Obiettivo", scActual: "Effettivo", scTarget: "target", scRadarNote: "ogni asse = effettivo ÷ obiettivo (obiettivo = pentagono interno)", scOrders: "ordini", scNoRca: "nessun ordine attribuito per questa metrica",
     scDefectiveOrders: "Ordini con questo difetto nella settimana", scKeyMetrics: "Metriche chiave", scCatRouting: "Routing", scCatVolume: "Volumi", scCatPunctuality: "Puntualità",
@@ -289,7 +291,8 @@ const T = {
     defects: "difetti", across: "su",
   },
   "es": {
-    tabPip: "PIP Tracker", pipTitle: "PIP — semana de evaluación", pipDataThrough: "datos hasta el", pipDaysIn: "días en los datos", pipLag: "Lighthouse publica con ~2 días de retraso", pipWtd: "Semana en curso", pipWeekResult: "Semana completa", pipDefects: "defectos", pipOrders: "Pedidos", pipMax: "Máximo de la semana", pipForecast: "pedidos previstos", pipLeft: "disponibles", pipOnRemaining: "sobre los pedidos restantes", pipOver: "por encima del presupuesto en", pipForecastNote: "Presupuesto = objetivo × pedidos previstos de la semana completa; previsión = pedidos ya en los datos + volumen de la semana anterior en los días que faltan. Los recuentos de defectos se recuperan del % diario de Lighthouse × pedidos.", pipByStation: "Por estación", pipTotal: "Total", pipByDay: "Día a día", pipDay: "Día", pipDayNote: "Entre paréntesis = pedidos con defecto ese día. Rojo = por encima del objetivo, verde = dentro.", pipQuality: "Informe de calidad — últimas 5 semanas", pipMetric: "Métrica", pipTrend: "Tendencia", pipWow: "Δ WoW", pipQualityNote: "* semana en curso. Objetivos: objetivos mensuales de Amazon para las cinco métricas clave; FOND OC, FTPDF PP y F/P DNR de los targets del Quality Report de Amazon. Δ WoW en puntos básicos vs la semana anterior. RFC es la métrica de Lighthouse a nivel de ruta.", pipNoDaily: "aún no hay datos diarios — ejecuta la actualización diaria",
+    pipTitleWeek: "PIP tracker — semanal", pipNoRange: "no hay datos diarios en el año / rango de semanas seleccionado — amplía los filtros",
+    tabPip: "PIP Tracker", pipTitle: "PIP — semana de evaluación", pipDataThrough: "datos hasta el", pipDaysIn: "días en los datos", pipLag: "Lighthouse publica con ~2 días de retraso", pipWtd: "Semana en curso", pipWeekResult: "Semana completa", pipDefects: "defectos", pipOrders: "Pedidos", pipMax: "Máximo de la semana", pipForecast: "pedidos previstos", pipLeft: "disponibles", pipOnRemaining: "sobre los pedidos restantes", pipOver: "por encima del presupuesto en", pipForecastNote: "Presupuesto = objetivo × pedidos previstos de la semana completa; previsión = pedidos ya en los datos + volumen de la semana anterior en los días que faltan. Los recuentos de defectos se recuperan del % diario de Lighthouse × pedidos.", pipByStation: "Por estación", pipTotal: "Total", pipByDay: "Día a día", pipDay: "Día", pipDayNote: "Entre paréntesis = pedidos con defecto ese día. Rojo = por encima del objetivo, verde = dentro.", pipQuality: "Informe de calidad — últimas 5 semanas", pipMetric: "Métrica", pipTrend: "Tendencia", pipWow: "Δ WoW", pipQualityNote: "* semana en curso. Objetivos: objetivos mensuales de Amazon para las cinco métricas clave; FOND OC, FTPDF PP y F/P DNR de los targets del Quality Report de Amazon. Δ WoW en puntos básicos vs la semana anterior. RFC es la métrica de Lighthouse a nivel de ruta. Las cifras semanales salen de la pivot semanal de Lighthouse y pueden diferir ±0,01 pp de las tarjetas diarias de arriba.", pipNoDaily: "aún no hay datos diarios — ejecuta la actualización diaria",
     tabGoals: "Scorecard", scNetwork: "Red", scSource: "Amazon Lighthouse · semanal · objetivo vs real", scWeek: "SEMANA", scPartial: "parcial", scPartialNote: "semana parcial — datos hasta la última actualización",
     scGoal: "Objetivo", scActual: "Real", scTarget: "target", scRadarNote: "cada eje = real ÷ objetivo (objetivo = pentágono interior)", scOrders: "pedidos", scNoRca: "sin pedidos atribuidos para esta métrica",
     scDefectiveOrders: "Pedidos con este defecto en la semana", scKeyMetrics: "Métricas clave", scCatRouting: "Routing", scCatVolume: "Volumen", scCatPunctuality: "Puntualidad",
@@ -1265,7 +1268,7 @@ const SC_SECONDARY = [  // métricas secundarias (Lighthouse)
   { key: "latePkFW", cat: "punctuality", label: "Late pickup — first window",        fmt: v => v.toFixed(2) + "%" },
 ];
 const DATA_THROUGH = "2026-10-24";  // último delivery_date presente en la exportación (lo actualiza lighthouse_to_dashboard.py)
-const scSunday = (year, week) => { const d = new Date(Date.UTC(2025, 11, 28)); d.setUTCDate(d.getUTCDate() + (year - 2026) * 364 + (weekNum(week) - 1) * 7); return d; };
+const scSunday = (year, week) => { const d = new Date(Date.UTC(year, 0, 1)); d.setUTCDate(d.getUTCDate() - d.getUTCDay() + (weekNum(week) - 1) * 7); return d; };  // W1 = semana (dom–sáb) que contiene el 1 de enero
 function scGoalsFor(year, week) {
   const d = scSunday(year, week); d.setUTCDate(d.getUTCDate() + 3);  // el miércoles decide el mes de la semana
   const ym = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
@@ -1279,9 +1282,9 @@ function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeek
   const year = selectedYear === "ALL" ? 2026 : selectedYear;
   const inRange = w => weekNum(w) >= weekNum(effectiveFrom) && weekNum(w) <= weekNum(effectiveTo);
   // Semanas del rango con datos; la semana en curso llega parcial (menos de la mitad de pedidos que la anterior)
-  const weekInfo = useMemo(() => {
+  const allInfo = useMemo(() => {  // todas las semanas con datos (sin recortar por el rango): sirve para «vs semana anterior»
     const out = [];
-    availableWeeks.filter(inRange).forEach(w => {
+    availableWeeks.forEach(w => {
       const fw = FLOW_WEEKS[`${year}-${w}`];
       const orders = fw ? selectedDepots.reduce((s, d) => s + (fw.o?.[d] || 0), 0) : null;
       const rows = selectedDepots.map(d => (ALL_DEPOT_DATA[d] || []).find(r => r.year === year && r.week === w)).filter(Boolean);
@@ -1293,13 +1296,15 @@ function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeek
       x.partial = sat.toISOString().slice(0, 10) > covered;  // la semana no está completa en los datos (Lighthouse llega con 2 días de retraso)
     });
     return out;
-  }, [availableWeeks, effectiveFrom, effectiveTo, year, selectedDepots]);
+  }, [availableWeeks, year, selectedDepots]);
+  const weekInfo = useMemo(() => allInfo.filter(x => inRange(x.week)), [allInfo, effectiveFrom, effectiveTo]);
   const defaultWeek = useMemo(() => { const full = weekInfo.filter(x => !x.partial); return (full.length ? full[full.length - 1] : weekInfo[weekInfo.length - 1])?.week || null; }, [weekInfo]);
   const [pickedWeek, setPickedWeek] = useState(null);
+  useEffect(() => { if (pickedWeek && !weekInfo.some(x => x.week === pickedWeek)) setPickedWeek(null); }, [weekInfo]);  // la semana elegida salió del rango
   const week = pickedWeek && weekInfo.some(x => x.week === pickedWeek) ? pickedWeek : defaultWeek;
-  const weekIdx = weekInfo.findIndex(x => x.week === week);
-  const prevWeek = weekIdx > 0 && weekNum(weekInfo[weekIdx - 1].week) === weekNum(week) - 1 ? weekInfo[weekIdx - 1].week : null;  // sólo la semana inmediatamente anterior
-  const isPartial = weekInfo[weekIdx]?.partial;
+  const weekIdx = allInfo.findIndex(x => x.week === week);
+  const prevWeek = weekIdx > 0 && weekNum(allInfo[weekIdx - 1].week) === weekNum(week) - 1 ? allInfo[weekIdx - 1].week : null;  // la semana inmediatamente anterior, aunque el rango la excluya
+  const isPartial = weekInfo.find(x => x.week === week)?.partial;
   const [metric, setMetric] = useState(null);
 
   // Valores de la semana: red = fila NETWORK; subconjunto = media ponderada por pedidos de las estaciones
@@ -1355,7 +1360,7 @@ function ScorecardTab({ selectedDepots, allSelected, selectedYear, availableWeek
         {/* cabecera */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 14 }}>
           <div>
-            <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 700, letterSpacing: -0.3 }}>Last Mile <span style={{ color: "#9ca3af", fontWeight: 500 }}>| {scope}</span></div>
+            <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 700, letterSpacing: -0.3 }}>Last Mile <span style={{ color: "#9ca3af", fontWeight: 500 }}>| {scope} · {year}</span></div>
             <div style={{ fontSize: 11, color: "#6b7280", fontFamily: M, marginTop: 2 }}>{t("scSource")}</div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -1514,6 +1519,8 @@ const PIP_METRICS = [  // columnas de las tablas diarias (clave DAILY, etiqueta,
   { key: "dnr",   label: "DNR",       goal: "dnr" },
 ];
 const pipIso = d => d.toISOString().slice(0, 10);
+// Año y semana Amazon de un domingo (Date UTC) — válido más allá de 2026
+const pipWeekOf = (s) => { let y = s.getUTCFullYear(); if (scSunday(y + 1, "W1") <= s) y++; else if (scSunday(y, "W1") > s) y--; return { year: y, week: "W" + (Math.round((s - scSunday(y, "W1")) / 6048e5) + 1) }; };
 const pipWeekDays = (year, week) => { const s = scSunday(year, week); return Array.from({ length: 7 }, (_, i) => { const d = new Date(s); d.setUTCDate(d.getUTCDate() + i); return pipIso(d); }); };
 // Recuento de defectos de un día/ámbito a partir del % y los pedidos (el % de Lighthouse es n ÷ pedidos, así que se recupera el entero)
 const pipCounts = (row) => {
@@ -1525,7 +1532,7 @@ const pipCounts = (row) => {
 const pipSum = (rows) => rows.reduce((a, c) => { if (!c) return a; a.o += c.o; a.r += c.r; ["ftdc", "ftfdf", "late", "ftpdf", "pdnr", "fdnr", "dnr", "fond", "miss", "dmg"].forEach(k => { if (c[k] != null) a[k] = (a[k] || 0) + c[k]; }); return a; }, { o: 0, r: 0 });
 const pipPct = (c, k) => c && c.o && c[k] != null ? +(100 * c[k] / c.o).toFixed(2) : null;
 
-function PipTab({ selectedDepots, allSelected, t, isMobile, lang }) {
+function PipTab({ selectedDepots, allSelected, selectedYear, effectiveFrom, effectiveTo, t, isMobile, lang }) {
   const F = "Arial, Helvetica, sans-serif";
   const loc = lang === "it" ? "it-IT" : lang === "es" ? "es-ES" : "en-GB";
   const fmtDay = iso => new Date(iso + "T00:00:00Z").toLocaleDateString(loc, { weekday: "short", day: "2-digit", month: "short", timeZone: "UTC" });
@@ -1536,19 +1543,38 @@ function PipTab({ selectedDepots, allSelected, t, isMobile, lang }) {
     if (allSelected) return pipCounts(d.NETWORK) || pipSum(selectedDepots.map(s => pipCounts(d[s])));
     return pipSum(selectedDepots.map(s => pipCounts(d[s])));
   }, [allSelected, selectedDepots]);
-  // Semanas con datos diarios (la del PIP primero si existe)
-  const weeks = useMemo(() => {
+  // Semanas con datos diarios dentro de los filtros globales (año y rango de semanas)
+  const allWeeks = useMemo(() => {
     const seen = new Map();
-    days.forEach(iso => { const s = new Date(iso + "T00:00:00Z"); s.setUTCDate(s.getUTCDate() - ((s.getUTCDay()) % 7)); const key = pipIso(s); if (!seen.has(key)) seen.set(key, { sunday: key, year: 2026, week: "W" + (Math.floor((s - Date.UTC(2025, 11, 28)) / 864e5 / 7) + 1) }); });
+    days.forEach(iso => { const s = new Date(iso + "T00:00:00Z"); s.setUTCDate(s.getUTCDate() - s.getUTCDay()); const key = pipIso(s); if (!seen.has(key)) seen.set(key, { sunday: key, ...pipWeekOf(s) }); });
     return [...seen.values()].sort((a, b) => a.sunday < b.sunday ? -1 : 1);
   }, [days]);
+  const weeks = useMemo(() => allWeeks.filter(w => (selectedYear === "ALL" || w.year === selectedYear) && (!effectiveFrom || weekNum(w.week) >= weekNum(effectiveFrom)) && (!effectiveTo || weekNum(w.week) <= weekNum(effectiveTo))),
+    [allWeeks, selectedYear, effectiveFrom, effectiveTo]);
   const [pickedWeek, setPickedWeek] = useState(null);
-  // Por defecto la semana del PIP mientras esté incompleta; una vez cerrada, la última semana con datos (la del PIP sigue en el selector)
+  useEffect(() => { if (pickedWeek && !weeks.some(w => w.week === pickedWeek)) setPickedWeek(null); }, [weeks]);  // la semana elegida salió del rango → vuelve al valor por defecto
+  // Por defecto la semana del PIP mientras esté incompleta; una vez cerrada, la última semana del rango (la del PIP sigue en el selector)
   const pipWk = weeks.find(w => w.year === PIP.year && w.week === PIP.week);
   const pipDone = !!pipWk && pipWeekDays(pipWk.year, pipWk.week).every(iso => DAILY[iso]);
   const defaultWeek = pipWk && !pipDone ? pipWk : weeks[weeks.length - 1];
-  const wk = (pickedWeek && weeks.find(w => w.week === pickedWeek)) || defaultWeek;
-  if (!wk) return <div style={{ background: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 16, padding: 40, textAlign: "center", color: "#6b7280", fontFamily: F, fontSize: 12 }}>— {t("pipNoDaily")} —</div>;
+  const wk = (pickedWeek && weeks.find(w => w.week === pickedWeek)) || defaultWeek || null;
+  // Informe de calidad semanal (últimas 5 semanas) — hooks antes de cualquier return (reglas de hooks)
+  const qrWeeks = useMemo(() => { if (!wk) return []; const n = weekNum(wk.week); return [n - 4, n - 3, n - 2, n - 1, n].filter(x => x > 0).map(x => "W" + x); }, [wk]);
+  const weeklyFor = useCallback((w) => {
+    if (!wk) return null;
+    const ordersOf = d => (PRODUCTIVITY[d] || []).find(x => x.year === wk.year && x.week === w)?.orders || 0;
+    const routesOf = d => (PRODUCTIVITY[d] || []).find(x => x.year === wk.year && x.week === w)?.routes || 0;
+    let orders = 0, routes = 0; selectedDepots.forEach(d => { orders += ordersOf(d); routes += routesOf(d); });
+    const agg = (fld, wt = ordersOf) => { let s = 0, n = 0; selectedDepots.forEach(d => { const r = (ALL_DEPOT_DATA[d] || []).find(x => x.year === wk.year && x.week === w); const v = r?.[fld]; if (v == null) return; const k = wt(d) || 1; s += v * k; n += k; }); return n ? +(s / n).toFixed(2) : null; };
+    const net = allSelected ? NETWORK.find(x => x.year === wk.year && x.week === w) : null;
+    const pick = (fld, netFld) => { const v = net ? net[netFld || fld] : null; return v != null ? v : agg(fld); };
+    const pdnr = pick("pdnr"), fdnr = pick("fdnr");
+    const rfc = net && net.rfc != null ? net.rfc : agg("rfc", routesOf);  // métrica de rutas: ponderada por rutas
+    return { orders: orders || null, routes: routes || null, ftdc: pick("ftdc"), ftfdf: pick("ftfdf"), fond: net ? net.ftfdfOC : agg("fondCtrl"), ftpdf: pick("ftpdf"), pondPP: pick("pondPP"), pondFP: pick("pondFP"),
+             dnr: pdnr != null && fdnr != null ? +(pdnr + fdnr).toFixed(2) : (pdnr ?? fdnr), pdnr, fdnr, late: pick("late"), rfc };
+  }, [wk, selectedDepots, allSelected]);
+  const qr = useMemo(() => qrWeeks.map(w => ({ w, v: weeklyFor(w) })), [qrWeeks, weeklyFor]);
+  if (!wk) return <div style={{ background: "#ffffff", border: "1px solid #e5e7eb", borderRadius: 16, padding: 40, textAlign: "center", color: "#6b7280", fontFamily: F, fontSize: 12 }}>— {allWeeks.length ? t("pipNoRange") : t("pipNoDaily")} —</div>;
   const isPip = wk.year === PIP.year && wk.week === PIP.week;
   const wdays = pipWeekDays(wk.year, wk.week);
   const have = wdays.filter(iso => DAILY[iso]);
@@ -1565,20 +1591,7 @@ function PipTab({ selectedDepots, allSelected, t, isMobile, lang }) {
   const weekRange = `${new Date(wdays[0] + "T00:00:00Z").toLocaleDateString(loc, { day: "2-digit", month: "short", timeZone: "UTC" })} – ${new Date(wdays[6] + "T00:00:00Z").toLocaleDateString(loc, { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" })}`;
   const cellColor = (v, g) => v == null ? "#9ca3af" : g == null ? "#111827" : v > g ? "#dc2626" : "#15803d";
 
-  // Informe de calidad semanal (últimas 5 semanas) — valores de la pivot semanal (ALL_DEPOT_DATA / NETWORK), ámbito ponderado por pedidos
-  const qrWeeks = useMemo(() => { const n = weekNum(wk.week); return [n - 4, n - 3, n - 2, n - 1, n].filter(x => x > 0).map(x => "W" + x); }, [wk]);
-  const weeklyFor = useCallback((w) => {
-    const ordersOf = d => (PRODUCTIVITY[d] || []).find(x => x.year === wk.year && x.week === w)?.orders || 0;
-    const routesOf = d => (PRODUCTIVITY[d] || []).find(x => x.year === wk.year && x.week === w)?.routes || 0;
-    let orders = 0, routes = 0; selectedDepots.forEach(d => { orders += ordersOf(d); routes += routesOf(d); });
-    const agg = fld => { let s = 0, n = 0; selectedDepots.forEach(d => { const r = (ALL_DEPOT_DATA[d] || []).find(x => x.year === wk.year && x.week === w); const v = r?.[fld]; if (v == null) return; const k = ordersOf(d) || 1; s += v * k; n += k; }); return n ? +(s / n).toFixed(2) : null; };
-    const net = allSelected ? NETWORK.find(x => x.year === wk.year && x.week === w) : null;
-    const pick = (fld, netFld) => { const v = net ? net[netFld || fld] : null; return v != null ? v : agg(fld); };
-    const pdnr = pick("pdnr"), fdnr = pick("fdnr");
-    return { orders: orders || null, routes: routes || null, ftdc: pick("ftdc"), ftfdf: pick("ftfdf"), fond: net ? net.ftfdfOC : agg("fondCtrl"), ftpdf: pick("ftpdf"), pondPP: pick("pondPP"), pondFP: pick("pondFP"),
-             dnr: pdnr != null && fdnr != null ? +(pdnr + fdnr).toFixed(2) : (pdnr ?? fdnr), pdnr, fdnr, late: pick("late"), rfc: pick("rfc") };
-  }, [wk, selectedDepots, allSelected]);
-  const qr = useMemo(() => qrWeeks.map(w => ({ w, v: weeklyFor(w) })), [qrWeeks, weeklyFor]);
+  const goalsOf = w => scGoalsFor(wk.year, w).goals;  // objetivo del mes de cada semana (las columnas del informe pueden cruzar de mes)
   const QR_ROWS = [
     { key: "orders", label: t("pipOrders"), goal: null, fmt: v => v == null ? "—" : v.toLocaleString(loc), unit: "n" },
     { key: "ftdc",  label: "FTDC", goal: goals.ftdc },
@@ -1615,7 +1628,7 @@ function PipTab({ selectedDepots, allSelected, t, isMobile, lang }) {
       <div style={{ ...card, borderColor: isPip ? "#111827" : "#e5e7eb" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
           <div>
-            <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 700, letterSpacing: -0.3 }}>{t("pipTitle")} <span style={{ color: "#9ca3af", fontWeight: 500 }}>| {scope}</span></div>
+            <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 700, letterSpacing: -0.3 }}>{isPip ? t("pipTitle") : t("pipTitleWeek")} <span style={{ color: "#9ca3af", fontWeight: 500 }}>| {scope}</span></div>
             <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2 }}>
               {isPip ? <span style={{ background: "#111827", color: "#fff", borderRadius: 999, padding: "2px 8px", fontSize: 10, fontWeight: 700, marginRight: 8 }}>PIP · WK{weekNum(PIP.week)}</span> : null}
               WK{weekNum(wk.week)} · {weekRange} · {t("pipDataThrough")} {DATA_THROUGH ? new Date(DATA_THROUGH + "T00:00:00Z").toLocaleDateString(loc, { day: "2-digit", month: "short", timeZone: "UTC" }) : "—"} · {have.length}/7 {t("pipDaysIn")}{complete ? "" : ` · ${t("pipLag")}`}
@@ -1717,7 +1730,7 @@ function PipTab({ selectedDepots, allSelected, t, isMobile, lang }) {
                   <tr key={row.key}>
                     <td style={{ ...td, textAlign: "left", paddingLeft: row.sub ? 24 : 10, color: row.sub ? "#6b7280" : "#111827", fontWeight: row.sub ? 400 : 600 }}>{row.label}</td>
                     <td style={{ ...td, color: "#2563eb" }}>{row.goal == null ? "—" : fmtPct(row.goal)}</td>
-                    {vals.map((v, i) => <td key={i} style={{ ...td, color: isN || row.goal == null ? "#111827" : row.higherBetter ? (v != null && v < row.goal ? "#dc2626" : "#15803d") : cellColor(v, row.goal), fontWeight: i === vals.length - 1 ? 700 : 400 }}>{fmt(v)}</td>)}
+                    {vals.map((v, i) => { const g = row.sub || row.goal == null ? row.goal : (goalsOf(qr[i].w)[row.key] ?? row.goal); return <td key={i} style={{ ...td, color: isN || g == null ? "#111827" : row.higherBetter ? (v != null && v < g ? "#dc2626" : "#15803d") : cellColor(v, g), fontWeight: i === vals.length - 1 ? 700 : 400 }}>{fmt(v)}</td>; })}
                     <td style={{ ...td, padding: "4px 10px" }}>{isN ? "" : spark(vals, row.goal, row.higherBetter)}</td>
                     <td style={{ ...td, color: worse == null ? "#6b7280" : worse ? "#dc2626" : "#15803d" }}>{delta == null ? "—" : isN ? (delta > 0 ? "+" : "") + delta.toLocaleString(loc) : `${delta > 0 ? "+" : ""}${delta} bps`}</td>
                   </tr>);
@@ -1753,7 +1766,8 @@ function MiniSpark({data,width=90,height=24}) {
 
 // ─── FILTER BAR ─────────────────────────────────────────────────────
 function FilterBar({selectedYear,setSelectedYear,selectedDepots,setSelectedDepots,weekFrom,setWeekFrom,weekTo,setWeekTo,availableWeeks,t,isMobile}) {
-  const toggleDepot = d => setSelectedDepots(prev => prev.includes(d) ? (prev.length > 1 ? prev.filter(x=>x!==d) : prev) : [...prev, d]);
+  // Con todas seleccionadas, el primer clic en una estación la deja sola (lo que espera el usuario); después, cada clic añade/quita
+  const toggleDepot = d => setSelectedDepots(prev => prev.length === ALL_DEPOTS.length ? [d] : prev.includes(d) ? (prev.length > 1 ? prev.filter(x=>x!==d) : prev) : [...prev, d]);
   const allSelected = selectedDepots.length === ALL_DEPOTS.length;
   const ss = {background:"#ffffff",color:"#111827",border:"1px solid #e5e7eb",borderRadius:5,padding:"5px 8px",fontSize:11,fontFamily:"Arial, Helvetica, sans-serif",cursor:"pointer",outline:"none",minWidth:70};
   const yrBtn = (yr, active) => ({
@@ -2268,7 +2282,7 @@ function DashboardInner() {
           <ScorecardTab selectedDepots={selectedDepots} allSelected={allSelected} selectedYear={selectedYear} availableWeeks={availableWeeks} effectiveFrom={effectiveFrom} effectiveTo={effectiveTo} t={t} isMobile={isMobile} lang={lang} />
         )}
         {selectedView==="pip"&&(
-          <PipTab selectedDepots={selectedDepots} allSelected={allSelected} t={t} isMobile={isMobile} lang={lang} />
+          <PipTab selectedDepots={selectedDepots} allSelected={allSelected} selectedYear={selectedYear} effectiveFrom={effectiveFrom} effectiveTo={effectiveTo} t={t} isMobile={isMobile} lang={lang} />
         )}
         {selectedView==="overview"&&(<>
           <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":selectedDepots.length===1?"1fr":"repeat(2,1fr)",gap:12,marginBottom:24}}>
