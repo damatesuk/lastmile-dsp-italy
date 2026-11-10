@@ -131,7 +131,37 @@ def login(page, user, pwd):
 CTRL_VALUE = '[data-automation-id="sheet_control_value"]'
 
 
+def dismiss_dialogs(page):
+    """Cierra los diálogos modales de Amazon Quick (p. ej. el anuncio «AWS Quick just got a lot more powerful», desde 05/11/2026)
+    y el panel lateral de chat del asistente: su overlay (`data-slot="dialog-overlay"`) intercepta todos los clics."""
+    closed = 0
+    for _ in range(3):
+        dlg = page.locator('[role="dialog"]:visible, [role="alertdialog"]:visible')
+        if not dlg.count():
+            break
+        btn = dlg.last.get_by_role("button", name=re.compile(r"^(Close|Dismiss|Got it|OK|Not now|Skip|Maybe later)$", re.I))
+        if btn.count():
+            try:
+                btn.first.click(timeout=3000)
+            except Exception:
+                page.keyboard.press("Escape")
+        else:
+            page.keyboard.press("Escape")
+        closed += 1; page.wait_for_timeout(800)
+    if closed:
+        log(f"Diálogo(s) modal(es) cerrado(s): {closed}")
+    chat = page.locator('button[aria-label="Close chat"]')
+    if chat.count():  # el panel de chat quita la mitad del ancho al dashboard
+        try:
+            chat.first.click(timeout=3000); page.wait_for_timeout(800); log("Panel de chat cerrado")
+        except Exception:
+            pass
+    if page.locator('[data-slot="dialog-overlay"]:visible').count():
+        dump_debug(page, "dialog"); log("Sigue habiendo un overlay modal; los clics pueden fallar", "WARN")
+
+
 def open_sheet(page, name):
+    dismiss_dialogs(page)
     tab = page.get_by_role("tab", name=re.compile(re.escape(name)))
     tab.first.click()
     page.wait_for_timeout(6000)
@@ -154,6 +184,7 @@ def dump_debug(page, tag):
 
 def reset_to_original(page):
     """«Reset to original»: quita filtros persistidos del usuario (p. ej. station_code = UIT4) antes de exportar."""
+    dismiss_dialogs(page)
     btn = page.locator('[data-automation-id="analysis_navbar_reset"]')
     if not btn.count():
         log("No encuentro «Reset to original»; sigo con el estado guardado", "WARN"); return
@@ -229,6 +260,8 @@ POPOVER = '[role="presentation"][data-automation-id$="-menu"]:visible, [class*="
 def dismiss_popovers(page):
     """Cierra popovers MUI (calendario, listas de controles) que interceptan clics y hover.
     Escape no cierra la lista multi-selección («Defect»): lo fiable es pinchar en su fondo (backdrop), como un usuario que pincha fuera."""
+    if page.locator('[data-slot="dialog-overlay"]:visible').count():
+        dismiss_dialogs(page)
     for _ in range(4):
         if not (page.locator(POPOVER).count() or page.locator('[role="presentation"] [role="dialog"]:visible').count() or open_dropdowns(page).count()):
             return
@@ -445,6 +478,7 @@ def main():
             login(page, user, pwd)
             page.goto(DASH_URL, wait_until="domcontentloaded"); page.wait_for_timeout(8000)
         ctx.storage_state(path=str(STATE_FILE))
+        dismiss_dialogs(page)
 
         steps = [x.strip() for x in a.steps.split(",") if x.strip()]
         try:
